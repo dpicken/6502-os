@@ -16,3 +16,8 @@ $(BUILD_DIR)/kernel/kernel: $(SRC_DIR)/kernel/system.cfg $(KERNEL_OBJS) $(KERNEL
 	$(echo_recipe)ld65 -o $@ --lib-path $(BUILD_DIR) -C $^ $(KERNEL_TOOLCHAIN_LIBS) && chmod a+x $@
 
 all: $(BUILD_DIR)/kernel/kernel
+
+.PHONY: install
+install: $(BUILD_DIR)/kernel/kernel
+	$(echo_build_message)
+	$(echo_recipe)minipro -p AT28C256 -w $(BUILD_DIR)/kernel/kernel
