@@ -5,6 +5,7 @@ KERNEL_OBJS += $(BUILD_DIR)/kernel/vector.s.o
 KERNEL_OBJS += $(BUILD_DIR)/kernel/kernel.c.o
 
 KERNEL_LIBS :=
+KERNEL_LIBS += $(BUILD_DIR)/button/button.a
 KERNEL_LIBS += $(BUILD_DIR)/lcd/lcd.a
 KERNEL_LIBS += $(BUILD_DIR)/hw/hw.a
 
