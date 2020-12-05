@@ -10,6 +10,15 @@
 #define HW_LCD_CONTROL_BIT_RW 0x40
 #define HW_LCD_CONTROL_BIT_E  0x80
 
+/** Get the CPU frequency. */
+unsigned long hw_cpu_get_frequency(void);
+
+/** Start the fixed rate timer. */
+void hw_timer_fixed_rate_start(unsigned int frequency);
+
+/** Reset the fixed rate timer interrupt; returns true if it was set. */
+unsigned char hw_timer_fixed_rate_interrupt_reset(void);
+
 /** Set the button direction to read. */
 void hw_button_direction_set_read(void);
 

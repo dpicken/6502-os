@@ -1,6 +1,6 @@
 .export __STARTUP__: absolute = 1
 
-.export startup_reset
+.export startup_init
 .export _exit
 
 .import copydata
@@ -14,7 +14,8 @@
 .include "zeropage.inc"
 
 .segment "STARTUP"
-startup_reset:
+
+startup_init:
   ; Initialize stack pointer
   ldx #$FF
   txs

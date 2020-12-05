@@ -46,12 +46,20 @@ void lcd_init(void) {
 
   lcd_write_instruction(LCD_INSTRUCTION_DISPLAY_CONTROL
       | LCD_DISPLAY_CONTROL_ON
-      | LCD_DISPLAY_CONTROL_CURSOR_ON
+      | LCD_DISPLAY_CONTROL_CURSOR_OFF
       | LCD_DISPLAY_CONTROL_CURSOR_BLINK_OFF);
 
   lcd_write_instruction(LCD_INSTRUCTION_ENTRY_MODE_SET
       | LCD_ENTRY_MODE_SET_INCREMENT
       | LCD_ENTRY_MODE_SET_SHIFT_DISPLAY_OFF);
 
+  lcd_clear();
+}
+
+void lcd_home(void) {
+  lcd_write_instruction(LCD_INSTRUCTION_RETURN_HOME);
+}
+
+void lcd_clear(void) {
   lcd_write_instruction(LCD_INSTRUCTION_CLEAR_DISPLAY);
 }
