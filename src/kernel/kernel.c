@@ -4,6 +4,7 @@
 #include "irq_handler.h"
 #include "system_time.h"
 
+#include "button/event.h"
 #include "button/init.h"
 #include "lcd/init.h"
 #include "lcd/putc.h"
@@ -18,7 +19,7 @@ void kernel_out(const char* str) {
 }
 
 void kernel_out_system_time(void) {
-  long unsigned int total_seconds = system_time_get_ms() / 1000;
+  unsigned long total_seconds = system_time_get_ms() / 1000;
   unsigned int seconds = total_seconds % 60;
   unsigned int minutes = (total_seconds / 60) % 60;
   unsigned int hours = (total_seconds / (60 * 60)) % 24;
@@ -28,37 +29,50 @@ void kernel_out_system_time(void) {
   kernel_out(timestamp);
 }
 
-void kernel_display_time(void) {
+void kernel_out_system_time_pretty(void) {
   lcd_home();
   kernel_out_system_time();
   kernel_out("                             ");
 }
 
-void kernel_button_poll(void) {
-  unsigned char button_bits = hw_button_get();
-  if (button_bits & HW_BUTTON_0) {
-    kernel_out("Up                                      ");
+#define KERNEL_DECLARE_BUTTON_HANDLER(button_code, event, str) \
+  void kernel_##button_code##_##event##(void); \
+  void kernel_##button_code##_##event##(void) { \
+    kernel_out(str""); \
   }
-  if (button_bits & HW_BUTTON_1) {
-    kernel_out("Down                                    ");
-  }
-  if (button_bits & HW_BUTTON_2) {
-    kernel_out("Left                                    ");
-  }
-  if (button_bits & HW_BUTTON_3) {
-    kernel_out("Right                                   ");
-  }
-  if (button_bits & HW_BUTTON_4) {
-    kernel_out("Fire                                    ");
-  }
+
+KERNEL_DECLARE_BUTTON_HANDLER(button_code_up, depressed, "u")
+KERNEL_DECLARE_BUTTON_HANDLER(button_code_down, depressed, "d")
+KERNEL_DECLARE_BUTTON_HANDLER(button_code_left, depressed, "l")
+KERNEL_DECLARE_BUTTON_HANDLER(button_code_right, depressed, "r")
+KERNEL_DECLARE_BUTTON_HANDLER(button_code_fire, depressed, "f")
+
+KERNEL_DECLARE_BUTTON_HANDLER(button_code_up, released, "U")
+KERNEL_DECLARE_BUTTON_HANDLER(button_code_down, released, "D")
+KERNEL_DECLARE_BUTTON_HANDLER(button_code_left, released, "L")
+KERNEL_DECLARE_BUTTON_HANDLER(button_code_right, released, "R")
+KERNEL_DECLARE_BUTTON_HANDLER(button_code_fire, released, "F")
+
+void kernel_button_handlers_set(void) {
+  button_depressed_set_handler(kernel_button_code_up_depressed, button_code_up);
+  button_depressed_set_handler(kernel_button_code_down_depressed, button_code_down);
+  button_depressed_set_handler(kernel_button_code_left_depressed, button_code_left);
+  button_depressed_set_handler(kernel_button_code_right_depressed, button_code_right);
+  button_depressed_set_handler(kernel_button_code_fire_depressed, button_code_fire);
+
+  button_released_set_handler(kernel_button_code_up_released, button_code_up);
+  button_released_set_handler(kernel_button_code_down_released, button_code_down);
+  button_released_set_handler(kernel_button_code_left_released, button_code_left);
+  button_released_set_handler(kernel_button_code_right_released, button_code_right);
+  button_released_set_handler(kernel_button_code_fire_released, button_code_fire);
 }
 
-void kernel_event_loop(void) {
+void kernel_event_poll_loop(void) {
+  lcd_clear();
   for (;;) {
     if (system_time_reset_ticked_event()) {
       timer_on_system_time_ticked();
     }
-    kernel_button_poll();
   }
 }
 
@@ -74,9 +88,12 @@ void main(void) {
   button_init();
   kernel_out("[btn_init] done                         ");
 
-  timer_add_fixed_rate(&kernel_display_time, 1000);
-  kernel_out("[tme_init] done                         ");
+  timer_add_fixed_rate(&kernel_out_system_time_pretty, 1000);
+  kernel_out("[krl_time] done                         ");
 
-  kernel_out("[evt_loop] start                        ");
-  kernel_event_loop();
+  kernel_button_handlers_set();
+  kernel_out("[krl_bttn] done                         ");
+
+  kernel_out("[krl_epll] start                        ");
+  kernel_event_poll_loop();
 }
