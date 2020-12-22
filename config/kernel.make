@@ -8,6 +8,7 @@ KERNEL_OBJS += $(BUILD_DIR)/kernel/kernel.c.o
 
 KERNEL_LIBS :=
 KERNEL_LIBS += $(BUILD_DIR)/button/button.a
+KERNEL_LIBS += $(BUILD_DIR)/log/log.a
 KERNEL_LIBS += $(BUILD_DIR)/lcd/lcd.a
 KERNEL_LIBS += $(BUILD_DIR)/hw/hw.a
 KERNEL_LIBS += $(BUILD_DIR)/timer/timer.a
