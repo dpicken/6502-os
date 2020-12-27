@@ -19,6 +19,9 @@ void button_depressed_set_handler(button_event_handler handler, button_code code
 /** Callback the specified handler when the specified button is released. */
 void button_released_set_handler(button_event_handler handler, button_code code);
 
+/** Clear callbacks. */
+void button_clear_handlers(void);
+
 void button_event_dispatch(button_code code, unsigned char depressed);
 
 void button_event_poll(void);

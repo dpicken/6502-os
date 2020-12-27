@@ -31,17 +31,10 @@ unsigned char log_dump(log_dumper dumper, unsigned char offset) {
 }
 
 unsigned char log_dump_entry(log_dumper dumper, unsigned char index) {
-  const char* log_message = log_entries[index].message;
-  int log_message_index = 0;
-
-  if (log_message == 0) {
+  if (log_entries[index].message == 0) {
     return 0;
   }
 
-  while (log_message[log_message_index] != '\0') {
-    dumper(log_message[log_message_index]);
-    ++log_message_index;
-  }
-
+  dumper(log_entries[index].message);
   return 1;
 }

@@ -3,4 +3,6 @@
 
 void lcd_putc(char c);
 
+void lcd_puts(const char* str);
+
 #endif // ifndef lcd_io_h

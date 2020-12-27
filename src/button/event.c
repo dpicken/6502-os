@@ -15,6 +15,15 @@ void button_released_set_handler(button_event_handler handler, button_code code)
   button_released_handlers[code] = handler;
 }
 
+void button_clear_handlers(void) {
+  button_code i;
+
+  for (i = 0; i != button_count; ++i) {
+    button_depressed_set_handler(0, i);
+    button_released_set_handler(0, i);
+  }
+}
+
 void button_event_dispatch(button_code code, unsigned char depressed) {
   button_event_handler handler = depressed
       ? button_depressed_handlers[code]
