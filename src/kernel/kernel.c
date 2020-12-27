@@ -1,6 +1,7 @@
 #include "kernel.h"
 
-#include "interrupt_control.h"
+#include "interrupt_wait.h"
+#include "irq_control.h"
 #include "irq_handler.h"
 #include "system_time.h"
 
@@ -94,6 +95,7 @@ void kernel_event_poll_loop(void) {
     if (system_time_reset_ticked_event()) {
       timer_on_system_time_ticked();
     }
+    interrupt_wait();
   }
 }
 
@@ -113,7 +115,7 @@ void kernel_log(const char* const str) {
 
 void main(void) {
   irq_handler_init();
-  interrupt_control_irq_enable();
+  irq_enable();
   kernel_log_early("[irq_init] done ");
 
   system_time_init();
