@@ -2,7 +2,7 @@
 
 #include "hw/map.h"
 
-#define TICK_FREQUENCY 50000UL
+#define TICK_FREQUENCY 10000UL
 
 static unsigned long tick_count;
 static unsigned long ms_per_tick;

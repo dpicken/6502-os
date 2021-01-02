@@ -7,5 +7,5 @@
 
 void button_init(void) {
   hw_button_direction_set_read();
-  timer_add_fixed_rate(&button_event_poll, 50);
+  timer_add_fixed_rate(&button_event_poll, 20);
 }
