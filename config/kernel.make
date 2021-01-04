@@ -12,19 +12,19 @@ KERNEL_OBJS += $(BUILD_DIR)/kernel/kernel.c.o
 
 KERNEL_LIBS :=
 KERNEL_LIBS += $(BUILD_DIR)/button/button.a
-KERNEL_LIBS += $(BUILD_DIR)/log/log.a
-KERNEL_LIBS += $(BUILD_DIR)/lcd/lcd.a
-KERNEL_LIBS += $(BUILD_DIR)/memtest/memtest.a
 KERNEL_LIBS += $(BUILD_DIR)/hw/hw.a
+KERNEL_LIBS += $(BUILD_DIR)/lcd/lcd.a
+KERNEL_LIBS += $(BUILD_DIR)/log/log.a
+KERNEL_LIBS += $(BUILD_DIR)/memtest/memtest.a
 KERNEL_LIBS += $(BUILD_DIR)/timer/timer.a
 KERNEL_LIBS += $(BUILD_DIR)/uptime/uptime.a
 
 KERNEL_TOOLCHAIN_LIBS :=
-KERNEL_TOOLCHAIN_LIBS += none.lib
+KERNEL_TOOLCHAIN_LIBS += $(BUILD_DIR)/cc65/cc65.a
 
-$(BUILD_DIR)/kernel/kernel: $(SRC_DIR)/kernel/system.cfg $(KERNEL_OBJS) $(KERNEL_LIBS)
+$(BUILD_DIR)/kernel/kernel: $(SRC_DIR)/kernel/system.cfg $(KERNEL_OBJS) $(KERNEL_LIBS) $(KERNEL_TOOLCHAIN_LIBS)
 	$(echo_build_message)
-	$(echo_recipe)ld65 -o $@ --lib-path $(BUILD_DIR) -C $^ $(KERNEL_TOOLCHAIN_LIBS) && chmod a+x $@
+	$(echo_recipe)ld65 -o $@ --lib-path $(BUILD_DIR) -C $^ none.lib $(KERNEL_TOOLCHAIN_LIBS) && chmod a+x $@
 
 $(BUILD_DIR)/kernel/kernel.checksum: $(BUILD_DIR)/kernel/kernel
 	$(echo_build_message)

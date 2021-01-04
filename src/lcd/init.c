@@ -1,5 +1,7 @@
 #include "init.h"
 
+#include "io.h"
+
 #include "busy_wait.h"
 
 #define LCD_INSTRUCTION_FUNCTION_SET              0x20
@@ -58,8 +60,10 @@ void lcd_init(void) {
 
 void lcd_home(void) {
   lcd_write_instruction(LCD_INSTRUCTION_RETURN_HOME);
+  lcd_reset_xpos();
 }
 
 void lcd_clear(void) {
   lcd_write_instruction(LCD_INSTRUCTION_CLEAR_DISPLAY);
+  lcd_reset_xpos();
 }

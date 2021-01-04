@@ -3,17 +3,13 @@
 #include "button/event.h"
 #include "kernel/memory.h"
 #include "lcd/init.h"
-#include "lcd/io.h"
 
 #include <stdio.h>
 #include <zlib.h>
 
 void memtest_print_rom_checksum(void) {
-  char checksum_str[15];
-  snprintf(checksum_str, sizeof(checksum_str), " ROM: %08lx", memory_get_rom_checksum());
-  lcd_puts(checksum_str);
-  snprintf(checksum_str, sizeof(checksum_str), "CALC: %08lx", crc32(0, memory_get_rom_base_address(), memory_get_rom_size()));
-  lcd_puts(checksum_str);
+  printf(" ROM: %08lx\n", memory_get_rom_checksum());
+  printf("CALC: %08lx\n", crc32(0, memory_get_rom_base_address(), memory_get_rom_size()));
 }
 
 void memtest_app_button_left_released(void) {

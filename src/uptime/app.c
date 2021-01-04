@@ -3,7 +3,6 @@
 #include "button/event.h"
 #include "kernel/system_time.h"
 #include "lcd/init.h"
-#include "lcd/io.h"
 #include "timer/timer.h"
 
 #include <stdio.h>
@@ -14,9 +13,7 @@ void uptime_print_system_time(void) {
   unsigned int minutes = (total_seconds / 60) % 60;
   unsigned int hours = (total_seconds / (60 * 60)) % 24;
   unsigned int days = (total_seconds / (60 * 60 * 24));
-  char timestamp[12];
-  snprintf(timestamp, sizeof(timestamp), "%02u-%02u:%02u:%02u", days, hours, minutes, seconds);
-  lcd_puts(timestamp);
+  printf("%02u-%02u:%02u:%02u", days, hours, minutes, seconds);
 }
 
 void uptime_print_system_time_pretty(void) {
