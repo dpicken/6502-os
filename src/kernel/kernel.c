@@ -1,14 +1,15 @@
 #include "kernel.h"
 
-#include "app.h"
 #include "interrupt_wait.h"
 #include "irq_control.h"
 #include "irq_handler.h"
 #include "log.h"
 #include "system_time.h"
 
+#include "button/event.h"
 #include "button/init.h"
 #include "lcd/init.h"
+#include "switcher/app.h"
 #include "timer/timer.h"
 
 void kernel_event_poll_loop(void) {
@@ -34,9 +35,12 @@ void main(void) {
   button_init();
   kernel_log("[btn_init] done");
 
-  kernel_app_start();
-  kernel_log("[krl_apst] done");
+  button_released_set_handler(switcher_app_enter, button_code_special_left_and_right);
+  kernel_log("[swt_hkey] done");
 
-  kernel_log("[krl_poll] start");
+  timer_add_one_shot(switcher_app_enter, 1000);
+  kernel_log("[swt_entr] done");
+
+  kernel_log("[pol_loop] ...");
   kernel_event_poll_loop();
 }

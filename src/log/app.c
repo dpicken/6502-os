@@ -36,10 +36,8 @@ void log_app_tail(void) {
 }
 
 void log_app_enter(void) {
-  lcd_clear();
-  button_clear_handlers();
+  log_app_tail();
   button_released_set_handler(log_app_button_up_released, button_code_up);
   button_released_set_handler(log_app_button_down_released, button_code_down);
   button_released_set_handler(log_app_tail, button_code_fire);
-  log_app_tail();
 }

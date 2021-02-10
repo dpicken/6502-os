@@ -6,11 +6,11 @@ KERNEL_OBJS += $(BUILD_DIR)/kernel/system_time.c.o
 KERNEL_OBJS += $(BUILD_DIR)/kernel/vector.s.o
 KERNEL_OBJS += $(BUILD_DIR)/kernel/irq_handler.c.o
 KERNEL_OBJS += $(BUILD_DIR)/kernel/log.c.o
-KERNEL_OBJS += $(BUILD_DIR)/kernel/app.c.o
 KERNEL_OBJS += $(BUILD_DIR)/kernel/memory.s.o
 KERNEL_OBJS += $(BUILD_DIR)/kernel/kernel.c.o
 
 KERNEL_LIBS :=
+KERNEL_LIBS += $(BUILD_DIR)/switcher/switcher.a
 KERNEL_LIBS += $(BUILD_DIR)/button/button.a
 KERNEL_LIBS += $(BUILD_DIR)/hw/hw.a
 KERNEL_LIBS += $(BUILD_DIR)/lcd/lcd.a

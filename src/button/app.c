@@ -25,8 +25,6 @@ DEFINE_BUTTON_HANDLERS(fire,  'f', 'F')
   button_released_set_handler(button_app_button_##button_name##_released, button_code_##button_name)
 
 void button_app_enter(void) {
-  lcd_clear();
-  button_clear_handlers();
   SET_BUTTON_HANDLERS(up);
   SET_BUTTON_HANDLERS(down);
   SET_BUTTON_HANDLERS(left);

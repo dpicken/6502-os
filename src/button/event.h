@@ -8,6 +8,10 @@ typedef enum {
   button_code_right,
   button_code_fire,
 
+  button_count_non_special,
+
+  button_code_special_left_and_right = button_count_non_special,
+
   button_count
 } button_code;
 
@@ -19,8 +23,8 @@ void button_depressed_set_handler(button_event_handler handler, button_code code
 /** Callback the specified handler when the specified button is released. */
 void button_released_set_handler(button_event_handler handler, button_code code);
 
-/** Clear callbacks. */
-void button_clear_handlers(void);
+/** Clear all non-special callbacks. */
+void button_clear_all_non_special(void);
 
 void button_event_dispatch(button_code code, unsigned char depressed);
 

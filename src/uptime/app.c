@@ -22,8 +22,6 @@ void uptime_print_system_time_pretty(void) {
 }
 
 void uptime_app_enter(void) {
-  lcd_clear();
-  button_clear_handlers();
   uptime_print_system_time_pretty();
   timer_add_fixed_rate(&uptime_print_system_time_pretty, 1000);
 }
