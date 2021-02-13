@@ -30,10 +30,24 @@
 #define LCD_ENTRY_MODE_SET_SHIFT_DISPLAY_ON       0x01
 #define LCD_ENTRY_MODE_SET_SHIFT_DISPLAY_OFF      0x00
 
+void lcd_write_instruction8(unsigned char instruction) {
+  lcd_busy_wait();
+
+  hw_lcd_control_set(0);
+  hw_lcd_data_write(instruction);
+  hw_lcd_control_set(HW_LCD_CONTROL_BIT_E);
+  hw_lcd_control_set(0);
+}
+
 void lcd_write_instruction(unsigned char instruction) {
   lcd_busy_wait();
-  hw_lcd_data_write(instruction);
+
   hw_lcd_control_set(0);
+  hw_lcd_data_write(instruction);
+  hw_lcd_control_set(HW_LCD_CONTROL_BIT_E);
+  hw_lcd_control_set(0);
+
+  hw_lcd_data_write(instruction << 4);
   hw_lcd_control_set(HW_LCD_CONTROL_BIT_E);
   hw_lcd_control_set(0);
 }
@@ -42,8 +56,16 @@ void lcd_init(void) {
   hw_lcd_control_direction_set_write();
   hw_lcd_data_direction_set_write();
 
+  lcd_write_instruction8(LCD_INSTRUCTION_FUNCTION_SET
+      | LCD_FUNCTION_SET_DATA_LENGTH_8BIT);
+  lcd_write_instruction8(LCD_INSTRUCTION_FUNCTION_SET
+      | LCD_FUNCTION_SET_DATA_LENGTH_8BIT);
+  lcd_write_instruction8(LCD_INSTRUCTION_FUNCTION_SET
+      | LCD_FUNCTION_SET_DATA_LENGTH_8BIT);
+  lcd_write_instruction8(LCD_INSTRUCTION_FUNCTION_SET
+      | LCD_FUNCTION_SET_DATA_LENGTH_4BIT);
   lcd_write_instruction(LCD_INSTRUCTION_FUNCTION_SET
-      | LCD_FUNCTION_SET_DATA_LENGTH_8BIT
+      | LCD_FUNCTION_SET_DATA_LENGTH_4BIT
       | LCD_FUNCTION_SET_DISPLAY_LINES_2);
 
   lcd_write_instruction(LCD_INSTRUCTION_DISPLAY_CONTROL

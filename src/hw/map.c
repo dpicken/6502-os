@@ -30,7 +30,7 @@
 
 #define HW_LCD_DATA_REGISTER        HW_VIA_B
 #define HW_LCD_DATA_DDR             HW_VIA_DDRB
-#define HW_LCD_DATA_MASK            0xFF
+#define HW_LCD_DATA_MASK            0xF0
 
 unsigned long hw_cpu_get_frequency(void) {
   return 1000000UL;
@@ -82,5 +82,5 @@ void hw_lcd_data_write(unsigned char bits) {
 }
 
 unsigned char hw_lcd_data_read(void) {
-  return *HW_VIA_B;
+  return *HW_VIA_B & HW_LCD_DATA_MASK;
 }
