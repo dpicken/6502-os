@@ -2,6 +2,7 @@ KERNEL_OBJS :=
 KERNEL_OBJS += $(BUILD_DIR)/kernel/startup.s.o
 KERNEL_OBJS += $(BUILD_DIR)/kernel/interrupt_dispatch.s.o
 KERNEL_OBJS += $(BUILD_DIR)/kernel/interrupt_wait.s.o
+KERNEL_OBJS += $(BUILD_DIR)/kernel/delay.c.o
 KERNEL_OBJS += $(BUILD_DIR)/kernel/system_time.c.o
 KERNEL_OBJS += $(BUILD_DIR)/kernel/vector.s.o
 KERNEL_OBJS += $(BUILD_DIR)/kernel/irq_handler.c.o

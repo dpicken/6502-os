@@ -15,5 +15,5 @@ void memtest_print_rom_checksum(void) {
 
 void memtest_app_enter(void) {
   memtest_print_rom_checksum();
-  button_released_set_handler(memtest_print_rom_checksum, button_code_fire);
+  button_released_set_handler(memtest_print_rom_checksum, button_code_fire1);
 }

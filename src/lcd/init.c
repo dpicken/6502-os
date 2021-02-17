@@ -1,8 +1,9 @@
 #include "init.h"
 
+#include "busy_wait.h"
 #include "io.h"
 
-#include "busy_wait.h"
+#include "kernel/delay.h"
 
 #define LCD_INSTRUCTION_FUNCTION_SET              0x20
 #define LCD_INSTRUCTION_CURSOR_DISPLAY            0x10
@@ -30,50 +31,39 @@
 #define LCD_ENTRY_MODE_SET_SHIFT_DISPLAY_ON       0x01
 #define LCD_ENTRY_MODE_SET_SHIFT_DISPLAY_OFF      0x00
 
-void lcd_write_instruction8(unsigned char instruction) {
-  lcd_busy_wait();
-
-  hw_lcd_control_set(0);
-  hw_lcd_data_write(instruction);
-  hw_lcd_control_set(HW_LCD_CONTROL_BIT_E);
-  hw_lcd_control_set(0);
+void lcd_write_init_instruction_8bit(unsigned char instruction) {
+  hw_lcd_write_8bit(instruction, 0, HW_LCD_CONTROL_E1 | HW_LCD_CONTROL_E2);
+  delay_ms(5);
 }
 
-void lcd_write_instruction(unsigned char instruction) {
-  lcd_busy_wait();
-
-  hw_lcd_control_set(0);
-  hw_lcd_data_write(instruction);
-  hw_lcd_control_set(HW_LCD_CONTROL_BIT_E);
-  hw_lcd_control_set(0);
-
-  hw_lcd_data_write(instruction << 4);
-  hw_lcd_control_set(HW_LCD_CONTROL_BIT_E);
-  hw_lcd_control_set(0);
+void lcd_write_init_instruction_4bit(unsigned char instruction) {
+  hw_lcd_write_4bit(instruction, 0, HW_LCD_CONTROL_E1 | HW_LCD_CONTROL_E2);
+  delay_ms(1);
 }
 
 void lcd_init(void) {
   hw_lcd_control_direction_set_write();
   hw_lcd_data_direction_set_write();
 
-  lcd_write_instruction8(LCD_INSTRUCTION_FUNCTION_SET
+  delay_ms(15);
+
+  lcd_write_init_instruction_8bit(LCD_INSTRUCTION_FUNCTION_SET
       | LCD_FUNCTION_SET_DATA_LENGTH_8BIT);
-  lcd_write_instruction8(LCD_INSTRUCTION_FUNCTION_SET
+  lcd_write_init_instruction_8bit(LCD_INSTRUCTION_FUNCTION_SET
       | LCD_FUNCTION_SET_DATA_LENGTH_8BIT);
-  lcd_write_instruction8(LCD_INSTRUCTION_FUNCTION_SET
+  lcd_write_init_instruction_8bit(LCD_INSTRUCTION_FUNCTION_SET
       | LCD_FUNCTION_SET_DATA_LENGTH_8BIT);
-  lcd_write_instruction8(LCD_INSTRUCTION_FUNCTION_SET
+
+  lcd_write_init_instruction_8bit(LCD_INSTRUCTION_FUNCTION_SET
       | LCD_FUNCTION_SET_DATA_LENGTH_4BIT);
-  lcd_write_instruction(LCD_INSTRUCTION_FUNCTION_SET
+  lcd_write_init_instruction_4bit(LCD_INSTRUCTION_FUNCTION_SET
       | LCD_FUNCTION_SET_DATA_LENGTH_4BIT
       | LCD_FUNCTION_SET_DISPLAY_LINES_2);
-
-  lcd_write_instruction(LCD_INSTRUCTION_DISPLAY_CONTROL
+  lcd_write_init_instruction_4bit(LCD_INSTRUCTION_DISPLAY_CONTROL
       | LCD_DISPLAY_CONTROL_ON
       | LCD_DISPLAY_CONTROL_CURSOR_OFF
       | LCD_DISPLAY_CONTROL_CURSOR_BLINK_OFF);
-
-  lcd_write_instruction(LCD_INSTRUCTION_ENTRY_MODE_SET
+  lcd_write_init_instruction_4bit(LCD_INSTRUCTION_ENTRY_MODE_SET
       | LCD_ENTRY_MODE_SET_INCREMENT
       | LCD_ENTRY_MODE_SET_SHIFT_DISPLAY_OFF);
 
@@ -81,11 +71,13 @@ void lcd_init(void) {
 }
 
 void lcd_home(void) {
-  lcd_write_instruction(LCD_INSTRUCTION_RETURN_HOME);
+  lcd_busy_wait();
+  hw_lcd_write_4bit(LCD_INSTRUCTION_RETURN_HOME, 0, HW_LCD_CONTROL_E1 | HW_LCD_CONTROL_E2);
   lcd_reset_xpos();
 }
 
 void lcd_clear(void) {
-  lcd_write_instruction(LCD_INSTRUCTION_CLEAR_DISPLAY);
+  lcd_busy_wait();
+  hw_lcd_write_4bit(LCD_INSTRUCTION_CLEAR_DISPLAY, 0, HW_LCD_CONTROL_E1 | HW_LCD_CONTROL_E2);
   lcd_reset_xpos();
 }

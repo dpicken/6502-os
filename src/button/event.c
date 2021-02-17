@@ -34,7 +34,7 @@ void button_event_dispatch(button_code code, unsigned char depressed) {
 }
 
 void button_event_poll(void) {
-  unsigned char button_bits = hw_button_get();
+  unsigned char button_bits = hw_button_read();
   unsigned char button_bits_changed = button_bits ^ button_bits_history;
   button_bits_history = button_bits;
 
@@ -57,6 +57,13 @@ void button_event_poll(void) {
     button_event_dispatch(button_code_right, button_bits & HW_BUTTON_3);
   }
   if (button_bits_changed & HW_BUTTON_4) {
-    button_event_dispatch(button_code_fire, button_bits & HW_BUTTON_4);
+    button_event_dispatch(button_code_fire1, button_bits & HW_BUTTON_4);
   }
+  if (button_bits_changed & HW_BUTTON_5) {
+    button_event_dispatch(button_code_fire2, button_bits & HW_BUTTON_5);
+  }
+  if (button_bits_changed & HW_BUTTON_6) {
+    button_event_dispatch(button_code_fire3, button_bits & HW_BUTTON_6);
+  }
+
 }

@@ -22,14 +22,13 @@
 #define HW_VIA_IER_SET          0x80
 #define HW_VIA_IER_T1           0x40
 
-#define HW_BUTTON_MASK              (HW_BUTTON_0 | HW_BUTTON_1 | HW_BUTTON_2 | HW_BUTTON_3 | HW_BUTTON_4)
+#define HW_BUTTON_REGISTER          HW_VIA_A
+#define HW_BUTTON_DDR               HW_VIA_DDRA
+#define HW_BUTTON_MASK              (HW_BUTTON_0 | HW_BUTTON_1 | HW_BUTTON_2 | HW_BUTTON_3 | HW_BUTTON_4 | HW_BUTTON_5 | HW_BUTTON_6)
 
-#define HW_LCD_CONTROL_REGISTER     HW_VIA_A
-#define HW_LCD_CONTROL_DDR          HW_VIA_DDRA
-#define HW_LCD_CONTROL_MASK         (HW_LCD_CONTROL_BIT_E | HW_LCD_CONTROL_BIT_RW | HW_LCD_CONTROL_BIT_RS)
-
-#define HW_LCD_DATA_REGISTER        HW_VIA_B
-#define HW_LCD_DATA_DDR             HW_VIA_DDRB
+#define HW_LCD_REGISTER             HW_VIA_B
+#define HW_LCD_DDR                  HW_VIA_DDRB
+#define HW_LCD_CONTROL_MASK         0x0F
 #define HW_LCD_DATA_MASK            0xF0
 
 unsigned long hw_cpu_get_frequency(void) {
@@ -49,38 +48,61 @@ unsigned char hw_timer_fixed_rate_interrupt_reset(void) {
   return reset;
 }
 
-void hw_via_ddra_direction_set(void) {
-  *HW_VIA_DDRA = HW_LCD_CONTROL_MASK & ~HW_BUTTON_MASK;
-}
-
 void hw_button_direction_set_read(void) {
-  hw_via_ddra_direction_set();
+  *HW_BUTTON_DDR = ~HW_BUTTON_MASK;
 }
 
-unsigned char hw_button_get(void) {
-  return *HW_VIA_A & HW_BUTTON_MASK;
+unsigned char hw_button_read(void) {
+  return *HW_BUTTON_REGISTER & HW_BUTTON_MASK;
 }
 
 void hw_lcd_control_direction_set_write(void) {
-  hw_via_ddra_direction_set();
-}
-
-void hw_lcd_control_set(unsigned char hw_lcd_control_bits) {
-  *HW_VIA_A = hw_lcd_control_bits & HW_LCD_CONTROL_MASK;
+  *HW_LCD_DDR = HW_LCD_CONTROL_MASK;
 }
 
 void hw_lcd_data_direction_set_write(void) {
-  *HW_VIA_DDRB = HW_LCD_DATA_MASK;
+  *HW_LCD_DDR = HW_LCD_CONTROL_MASK | HW_LCD_DATA_MASK;
 }
 
 void hw_lcd_data_direction_set_read(void) {
-  *HW_VIA_DDRB = 0x00;
+  *HW_LCD_DDR = HW_LCD_CONTROL_MASK;
 }
 
-void hw_lcd_data_write(unsigned char bits) {
-  *HW_VIA_B = bits;
+void hw_lcd_write_8bit(unsigned char data, unsigned char rs, unsigned char e) {
+  unsigned char data_hi_with_control = (data & 0xF0) | rs;
+
+  *HW_LCD_REGISTER = data_hi_with_control;
+  *HW_LCD_REGISTER = data_hi_with_control | e;
+  *HW_LCD_REGISTER = data_hi_with_control;
 }
 
-unsigned char hw_lcd_data_read(void) {
-  return *HW_VIA_B & HW_LCD_DATA_MASK;
+void hw_lcd_write_4bit(unsigned char data, unsigned char rs, unsigned char e) {
+  unsigned char data_hi_with_control = ((data & 0xF0)     ) | rs;
+  unsigned char data_lo_with_control = ((data & 0x0F) << 4) | rs;
+
+  *HW_LCD_REGISTER = data_hi_with_control;
+  *HW_LCD_REGISTER = data_hi_with_control | e;
+  *HW_LCD_REGISTER = data_hi_with_control;
+
+  *HW_LCD_REGISTER = data_lo_with_control;
+  *HW_LCD_REGISTER = data_lo_with_control | e;
+  *HW_LCD_REGISTER = data_lo_with_control;
+}
+
+unsigned char hw_lcd_read_4bit(unsigned char rs, unsigned char e) {
+  unsigned char data_hi;
+  unsigned char data_lo;
+
+  unsigned char control = HW_LCD_CONTROL_R_WB | rs;
+
+  *HW_LCD_REGISTER = control;
+  *HW_LCD_REGISTER = control | e;
+  data_hi = *HW_LCD_REGISTER & HW_LCD_DATA_MASK;
+
+  *HW_LCD_REGISTER = control;
+  *HW_LCD_REGISTER = control | e;
+  data_lo = *HW_LCD_REGISTER & HW_LCD_DATA_MASK;
+
+  *HW_LCD_REGISTER = control;
+  return data_hi | (data_lo >> 4);
 }

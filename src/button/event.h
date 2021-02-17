@@ -6,7 +6,9 @@ typedef enum {
   button_code_down,
   button_code_left,
   button_code_right,
-  button_code_fire,
+  button_code_fire1,
+  button_code_fire2,
+  button_code_fire3,
 
   button_count_non_special,
 

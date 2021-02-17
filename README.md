@@ -1,6 +1,6 @@
 # 6502-os
 
-An OS and applications for an [Eater](https://eater.net/6502) 6502 computer.
+An OS and applications for an [Eater](https://eater.net/6502) derived 6502 computer.
 
 ## Install tools
 
