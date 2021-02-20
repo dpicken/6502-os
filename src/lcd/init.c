@@ -5,6 +5,8 @@
 
 #include "kernel/delay.h"
 
+#define LCD_INSTRUCTION_SET_DDRAM_ADDRESS         0x80
+#define LCD_INSTRUCTION_SET_CGRAM_ADDRESS         0x40
 #define LCD_INSTRUCTION_FUNCTION_SET              0x20
 #define LCD_INSTRUCTION_CURSOR_DISPLAY            0x10
 #define LCD_INSTRUCTION_DISPLAY_CONTROL           0x08
@@ -70,14 +72,22 @@ void lcd_init(void) {
   lcd_clear();
 }
 
-void lcd_home(void) {
-  lcd_busy_wait();
-  hw_lcd_write_4bit(LCD_INSTRUCTION_RETURN_HOME, 0, HW_LCD_CONTROL_E1 | HW_LCD_CONTROL_E2);
-  lcd_reset_xpos();
-}
-
 void lcd_clear(void) {
   lcd_busy_wait();
   hw_lcd_write_4bit(LCD_INSTRUCTION_CLEAR_DISPLAY, 0, HW_LCD_CONTROL_E1 | HW_LCD_CONTROL_E2);
-  lcd_reset_xpos();
+  lcd_reset_cached_pos();
+}
+
+void lcd_home(void) {
+  lcd_busy_wait();
+  hw_lcd_write_4bit(LCD_INSTRUCTION_RETURN_HOME, 0, HW_LCD_CONTROL_E1 | HW_LCD_CONTROL_E2);
+  lcd_reset_cached_pos();
+}
+
+void lcd_set_pos(unsigned int pos) {
+  unsigned char address = pos < 80 ? pos : pos - 80;
+
+  lcd_busy_wait();
+  hw_lcd_write_4bit(LCD_INSTRUCTION_SET_DDRAM_ADDRESS | address, 0, HW_LCD_CONTROL_E1 | HW_LCD_CONTROL_E2);
+  lcd_set_cached_pos(pos);
 }

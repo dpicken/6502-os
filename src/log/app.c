@@ -9,7 +9,7 @@
 unsigned char log_offset;
 
 void log_app_button_up_released(void) {
-  lcd_home();
+  lcd_clear();
   if (log_dump(&lcd_puts, log_offset + 1) != 0) {
     log_dump(&lcd_puts, log_offset);
     ++log_offset;
@@ -23,13 +23,13 @@ void log_app_button_down_released(void) {
   if (log_offset > 1) {
     --log_offset;
   }
-  lcd_home();
+  lcd_clear();
   log_dump(&lcd_puts, log_offset);
   log_dump(&lcd_puts, log_offset - 1);
 }
 
 void log_app_tail(void) {
-  lcd_home();
+  lcd_clear();
   log_offset = 1;
   log_dump(&lcd_puts, log_offset);
   log_dump(&lcd_puts, log_offset - 1);
