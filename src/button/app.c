@@ -1,17 +1,18 @@
 #include "app.h"
 
 #include "button/event.h"
-#include "lcd/init.h"
-#include "lcd/io.h"
+#include "console/console.h"
 #include "timer/timer.h"
+
+#include <stdio.h>
 
 #define DEFINE_BUTTON_HANDLERS(button_name, depressed_char, released_char) \
   void button_app_button_##button_name##_depressed(void) { \
-    lcd_putc(depressed_char); \
+    putchar(depressed_char); \
   } \
 \
   void button_app_button_##button_name##_released(void) { \
-    lcd_putc(released_char); \
+    putchar(released_char); \
   }
 
 DEFINE_BUTTON_HANDLERS(up,    'u', 'U')
@@ -34,5 +35,5 @@ void button_app_enter(void) {
   SET_BUTTON_HANDLERS(fire1);
   SET_BUTTON_HANDLERS(fire2);
   SET_BUTTON_HANDLERS(fire3);
-  timer_add_fixed_rate(&lcd_clear, 10000);
+  timer_add_fixed_rate(&console_clear, 30000);
 }

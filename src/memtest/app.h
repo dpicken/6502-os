@@ -3,6 +3,6 @@
 
 void memtest_app_enter(void);
 
-void memtest_print_rom_checksum(void);
+void memtest_rom(void);
 
 #endif // ifndef memtest_app_h

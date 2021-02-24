@@ -2,6 +2,8 @@
 
 #include "kernel/system_time.h"
 
+#include <stdio.h>
+
 #define LOG_MAX_ENTRY_COUNT 50
 
 typedef struct {
@@ -9,32 +11,29 @@ typedef struct {
   const char* message;
 } log_entry;
 
-log_entry log_entries[LOG_MAX_ENTRY_COUNT];
-unsigned char log_index;
+static log_entry log_entries[LOG_MAX_ENTRY_COUNT];
+static unsigned char log_pos;
 
 void log(const char* const message) {
-  log_entries[log_index].message = message;
-  log_entries[log_index].system_time_ms = system_time_get_ms();
-  if (++log_index == LOG_MAX_ENTRY_COUNT) {
-    log_index = 0;
+  log_entries[log_pos].message = message;
+  log_entries[log_pos].system_time_ms = system_time_get_ms();
+  if (++log_pos == LOG_MAX_ENTRY_COUNT) {
+    log_pos = 0;
   }
 }
 
-unsigned char log_dump(log_dumper dumper, unsigned char offset) {
-  unsigned char index = (log_index - 1 - offset) % LOG_MAX_ENTRY_COUNT;
+void log_dump(void) {
+  unsigned char i;
 
-  if (index == log_index) {
-    return 0;
+  for (i = log_pos; i != LOG_MAX_ENTRY_COUNT; ++i) {
+    if (log_entries[i].message != 0) {
+      puts(log_entries[i].message);
+    }
   }
 
-  return log_dump_entry(dumper, index);
-}
-
-unsigned char log_dump_entry(log_dumper dumper, unsigned char index) {
-  if (log_entries[index].message == 0) {
-    return 0;
+  for (i = 0; i != log_pos; ++i) {
+    if (log_entries[i].message != 0) {
+      puts(log_entries[i].message);
+    }
   }
-
-  dumper(log_entries[index].message);
-  return 1;
 }

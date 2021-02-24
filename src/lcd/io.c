@@ -17,16 +17,8 @@
 #define LCD_E1_POS_END LCD_LINE_2_POS_END
 #define LCD_E2_POS_END LCD_LINE_4_POS_END
 
-unsigned int lcd_pos_end = LCD_LINE_2_POS_END;
+unsigned int lcd_pos_end = LCD_LINE_4_POS_END;
 unsigned int lcd_pos;
-
-void lcd_reset_cached_pos(void) {
-  lcd_pos = 0;
-}
-
-void lcd_set_cached_pos(unsigned int pos) {
-  lcd_pos = pos;
-}
 
 void lcd_putc(char c) {
   lcd_busy_wait();
@@ -42,33 +34,18 @@ void lcd_putc(char c) {
   }
 }
 
-void lcd_newline(void) {
-  if (lcd_pos < LCD_LINE_1_POS_END) {
-    lcd_set_pos(LCD_LINE_1_POS_END);
-  } else if (lcd_pos_end < LCD_LINE_4_POS_END) {
-    lcd_set_pos(0);
-  } else if (lcd_pos > LCD_LINE_1_POS_END && lcd_pos < LCD_LINE_2_POS_END) {
-    lcd_set_pos(LCD_LINE_2_POS_END);
-  } else if (lcd_pos > LCD_LINE_2_POS_END && lcd_pos < LCD_LINE_3_POS_END) {
-    lcd_set_pos(LCD_LINE_3_POS_END);
-  } else {
-    lcd_set_pos(0);
-  }
-}
-
 void lcd_write(const char* buf, unsigned int count) {
-  int i;
+  unsigned int i;
 
   for (i = 0; i != count; ++i) {
-    if (buf[i] == '\n') {
-      lcd_newline();
-    } else {
-      lcd_putc(buf[i]);
-    }
+    lcd_putc(buf[i]);
   }
 }
 
-void lcd_puts(const char* str) {
-  lcd_write(str, strlen(str));
-  lcd_newline();
+void lcd_reset_cached_pos(void) {
+  lcd_pos = 0;
+}
+
+void lcd_set_cached_pos(unsigned int pos) {
+  lcd_pos = pos;
 }

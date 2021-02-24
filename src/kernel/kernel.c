@@ -8,6 +8,7 @@
 
 #include "button/event.h"
 #include "button/init.h"
+#include "console/console.h"
 #include "lcd/init.h"
 #include "switcher/app.h"
 #include "timer/timer.h"
@@ -31,6 +32,9 @@ void main(void) {
 
   lcd_init();
   kernel_log_early("[lcd_init] done");
+
+  console_init_40x4();
+  kernel_log_early("[con_init] done");
 
   button_init();
   kernel_log("[btn_init] done");
