@@ -2,6 +2,7 @@
 
 #include "button/app.h"
 #include "button/event.h"
+#include "buzzer/app.h"
 #include "console/console.h"
 #include "log/app.h"
 #include "memtest/app.h"
@@ -30,6 +31,11 @@ void switcher_button_right_released(void) {
   log_app_enter();
 }
 
+void switcher_button_fire1_released(void) {
+  switcher_app_reset();
+  buzzer_app_enter();
+}
+
 void switcher_app_reset(void) {
   button_clear_all_non_special();
   timer_clear_all_non_special();
@@ -42,8 +48,9 @@ void switcher_app_enter(void) {
   button_released_set_handler(switcher_button_down_released, button_code_down);
   button_released_set_handler(switcher_button_left_released, button_code_left);
   button_released_set_handler(switcher_button_right_released, button_code_right);
+  button_released_set_handler(switcher_button_fire1_released, button_code_fire1);
 
   puts("          U:memtest");
-  puts("L:uptime             R:log");
+  puts("L:uptime             R:log    A:buzzer");
   puts("          D:button");
 }

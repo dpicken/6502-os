@@ -38,6 +38,10 @@ void timer_add_one_shot(timer_callback callback, unsigned long ttl_ms) {
   timer_add(callback, ttl_ms, 0, 0);
 }
 
+void timer_add_one_shot_special(timer_callback callback, unsigned long ttl_ms) {
+  timer_add(callback, ttl_ms, 0, 1);
+}
+
 void timer_add_fixed_rate(timer_callback callback, unsigned long ttl_ms) {
   timer_add(callback, ttl_ms, ttl_ms, 0);
 }

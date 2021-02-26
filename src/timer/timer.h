@@ -6,6 +6,9 @@ typedef void (*timer_callback)(void);
 /** Add a timer that fires once. */
 void timer_add_one_shot(timer_callback callback, unsigned long ttl_ms);
 
+/** Add a timer that fires once, and, cannot be cleared. */
+void timer_add_one_shot_special(timer_callback callback, unsigned long ttl_ms);
+
 /** Add a timer that fires at a fixed rate. */
 void timer_add_fixed_rate(timer_callback callback, unsigned long ttl_ms);
 

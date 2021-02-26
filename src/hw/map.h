@@ -9,6 +9,8 @@
 #define HW_BUTTON_5           0x20
 #define HW_BUTTON_6           0x40
 
+#define HW_BUZZER             0x80
+
 #define HW_LCD_CONTROL_RS   0x01
 #define HW_LCD_CONTROL_R_WB 0x02
 #define HW_LCD_CONTROL_E1   0x04
@@ -22,6 +24,15 @@ void hw_timer_fixed_rate_start(unsigned int frequency);
 
 /** Reset the fixed rate timer interrupt; returns true if it was set. */
 unsigned char hw_timer_fixed_rate_interrupt_reset(void);
+
+/** Set the buzzer direction to write. */
+void hw_buzzer_direction_set_write(void);
+
+/** Set the buzzer. */
+void hw_buzzer_set(void);
+
+/** Reset the buzzer. */
+void hw_buzzer_reset(void);
 
 /** Set the button direction to read. */
 void hw_button_direction_set_read(void);

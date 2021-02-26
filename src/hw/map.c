@@ -32,7 +32,7 @@
 #define HW_LCD_DATA_MASK            0xF0
 
 unsigned long hw_cpu_get_frequency(void) {
-  return 1000000UL;
+  return 2000000UL;
 }
 
 void hw_timer_fixed_rate_start(unsigned int frequency) {
@@ -46,6 +46,19 @@ unsigned char hw_timer_fixed_rate_interrupt_reset(void) {
   unsigned char reset = *HW_VIA_IFR & HW_VIA_IFR_T1;
   *HW_VIA_IFR |= HW_VIA_IFR_T1;
   return reset;
+}
+
+void hw_buzzer_direction_set_write(void) {
+  // Note: the buzzer signal is the complement of the button signals.
+  hw_button_read();
+}
+
+void hw_buzzer_set(void) {
+  *HW_BUTTON_REGISTER = HW_BUZZER;
+}
+
+void hw_buzzer_reset(void) {
+  *HW_BUTTON_REGISTER = 0;
 }
 
 void hw_button_direction_set_read(void) {

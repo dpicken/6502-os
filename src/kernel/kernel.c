@@ -1,5 +1,6 @@
 #include "kernel.h"
 
+#include "delay.h"
 #include "interrupt_wait.h"
 #include "irq_control.h"
 #include "irq_handler.h"
@@ -8,6 +9,8 @@
 
 #include "button/event.h"
 #include "button/init.h"
+#include "buzzer/buzzer.h"
+#include "buzzer/init.h"
 #include "console/console.h"
 #include "lcd/init.h"
 #include "switcher/app.h"
@@ -23,6 +26,12 @@ void kernel_event_poll_loop(void) {
 }
 
 void main(void) {
+  buzzer_init();
+  kernel_log_early("[buz_init] done");
+
+  // Enable the buzzer early.
+  buzzer_on();
+
   irq_handler_init();
   irq_enable();
   kernel_log_early("[irq_init] done");
@@ -36,6 +45,9 @@ void main(void) {
   console_init_40x4();
   kernel_log_early("[con_init] done");
 
+  // Disable the buzzer after early initialization is complete.
+  buzzer_off();
+
   button_init();
   kernel_log("[btn_init] done");
 
@@ -44,6 +56,9 @@ void main(void) {
 
   timer_add_one_shot(switcher_app_enter, 1000);
   kernel_log("[swt_entr] done");
+
+  // Short buzz after initialization is complete.
+  buzzer_short_buzz();
 
   kernel_log("[pol_loop] ...");
   kernel_event_poll_loop();
