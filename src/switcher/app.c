@@ -3,6 +3,7 @@
 #include "button/app.h"
 #include "button/event.h"
 #include "buzzer/app.h"
+#include "configure/app.h"
 #include "console/console.h"
 #include "log/app.h"
 #include "memtest/app.h"
@@ -18,10 +19,11 @@ void switcher_app_enter(void) {
   button_released_set_handler(switcher_button_left_released, button_code_left);
   button_released_set_handler(switcher_button_right_released, button_code_right);
   button_released_set_handler(switcher_button_fire1_released, button_code_fire1);
+  button_released_set_handler(switcher_button_fire2_released, button_code_fire2);
 
   printf("          U:memtest                     \n");
   printf("L:uptime             R:log    A:buzzer  \n");
-  printf("          D:button            B:        \n");
+  printf("          D:button            B:config  \n");
   printf("                              C:        ");
 }
 
@@ -48,6 +50,11 @@ void switcher_button_right_released(void) {
 void switcher_button_fire1_released(void) {
   switcher_app_reset();
   buzzer_app_enter();
+}
+
+void switcher_button_fire2_released(void) {
+  switcher_app_reset();
+  configure_app_enter();
 }
 
 void switcher_app_reset(void) {

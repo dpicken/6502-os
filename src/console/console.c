@@ -15,12 +15,14 @@ void console_init_16x2(void) {
   x_size = 16;
   frame_capacity = 16 * 2;
   console_clear();
+  lcd_set_16x2();
 }
 
 void console_init_40x4(void) {
   x_size = 40;
   frame_capacity = 40 * 4;
   console_clear();
+  lcd_set_40x4();
 }
 
 void console_clear(void) {
