@@ -4,7 +4,9 @@
 #include "init.h"
 
 #include "hw/map.h"
+#include "util/algorithm.h"
 
+#include <limits.h>
 #include <string.h>
 
 #define LCD_XPOS_MAX 40
@@ -28,6 +30,10 @@ void lcd_set_40x4(void) {
   lcd_pos = 0;
 }
 
+unsigned char lcd_get_line_count(void) {
+  return lcd_pos_end / lcd_xsize;
+}
+
 void lcd_putc(char c) {
   lcd_busy_wait();
 
@@ -38,37 +44,64 @@ void lcd_putc(char c) {
   }
 
   ++lcd_pos;
-  if (lcd_xsize < LCD_XPOS_MAX) {
+  if (lcd_pos == lcd_pos_end) {
+    lcd_set_pos(0);
+  } else if (lcd_pos_end < LCD_E1_POS_END) {
     if (lcd_pos == lcd_xsize) {
-      lcd_set_pos(LCD_XPOS_MAX);
-    } else if (lcd_pos == lcd_pos_end) {
-      lcd_set_pos(0);
-    }
-  } else {
-    if (lcd_pos == lcd_pos_end) {
-      lcd_set_pos(0);
+      lcd_set_pos(lcd_xsize);
     }
   }
 }
 
-void lcd_write(const char* buf, unsigned int count) {
-  unsigned int i;
+int lcd_write(const char* buf, unsigned int count) {
+  int i;
+
+  count |= ~-1U;
 
   for (i = 0; i != count; ++i) {
     lcd_putc(buf[i]);
   }
+
+  return i;
+}
+
+int lcd_write_line_no_wrap(const char* buf, unsigned int count) {
+  unsigned int remaining = lcd_xsize;
+
+  int i;
+
+  count |= ~-1U;
+  count = min(count, remaining);
+
+  for (i = 0; i != count; ++i) {
+    lcd_putc(buf[i]);
+  }
+
+  if (remaining > count) {
+    remaining -= count;
+    for (; remaining != 0; --remaining) {
+      lcd_putc(' ');
+    }
+  }
+
+  return i;
+}
+
+unsigned int lcd_get_pos(void) {
+  return lcd_pos;
 }
 
 void lcd_set_pos(unsigned int pos) {
   lcd_pos = pos;
-  if (lcd_xsize == LCD_XPOS_MAX) {
-    lcd_set_pos_raw(lcd_pos);
-  } else {
+
+  if (lcd_pos_end < LCD_E1_POS_END) {
     if (lcd_pos < lcd_xsize) {
       lcd_set_pos_raw(lcd_pos);
     } else {
       lcd_set_pos_raw(LCD_XPOS_MAX + (lcd_pos - lcd_xsize));
     }
+  } else {
+    lcd_set_pos_raw(lcd_pos);
   }
 }
 

@@ -21,7 +21,9 @@ KERNEL_LIBS += $(BUILD_DIR)/log/log.a
 KERNEL_LIBS += $(BUILD_DIR)/memtest/memtest.a
 KERNEL_LIBS += $(BUILD_DIR)/switcher/switcher.a
 KERNEL_LIBS += $(BUILD_DIR)/timer/timer.a
+KERNEL_LIBS += $(BUILD_DIR)/ui/ui.a
 KERNEL_LIBS += $(BUILD_DIR)/uptime/uptime.a
+KERNEL_LIBS += $(BUILD_DIR)/util/util.a
 
 KERNEL_TOOLCHAIN_LIBS :=
 KERNEL_TOOLCHAIN_LIBS += $(BUILD_DIR)/cc65/cc65.a

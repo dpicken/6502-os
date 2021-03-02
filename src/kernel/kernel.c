@@ -42,7 +42,7 @@ void main(void) {
   lcd_init();
   kernel_log_early("[lcd_init] done");
 
-  console_init_40x4();
+  console_init_16x2();
   kernel_log_early("[con_init] done");
 
   // Disable the buzzer after early initialization is complete.

@@ -2,6 +2,9 @@
 
 #include "lcd/init.h"
 #include "lcd/io.h"
+#include "util/algorithm.h"
+
+#include <limits.h>
 
 static char frame_buffer[40 * 4];
 
@@ -23,6 +26,10 @@ void console_init_40x4(void) {
   frame_capacity = 40 * 4;
   console_clear();
   lcd_set_40x4();
+}
+
+unsigned char console_get_line_count(void) {
+  return frame_capacity / x_size;
 }
 
 void console_clear(void) {
@@ -52,9 +59,7 @@ void console_render(void) {
 }
 
 void console_new_line(void) {
-  while (frame_tail != frame_head) {
-    frame_buffer[frame_tail++] = ' ';
-  }
+  frame_tail = frame_head;
 
   if (frame_tail == frame_capacity) {
     full = 1;
@@ -73,9 +78,12 @@ void console_new_line(void) {
 }
 
 void console_putc(char c) {
+  unsigned int offset_from_line_begin;
+
   if (c == '\r') {
+    offset_from_line_begin = x_size - (frame_head - frame_tail);
     frame_tail = frame_head - x_size;
-    console_render();
+    lcd_set_pos(lcd_get_pos() - offset_from_line_begin);
     return;
   }
 
@@ -92,10 +100,14 @@ void console_putc(char c) {
   lcd_putc(c);
 }
 
-void console_write(const char* buf, unsigned int count) {
-  unsigned int i;
+int console_write(const char* buf, unsigned int count) {
+  int i;
+
+  count |= ~-1U;
 
   for (i = 0; i != count; ++i) {
     console_putc(buf[i]);
   }
+
+  return i;
 }
