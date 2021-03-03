@@ -5,6 +5,7 @@
 #include "irq_control.h"
 #include "irq_handler.h"
 #include "log.h"
+#include "memory.h"
 #include "system_time.h"
 
 #include "button/event.h"
@@ -29,6 +30,8 @@ void kernel_event_poll_loop(void) {
 }
 
 void main(void) {
+  kernel_log_early(memory_get_rom_version());
+
   buzzer_init();
   kernel_log_early("[buz_init] done");
 

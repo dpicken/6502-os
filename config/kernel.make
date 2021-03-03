@@ -32,13 +32,15 @@ $(BUILD_DIR)/kernel/kernel: $(SRC_DIR)/kernel/system.cfg $(KERNEL_OBJS) $(KERNEL
 	$(echo_build_message)
 	$(echo_recipe)ld65 -o $@ --lib-path $(BUILD_DIR) -C $< --start-group $(filter-out $<,$^) none.lib --end-group && chmod a+x $@
 
-$(BUILD_DIR)/kernel/kernel.checksum: $(BUILD_DIR)/kernel/kernel
+$(BUILD_DIR)/kernel/kernel.with.commit.img: $(BUILD_DIR)/kernel/kernel
+	$(echo_build_message)
+	$(echo_recipe)([[ $$(git status --porcelain) == "" ]] && (git rev-parse HEAD | cut --bytes=1-7 --zero-terminated) || echo -ne 'adhoc  \0') >$@
+	$(echo_recipe)cat $^ >>$@
+
+$(BUILD_DIR)/kernel/kernel.img: $(BUILD_DIR)/kernel/kernel.with.commit.img
 	$(echo_build_message)
 	$(echo_recipe)cat $^ | gzip -c | tail -c8 | head -c4 >$@
-
-$(BUILD_DIR)/kernel/kernel.img: $(BUILD_DIR)/kernel/kernel.checksum $(BUILD_DIR)/kernel/kernel
-	$(echo_build_message)
-	$(echo_recipe)cat $^ >$@
+	$(echo_recipe)cat $^ >>$@
 
 all: $(BUILD_DIR)/kernel/kernel.img
 
@@ -49,6 +51,6 @@ install: $(BUILD_DIR)/kernel/kernel.img
 
 .PHONY: clean-kernel
 clean-kernel:
-	$(echo_recipe)[ ! -d $(build_dir) ] || find $(build_dir) -type f \( -name '*.checksum' -o -name '*.img' \) -delete
+	$(echo_recipe)[ ! -d $(build_dir) ] || find $(build_dir) -type f -name '*.img' -delete
 
 clean: clean-kernel
