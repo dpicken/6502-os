@@ -16,14 +16,13 @@ void buzzer_app_enter(void) {
   button_released_set_handler(buzzer_on, button_code_fire2);
   button_released_set_handler(buzzer_off, button_code_fire3);
 
-  printf("          U:                            \n");
-  printf("L:short              R:long   A:on/off  \n");
-  printf("          D:count-down        B:on      \n");
-  printf("                              C:off     ");
+  printf("L   R \n");
+  printf("  D        A B C");
 }
 
 void buzzer_app_count_down(void) {
+  buzzer_short_buzz();
   timer_add_fixed_rate(buzzer_short_buzz, 1000);
-  timer_add_one_shot_special(timer_clear_all_non_special, 4000);
-  timer_add_one_shot_special(buzzer_long_buzz, 5000);
+  timer_add_one_shot_special(timer_clear_all_non_special, 3000);
+  timer_add_one_shot_special(buzzer_long_buzz, 4000);
 }
