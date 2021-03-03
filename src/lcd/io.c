@@ -18,15 +18,9 @@ static unsigned char lcd_xsize = LCD_XPOS_MAX;
 static unsigned int lcd_pos_end = LCD_E2_POS_END;
 static unsigned int lcd_pos;
 
-void lcd_set_16x2(void) {
-  lcd_xsize = 16;
-  lcd_pos_end = 16 * 2;
-  lcd_pos = 0;
-}
-
-void lcd_set_40x4(void) {
-  lcd_xsize = 40;
-  lcd_pos_end = LCD_E2_POS_END;
+void lcd_set_resolution(unsigned char x, unsigned char y) {
+  lcd_xsize = x;
+  lcd_pos_end = min(x * y, LCD_E2_POS_END);
   lcd_pos = 0;
 }
 

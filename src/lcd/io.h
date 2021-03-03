@@ -1,11 +1,8 @@
 #ifndef lcd_io_h
 #define lcd_io_h
 
-/** Set output to a 16x2 LCD. */
-void lcd_set_16x2(void);
-
-/** Set output to a 40x4 LCD. */
-void lcd_set_40x4(void);
+/** Set the resolution. */
+void lcd_set_resolution(unsigned char x, unsigned char y);
 
 /** Return the number of (configured) lines. */
 unsigned char lcd_get_line_count(void);

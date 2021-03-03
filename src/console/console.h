@@ -1,11 +1,7 @@
 #ifndef console_console_h
 #define console_console_h
 
-void console_init_16x2(void);
-
-void console_init_40x4(void);
-
-unsigned char console_get_line_count(void);
+void console_set_resolution(unsigned char x, unsigned char y);
 
 void console_clear(void);
 

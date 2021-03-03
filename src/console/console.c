@@ -15,22 +15,11 @@ static unsigned int frame_tail;
 static unsigned int frame_head;
 static unsigned char full;
 
-void console_init_16x2(void) {
-  x_size = 16;
-  frame_capacity = 16 * 2;
+void console_set_resolution(unsigned char x, unsigned char y) {
+  x_size = x;
+  frame_capacity = x * y;
   console_clear();
-  lcd_set_16x2();
-}
-
-void console_init_40x4(void) {
-  x_size = 40;
-  frame_capacity = 40 * 4;
-  console_clear();
-  lcd_set_40x4();
-}
-
-unsigned char console_get_line_count(void) {
-  return frame_capacity / x_size;
+  lcd_set_resolution(x, y);
 }
 
 void console_clear(void) {
