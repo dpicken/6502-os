@@ -1,5 +1,6 @@
 #include "log.h"
 
+#include "cc65/write.h"
 #include "kernel/system_time.h"
 
 #include <stdio.h>
@@ -22,18 +23,18 @@ void log(const char* const message) {
   }
 }
 
-void log_dump(void) {
+void log_dump(FILE* out) {
   unsigned char i;
 
   for (i = log_pos; i != LOG_MAX_ENTRY_COUNT; ++i) {
     if (log_entries[i].message != 0) {
-      puts(log_entries[i].message);
+      fprintf(out, "%s\n", log_entries[i].message);
     }
   }
 
   for (i = 0; i != log_pos; ++i) {
     if (log_entries[i].message != 0) {
-      puts(log_entries[i].message);
+      fprintf(out, "%s\n", log_entries[i].message);
     }
   }
 }

@@ -1,5 +1,6 @@
 #include "console.h"
 
+#include "kernel/delay.h"
 #include "lcd/init.h"
 #include "lcd/io.h"
 #include "util/algorithm.h"
@@ -106,6 +107,24 @@ int console_write(const char* buf, unsigned int count) {
   count |= ~-1U;
 
   for (i = 0; i != count; ++i) {
+    console_putc(buf[i]);
+  }
+
+  return i;
+}
+
+int console_write_vidiprinter(const char* buf, unsigned int count) {
+  int i;
+
+  count |= ~-1U;
+
+  for (i = 0; i != count; ++i) {
+    if (buf[i] == '\n') {
+      delay_ms(500);
+    } else {
+      delay_ms(100);
+    }
+
     console_putc(buf[i]);
   }
 

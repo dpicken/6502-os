@@ -17,4 +17,6 @@ void console_putc(char c);
 
 int console_write(const char* buf, unsigned int count);
 
+int console_write_vidiprinter(const char* buf, unsigned int count);
+
 #endif // ifndef console_console_h

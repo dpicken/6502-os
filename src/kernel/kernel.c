@@ -11,10 +11,13 @@
 #include "button/init.h"
 #include "buzzer/buzzer.h"
 #include "buzzer/init.h"
+#include "cc65/write.h"
 #include "console/console.h"
 #include "lcd/init.h"
 #include "switcher/app.h"
 #include "timer/timer.h"
+
+#include <stdio.h>
 
 void kernel_event_poll_loop(void) {
   for (;;) {
@@ -47,6 +50,9 @@ void main(void) {
 
   // Disable the buzzer after early initialization is complete.
   buzzer_off();
+
+  vidiprinter = fopen(VIDIPRINTER_PATH, "a");
+  kernel_log("[vid_init] done");
 
   button_init();
   kernel_log("[btn_init] done");
