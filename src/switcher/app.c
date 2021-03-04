@@ -8,12 +8,11 @@
 #include "log/app.h"
 #include "memtest/app.h"
 #include "timer/timer.h"
-#include "ui/menu.h"
 #include "uptime/app.h"
 
 #include <stdio.h>
 
-static ui_menu switcher_menu;
+ui_menu switcher_menu;
 
 static const ui_menu_item switcher_test_menu_items[] = {
   UI_MENU_MAKE_ITEM("Buzzer", switcher_app_enter_buzzer),
@@ -26,7 +25,7 @@ static ui_menu switcher_test_menu = UI_MENU_MAKE_SUB_MENU(&switcher_menu, switch
 static const ui_menu_item switcher_menu_items[] = {
   UI_MENU_MAKE_ITEM("Uptime", switcher_app_enter_uptime),
   UI_MENU_MAKE_ITEM("Log", switcher_app_enter_log),
-  UI_MENU_MAKE_ITEM("Configure", switcher_app_enter_config),
+  UI_MENU_MAKE_ITEM_WITH_SUB_MENU("Configure", &configure_menu),
   UI_MENU_MAKE_ITEM_WITH_SUB_MENU("Test", &switcher_test_menu)
 };
 
@@ -60,11 +59,6 @@ void switcher_app_enter_log(void) {
 void switcher_app_enter_buzzer(void) {
   switcher_app_reset();
   buzzer_app_enter();
-}
-
-void switcher_app_enter_config(void) {
-  switcher_app_reset();
-  configure_app_enter();
 }
 
 void switcher_app_reset(void) {

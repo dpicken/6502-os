@@ -1,7 +1,9 @@
 #ifndef configure_app_h
 #define configure_app_h
 
-void configure_app_enter(void);
+#include "ui/menu.h"
+
+extern ui_menu configure_menu;
 
 void configure_app_console_16x2(void);
 void configure_app_console_20x4(void);
