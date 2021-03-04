@@ -5,6 +5,7 @@
 #include "buzzer/app.h"
 #include "configure/app.h"
 #include "console/console.h"
+#include "lcd/app.h"
 #include "log/app.h"
 #include "memtest/app.h"
 #include "timer/timer.h"
@@ -15,8 +16,9 @@
 ui_menu switcher_menu;
 
 static const ui_menu_item switcher_test_menu_items[] = {
-  UI_MENU_MAKE_ITEM("Buzzer", switcher_app_enter_buzzer),
   UI_MENU_MAKE_ITEM("Button", switcher_app_enter_button),
+  UI_MENU_MAKE_ITEM("Buzzer", switcher_app_enter_buzzer),
+  UI_MENU_MAKE_ITEM("LCD", switcher_app_enter_lcd),
   UI_MENU_MAKE_ITEM("Memtest",switcher_app_enter_memtest)
 };
 
@@ -29,16 +31,11 @@ static const ui_menu_item switcher_menu_items[] = {
   UI_MENU_MAKE_ITEM_WITH_SUB_MENU("Test", &switcher_test_menu)
 };
 
-static ui_menu switcher_menu = UI_MENU_MAKE_MENU(switcher_menu_items);
+ui_menu switcher_menu = UI_MENU_MAKE_MENU(switcher_menu_items);
 
 void switcher_app_enter(void) {
   switcher_app_reset();
   ui_menu_enter(&switcher_menu);
-}
-
-void switcher_app_enter_memtest(void) {
-  switcher_app_reset();
-  memtest_app_enter();
 }
 
 void switcher_app_enter_button(void) {
@@ -46,9 +43,14 @@ void switcher_app_enter_button(void) {
   button_app_enter();
 }
 
-void switcher_app_enter_uptime(void) {
+void switcher_app_enter_buzzer(void) {
   switcher_app_reset();
-  uptime_app_enter();
+  buzzer_app_enter();
+}
+
+void switcher_app_enter_lcd(void) {
+  switcher_app_reset();
+  lcd_app_enter();
 }
 
 void switcher_app_enter_log(void) {
@@ -56,9 +58,14 @@ void switcher_app_enter_log(void) {
   log_app_enter();
 }
 
-void switcher_app_enter_buzzer(void) {
+void switcher_app_enter_memtest(void) {
   switcher_app_reset();
-  buzzer_app_enter();
+  memtest_app_enter();
+}
+
+void switcher_app_enter_uptime(void) {
+  switcher_app_reset();
+  uptime_app_enter();
 }
 
 void switcher_app_reset(void) {

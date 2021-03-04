@@ -78,7 +78,7 @@ void ui_menu_button_fire1_released(void) {
 
 void ui_menu_render(void) {
   unsigned char render_item_count_max = current_menu->item_count - current_menu->render_pos;
-  unsigned char render_item_count = smin(render_item_count_max, lcd_get_line_count());
+  unsigned char render_item_count = uc_min(render_item_count_max, lcd_get_line_count());
   unsigned char render_item_pos_end = current_menu->render_pos + render_item_count;
 
   unsigned char i;

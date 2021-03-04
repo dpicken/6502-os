@@ -24,6 +24,10 @@ void lcd_set_resolution(unsigned char x, unsigned char y) {
   lcd_pos = 0;
 }
 
+unsigned char lcd_get_char_count(void) {
+  return lcd_pos_end;
+}
+
 unsigned char lcd_get_line_count(void) {
   return lcd_pos_end / lcd_xsize;
 }

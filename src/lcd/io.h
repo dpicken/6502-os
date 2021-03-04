@@ -4,7 +4,10 @@
 /** Set the resolution. */
 void lcd_set_resolution(unsigned char x, unsigned char y);
 
-/** Return the number of (configured) lines. */
+/** Get the (configured) size. */
+unsigned char lcd_get_char_count(void);
+
+/** Get the number of (configured) lines. */
 unsigned char lcd_get_line_count(void);
 
 /** Write a char to the LCD. */
