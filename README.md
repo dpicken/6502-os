@@ -32,4 +32,8 @@ Build:
     cd 6502-os
     make
 
+Write EEPROM:
+
+    make install
+
 ## Software
