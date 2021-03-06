@@ -80,6 +80,7 @@ void ui_menu_render(void) {
   unsigned char render_item_count_max = current_menu->item_count - current_menu->render_pos;
   unsigned char render_item_count = uc_min(render_item_count_max, lcd_get_line_count());
   unsigned char render_item_pos_end = current_menu->render_pos + render_item_count;
+  unsigned char render_end = current_menu->render_pos + uc_max(render_item_count, lcd_get_line_count());
 
   unsigned char i;
   unsigned char buffer[41];
@@ -89,5 +90,9 @@ void ui_menu_render(void) {
         i == current_menu->item_pos ? '*' : ' ',
         current_menu->item_array[i].label,
         current_menu->item_array[i].sub_menu ? '>' : ' '));
+  }
+
+  for (; i != render_end; ++i) {
+    lcd_write_line_no_wrap(" ", 1);
   }
 }

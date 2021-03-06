@@ -5,6 +5,7 @@
 #include "buzzer/app.h"
 #include "configure/app.h"
 #include "console/console.h"
+#include "distraction/scroll/app.h"
 #include "lcd/app.h"
 #include "log/app.h"
 #include "memtest/app.h"
@@ -15,6 +16,19 @@
 
 ui_menu switcher_menu;
 
+static const ui_menu_item switcher_distraction_menu_items[] = {
+  UI_MENU_MAKE_ITEM("Scroll", switcher_app_enter_scroll),
+};
+
+static ui_menu switcher_distraction_menu = UI_MENU_MAKE_SUB_MENU(&switcher_menu, switcher_distraction_menu_items);
+
+static const ui_menu_item switcher_system_menu_items[] = {
+  UI_MENU_MAKE_ITEM("Log", switcher_app_enter_log),
+  UI_MENU_MAKE_ITEM("Uptime", switcher_app_enter_uptime),
+};
+
+static ui_menu switcher_system_menu = UI_MENU_MAKE_SUB_MENU(&switcher_menu, switcher_system_menu_items);
+
 static const ui_menu_item switcher_test_menu_items[] = {
   UI_MENU_MAKE_ITEM("Button", switcher_app_enter_button),
   UI_MENU_MAKE_ITEM("Buzzer", switcher_app_enter_buzzer),
@@ -24,15 +38,9 @@ static const ui_menu_item switcher_test_menu_items[] = {
 
 static ui_menu switcher_test_menu = UI_MENU_MAKE_SUB_MENU(&switcher_menu, switcher_test_menu_items);
 
-static const ui_menu_item switcher_system_menu_items[] = {
-  UI_MENU_MAKE_ITEM("Log", switcher_app_enter_log),
-  UI_MENU_MAKE_ITEM("Uptime", switcher_app_enter_uptime),
-};
-
-static ui_menu switcher_system_menu = UI_MENU_MAKE_SUB_MENU(&switcher_menu, switcher_system_menu_items);
-
 static const ui_menu_item switcher_menu_items[] = {
   UI_MENU_MAKE_ITEM_WITH_SUB_MENU("Configure", &configure_menu),
+  UI_MENU_MAKE_ITEM_WITH_SUB_MENU("Distraction", &switcher_distraction_menu),
   UI_MENU_MAKE_ITEM_WITH_SUB_MENU("System", &switcher_system_menu),
   UI_MENU_MAKE_ITEM_WITH_SUB_MENU("Test", &switcher_test_menu)
 };
@@ -68,6 +76,11 @@ void switcher_app_enter_log(void) {
 void switcher_app_enter_memtest(void) {
   switcher_app_reset();
   memtest_app_enter();
+}
+
+void switcher_app_enter_scroll(void) {
+  switcher_app_reset();
+  scroll_app_enter();
 }
 
 void switcher_app_enter_uptime(void) {
