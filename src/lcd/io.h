@@ -20,10 +20,10 @@ int lcd_write(const char* buf, unsigned int count);
 int lcd_write_line_no_wrap(const char* buf, unsigned int count);
 
 /** Get the position of the cursor. */
-unsigned int lcd_get_pos(void);
+unsigned char lcd_get_pos(void);
 
 /** Set the position of the cursor. */
-void lcd_set_pos(unsigned int pos);
+void lcd_set_pos(unsigned char pos);
 
 void lcd_reset_cached_pos(void);
 

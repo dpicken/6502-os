@@ -109,7 +109,7 @@ void lcd_display_on(void) {
   hw_lcd_write_4bit(LCD_INSTRUCTION_DISPLAY_CONTROL | LCD_DISPLAY_CONTROL_ON, 0, HW_LCD_CONTROL_E1 | HW_LCD_CONTROL_E2);
 }
 
-void lcd_set_pos_raw(unsigned int pos) {
+void lcd_set_pos_raw(unsigned char pos) {
   unsigned char address = pos < 80 ? pos : pos - 80;
 
   lcd_busy_wait();

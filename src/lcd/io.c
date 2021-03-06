@@ -15,12 +15,12 @@
 #define LCD_E2_POS_END 160
 
 static unsigned char lcd_xsize = LCD_XPOS_MAX;
-static unsigned int lcd_pos_end = LCD_E2_POS_END;
-static unsigned int lcd_pos;
+static unsigned char lcd_pos_end = LCD_E2_POS_END;
+static unsigned char lcd_pos;
 
 void lcd_set_resolution(unsigned char x, unsigned char y) {
   lcd_xsize = x;
-  lcd_pos_end = min(x * y, LCD_E2_POS_END);
+  lcd_pos_end = uc_min(x * y, LCD_E2_POS_END);
   lcd_pos = 0;
 }
 
@@ -85,11 +85,11 @@ int lcd_write_line_no_wrap(const char* buf, unsigned int count) {
   return i;
 }
 
-unsigned int lcd_get_pos(void) {
+unsigned char lcd_get_pos(void) {
   return lcd_pos;
 }
 
-void lcd_set_pos(unsigned int pos) {
+void lcd_set_pos(unsigned char pos) {
   lcd_pos = pos;
 
   if (lcd_pos_end < LCD_E1_POS_END) {

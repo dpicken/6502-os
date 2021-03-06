@@ -10,9 +10,9 @@
 static char frame_buffer[40 * 4];
 
 static unsigned char x_size;
-static unsigned int frame_capacity;
-static unsigned int frame_tail;
-static unsigned int frame_head;
+static unsigned char frame_capacity;
+static unsigned char frame_tail;
+static unsigned char frame_head;
 static unsigned char full;
 
 void console_set_resolution(unsigned char x, unsigned char y) {
@@ -23,7 +23,7 @@ void console_set_resolution(unsigned char x, unsigned char y) {
 }
 
 void console_clear(void) {
-  unsigned int i;
+  unsigned char i;
 
   for (i = 0; i < frame_capacity; ++i) {
     frame_buffer[i] = ' ';
@@ -68,7 +68,7 @@ void console_new_line(void) {
 }
 
 void console_putc(char c) {
-  unsigned int offset_from_line_begin;
+  unsigned char offset_from_line_begin;
 
   if (c == '\r') {
     offset_from_line_begin = x_size - (frame_head - frame_tail);
