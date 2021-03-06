@@ -14,7 +14,7 @@
 #include "buzzer/init.h"
 #include "cc65/write.h"
 #include "console/console.h"
-#include "lcd/init.h"
+#include "lcd/control.h"
 #include "switcher/app.h"
 #include "timer/timer.h"
 

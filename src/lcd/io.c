@@ -1,7 +1,7 @@
 #include "io.h"
 
 #include "busy_wait.h"
-#include "init.h"
+#include "control.h"
 
 #include "hw/map.h"
 #include "util/algorithm.h"

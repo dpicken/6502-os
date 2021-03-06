@@ -1,7 +1,7 @@
 #include "menu.h"
 
 #include "button/event.h"
-#include "lcd/init.h"
+#include "lcd/control.h"
 #include "lcd/io.h"
 #include "util/algorithm.h"
 

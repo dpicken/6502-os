@@ -1,5 +1,6 @@
 #include "app.h"
 
+#include "control.h"
 #include "io.h"
 
 #include "button/event.h"
@@ -14,12 +15,17 @@ static int char_set_pos;
 void lcd_app_enter(void) {
   button_released_set_handler(lcd_app_char_set_previous_page, button_code_up);
   button_released_set_handler(lcd_app_char_set_next_page, button_code_down);
+  button_released_set_handler(lcd_display_shift_left, button_code_left);
+  button_released_set_handler(lcd_display_shift_right, button_code_right);
   button_released_set_handler(lcd_app_char_set_home, button_code_fire1);
+  button_released_set_handler(lcd_display_off, button_code_fire2);
+  button_released_set_handler(lcd_display_on, button_code_fire3);
 
   lcd_app_char_set_home();
 }
 
 void lcd_app_char_set_home(void) {
+  lcd_home();
   char_set_pos = 0;
   lcd_app_char_set_dump_page();
 }

@@ -1,4 +1,4 @@
-#include "init.h"
+#include "control.h"
 
 #include "busy_wait.h"
 #include "io.h"
@@ -20,6 +20,11 @@
 #define LCD_FUNCTION_SET_DISPLAY_LINES_1          0x00
 #define LCD_FUNCTION_SET_DISPLAY_LINE_1_FONT_5_10 0x04
 #define LCD_FUNCTION_SET_DISPLAY_LINE_1_FONT_5_8  0x00
+
+#define LCD_CURSOR_DISPLAY_DISPLAY_SHIFT          0x08
+#define LCD_CURSOR_DISPLAY_CURSOR_MOVE            0x00
+#define LCD_CURSOR_DISPLAY_RIGHT                  0x04
+#define LCD_CURSOR_DISPLAY_LEFT                   0x00
 
 #define LCD_DISPLAY_CONTROL_ON                    0x04
 #define LCD_DISPLAY_CONTROL_OFF                   0x00
@@ -82,6 +87,26 @@ void lcd_home(void) {
   lcd_busy_wait();
   hw_lcd_write_4bit(LCD_INSTRUCTION_RETURN_HOME, 0, HW_LCD_CONTROL_E1 | HW_LCD_CONTROL_E2);
   lcd_reset_cached_pos();
+}
+
+void lcd_display_shift_left(void) {
+  lcd_busy_wait();
+  hw_lcd_write_4bit(LCD_INSTRUCTION_CURSOR_DISPLAY | LCD_CURSOR_DISPLAY_DISPLAY_SHIFT | LCD_CURSOR_DISPLAY_LEFT, 0, HW_LCD_CONTROL_E1 | HW_LCD_CONTROL_E2);
+}
+
+void lcd_display_shift_right(void) {
+  lcd_busy_wait();
+  hw_lcd_write_4bit(LCD_INSTRUCTION_CURSOR_DISPLAY | LCD_CURSOR_DISPLAY_DISPLAY_SHIFT | LCD_CURSOR_DISPLAY_RIGHT, 0, HW_LCD_CONTROL_E1 | HW_LCD_CONTROL_E2);
+}
+
+void lcd_display_off(void) {
+  lcd_busy_wait();
+  hw_lcd_write_4bit(LCD_INSTRUCTION_DISPLAY_CONTROL | LCD_DISPLAY_CONTROL_OFF, 0, HW_LCD_CONTROL_E1 | HW_LCD_CONTROL_E2);
+}
+
+void lcd_display_on(void) {
+  lcd_busy_wait();
+  hw_lcd_write_4bit(LCD_INSTRUCTION_DISPLAY_CONTROL | LCD_DISPLAY_CONTROL_ON, 0, HW_LCD_CONTROL_E1 | HW_LCD_CONTROL_E2);
 }
 
 void lcd_set_pos_raw(unsigned int pos) {

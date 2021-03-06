@@ -1,7 +1,7 @@
 #include "console.h"
 
 #include "kernel/delay.h"
-#include "lcd/init.h"
+#include "lcd/control.h"
 #include "lcd/io.h"
 #include "util/algorithm.h"
 
