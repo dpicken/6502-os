@@ -28,6 +28,8 @@ struct ui_menu {
 #define UI_MENU_MAKE_MENU(item_array) { 0, 0, 0, ARRAY_SIZE(item_array), item_array }
 #define UI_MENU_MAKE_SUB_MENU(parent_menu, item_array) { parent_menu, 0, 0, ARRAY_SIZE(item_array), item_array }
 
+#define UI_MENU_HOME(menu) menu.render_pos = 0; menu.item_pos = 0
+
 /** Run the specified menu. */
 void ui_menu_enter(ui_menu* menu);
 

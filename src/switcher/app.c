@@ -24,10 +24,16 @@ static const ui_menu_item switcher_test_menu_items[] = {
 
 static ui_menu switcher_test_menu = UI_MENU_MAKE_SUB_MENU(&switcher_menu, switcher_test_menu_items);
 
-static const ui_menu_item switcher_menu_items[] = {
-  UI_MENU_MAKE_ITEM("Uptime", switcher_app_enter_uptime),
+static const ui_menu_item switcher_system_menu_items[] = {
   UI_MENU_MAKE_ITEM("Log", switcher_app_enter_log),
+  UI_MENU_MAKE_ITEM("Uptime", switcher_app_enter_uptime),
+};
+
+static ui_menu switcher_system_menu = UI_MENU_MAKE_SUB_MENU(&switcher_menu, switcher_system_menu_items);
+
+static const ui_menu_item switcher_menu_items[] = {
   UI_MENU_MAKE_ITEM_WITH_SUB_MENU("Configure", &configure_menu),
+  UI_MENU_MAKE_ITEM_WITH_SUB_MENU("System", &switcher_system_menu),
   UI_MENU_MAKE_ITEM_WITH_SUB_MENU("Test", &switcher_test_menu)
 };
 
@@ -35,6 +41,7 @@ ui_menu switcher_menu = UI_MENU_MAKE_MENU(switcher_menu_items);
 
 void switcher_app_enter(void) {
   switcher_app_reset();
+  UI_MENU_HOME(switcher_menu);
   ui_menu_enter(&switcher_menu);
 }
 
