@@ -5,9 +5,9 @@
 
 extern ui_menu configure_menu;
 
-void configure_app_console_16x2(void);
-void configure_app_console_20x4(void);
-void configure_app_console_40x4(void);
+void configure_app_lcd_16x2(void);
+void configure_app_lcd_20x4(void);
+void configure_app_lcd_40x4(void);
 void configure_app_exit(void);
 
 #endif // ifndef configure_app_h
