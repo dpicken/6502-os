@@ -6,6 +6,7 @@
 #include "configure/app.h"
 #include "console/console.h"
 #include "distraction/scroll/app.h"
+#include "kernel/kernel.h"
 #include "lcd/app.h"
 #include "log/app.h"
 #include "memtest/app.h"
@@ -25,6 +26,7 @@ static ui_menu switcher_distraction_menu = UI_MENU_MAKE_SUB_MENU(&switcher_menu,
 static const ui_menu_item switcher_system_menu_items[] = {
   UI_MENU_MAKE_ITEM("Log", switcher_app_enter_log),
   UI_MENU_MAKE_ITEM("Uptime", switcher_app_enter_uptime),
+  UI_MENU_MAKE_ITEM("Shutdown", switcher_app_exit),
 };
 
 static ui_menu switcher_system_menu = UI_MENU_MAKE_SUB_MENU(&switcher_menu, switcher_system_menu_items);
@@ -86,6 +88,11 @@ void switcher_app_enter_scroll(void) {
 void switcher_app_enter_uptime(void) {
   switcher_app_reset();
   uptime_app_enter();
+}
+
+void switcher_app_exit(void) {
+  switcher_app_reset();
+  kernel_shutdown();
 }
 
 void switcher_app_reset(void) {

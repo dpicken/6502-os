@@ -20,14 +20,7 @@
 
 #include <stdio.h>
 
-void kernel_event_poll_loop(void) {
-  for (;;) {
-    if (system_time_reset_ticked_event()) {
-      timer_on_system_time_ticked();
-    }
-    interrupt_wait();
-  }
-}
+static unsigned char shutdown;
 
 void main(void) {
   kernel_log_early(memory_get_rom_version());
@@ -71,4 +64,23 @@ void main(void) {
 
   kernel_log("[pol_loop] ...");
   kernel_event_poll_loop();
+  kernel_log("[pol_loop] done");
+
+  irq_disable();
+  kernel_log("[irq_shut] done");
+
+  kernel_log("[krl_exit] ...");
+}
+
+void kernel_event_poll_loop(void) {
+  while (!shutdown) {
+    if (system_time_reset_ticked_event()) {
+      timer_on_system_time_ticked();
+    }
+    interrupt_wait();
+  }
+}
+
+void kernel_shutdown(void) {
+  shutdown = 1;
 }
