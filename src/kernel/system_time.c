@@ -2,10 +2,9 @@
 
 #include "hw/map.h"
 
-#define TICK_FREQUENCY 10000UL
+#define MS_PER_TICK 5
 
 static unsigned long tick_count;
-static unsigned long ms_per_tick;
 static unsigned char ticked_event;
 
 unsigned long system_time_get(void) {
@@ -13,7 +12,7 @@ unsigned long system_time_get(void) {
 }
 
 unsigned long system_time_get_ms(void) {
-  return system_time_get() * ms_per_tick;
+  return system_time_get() * MS_PER_TICK;
 }
 
 unsigned char system_time_reset_ticked_event(void) {
@@ -25,8 +24,8 @@ unsigned char system_time_reset_ticked_event(void) {
 }
 
 void system_time_init(void) {
-  hw_timer_fixed_rate_start(TICK_FREQUENCY);
-  ms_per_tick = TICK_FREQUENCY / (hw_cpu_get_frequency() / 1000);
+  unsigned long tick_frequency = MS_PER_TICK * (hw_cpu_get_frequency() / 1000);
+  hw_timer_fixed_rate_start(tick_frequency);
 }
 
 void system_time_on_tick(void) {

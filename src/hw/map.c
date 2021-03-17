@@ -32,7 +32,7 @@
 #define HW_LCD_DATA_MASK            0xF0
 
 unsigned long hw_cpu_get_frequency(void) {
-  return 2000000UL;
+  return 4000000UL;
 }
 
 void hw_timer_fixed_rate_start(unsigned int frequency) {
