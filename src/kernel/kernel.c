@@ -56,7 +56,7 @@ void main(void) {
   button_released_set_handler(switcher_app_enter, button_code_special_left_and_right);
   kernel_log("[swt_hkey] done");
 
-  timer_add_one_shot(switcher_app_enter, 1000);
+  timer_add_one_shot(switcher_app_enter, 10);
   kernel_log("[swt_entr] done");
 
   // Short buzz after initialization is complete.

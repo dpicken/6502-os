@@ -50,7 +50,7 @@ unsigned char hw_timer_fixed_rate_interrupt_reset(void) {
 
 void hw_buzzer_direction_set_write(void) {
   // Note: the buzzer signal is the complement of the button signals.
-  hw_button_read();
+  hw_button_direction_set_read();
 }
 
 void hw_buzzer_set(void) {
