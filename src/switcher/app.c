@@ -6,6 +6,7 @@
 #include "configure/app.h"
 #include "console/console.h"
 #include "distraction/scroll/app.h"
+#include "distraction/wisdom/app.h"
 #include "kernel/kernel.h"
 #include "lcd/app.h"
 #include "log/app.h"
@@ -19,6 +20,7 @@ ui_menu switcher_menu;
 
 static const ui_menu_item switcher_distraction_menu_items[] = {
   UI_MENU_MAKE_ITEM("Scroll", switcher_app_enter_scroll),
+  UI_MENU_MAKE_ITEM("Wisdom", switcher_app_enter_wisdom),
 };
 
 static ui_menu switcher_distraction_menu = UI_MENU_MAKE_SUB_MENU(&switcher_menu, switcher_distraction_menu_items);
@@ -83,6 +85,11 @@ void switcher_app_enter_memtest(void) {
 void switcher_app_enter_scroll(void) {
   switcher_app_reset();
   scroll_app_enter();
+}
+
+void switcher_app_enter_wisdom(void) {
+  switcher_app_reset();
+  wisdom_app_enter();
 }
 
 void switcher_app_enter_uptime(void) {

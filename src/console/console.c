@@ -5,6 +5,7 @@
 #include "lcd/io.h"
 #include "util/algorithm.h"
 
+#include <ctype.h>
 #include <limits.h>
 
 static char frame_buffer[40 * 4];
@@ -20,6 +21,10 @@ void console_set_resolution(unsigned char x, unsigned char y) {
   frame_capacity = x * y;
   lcd_set_resolution(x, y);
   console_clear();
+}
+
+unsigned char console_get_x_size(void) {
+  return x_size;
 }
 
 void console_clear(void) {
@@ -102,20 +107,20 @@ int console_write(const char* buf, unsigned int count) {
   return i;
 }
 
-int console_write_vidiprinter(const char* buf, unsigned int count) {
+int console_vidiprinter_write(const char* buf, unsigned int count) {
   int i;
 
   count |= ~-1U;
 
   for (i = 0; i != count; ++i) {
-    if (buf[i] == '\n') {
-      delay_ms(500);
-    } else {
-      delay_ms(100);
-    }
-
     console_putc(buf[i]);
+    console_vidiprinter_delay(buf[i]);
   }
 
   return i;
 }
+
+void console_vidiprinter_delay(char c) {
+  delay_ms(c == ',' || c == ';' || c == ':' || c == '.' || c == '?' ? 500 : 100);
+}
+
