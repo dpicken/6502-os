@@ -14,7 +14,7 @@ static const writer open_writers[FOPEN_MAX] = {
   0,              // STDIN_FILENO
   &console_write, // STDOUT_FILENO
   &console_write, // STDERR_FILENO
-  &console_write_vidiprinter // VIDIPRINTER_FILENO
+  &console_vidiprinter_write // VIDIPRINTER_FILENO
 };
 
 int open_writer(const char* path) {
