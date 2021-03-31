@@ -1,6 +1,14 @@
 #ifndef lcd_io_h
 #define lcd_io_h
 
+#define LCD_LINE_1_DDRAM_ADDRESS_BASE 0x00
+#define LCD_LINE_2_DDRAM_ADDRESS_BASE 0x40
+
+#define LCD_XSIZE_MAX 40
+
+#define LCD_LINE_1_DDRAM_ADDRESS_END (LCD_LINE_1_DDRAM_ADDRESS_BASE + LCD_XSIZE_MAX)
+#define LCD_LINE_2_DDRAM_ADDRESS_END (LCD_LINE_2_DDRAM_ADDRESS_BASE + LCD_XSIZE_MAX)
+
 /** Set the resolution. */
 void lcd_set_resolution(unsigned char x, unsigned char y);
 

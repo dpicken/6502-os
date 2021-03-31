@@ -24,6 +24,6 @@ void lcd_display_off(void);
 /** Turn the display on. */
 void lcd_display_on(void);
 
-void lcd_set_pos_raw(unsigned char pos);
+void lcd_set_ddram_address(unsigned char address);
 
 #endif // ifndef lcd_lcd_control_h

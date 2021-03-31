@@ -83,7 +83,7 @@ void ui_menu_render(void) {
   unsigned char render_end = current_menu->render_pos + uc_max(render_item_count, lcd_get_line_count());
 
   unsigned char i;
-  unsigned char buffer[41];
+  unsigned char buffer[LCD_XSIZE_MAX + 1];
 
   for (i = current_menu->render_pos; i != render_item_pos_end; ++i) {
     lcd_write_line_no_wrap(buffer, snprintf(buffer, sizeof(buffer), "%c %-12s %c",

@@ -18,8 +18,8 @@ static unsigned char full;
 void console_set_resolution(unsigned char x, unsigned char y) {
   x_size = x;
   frame_capacity = x * y;
-  console_clear();
   lcd_set_resolution(x, y);
+  console_clear();
 }
 
 void console_clear(void) {

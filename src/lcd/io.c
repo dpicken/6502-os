@@ -9,18 +9,16 @@
 #include <limits.h>
 #include <string.h>
 
-#define LCD_XPOS_MAX 40
-
 #define LCD_E1_POS_END 80
 #define LCD_E2_POS_END 160
 
-static unsigned char lcd_xsize = LCD_XPOS_MAX;
+static unsigned char lcd_xsize = LCD_XSIZE_MAX;
 static unsigned char lcd_pos_end = LCD_E2_POS_END;
 static unsigned char lcd_pos;
 
 void lcd_set_resolution(unsigned char x, unsigned char y) {
   lcd_xsize = x;
-  lcd_pos_end = uc_min(x * y, LCD_E2_POS_END);
+  lcd_pos_end = x * y;
   lcd_pos = 0;
 }
 
@@ -43,11 +41,11 @@ void lcd_putc(char c) {
 
   ++lcd_pos;
   if (lcd_pos == lcd_pos_end) {
-    lcd_set_pos(0);
-  } else if (lcd_pos_end < LCD_E1_POS_END) {
-    if (lcd_pos == lcd_xsize) {
-      lcd_set_pos(lcd_xsize);
-    }
+    lcd_pos = 0;
+  }
+
+  if (lcd_pos % lcd_xsize == 0) {
+    lcd_set_pos(lcd_pos);
   }
 }
 
@@ -90,16 +88,24 @@ unsigned char lcd_get_pos(void) {
 }
 
 void lcd_set_pos(unsigned char pos) {
+  unsigned char x = pos % lcd_xsize;
+  unsigned char y = pos / lcd_xsize;
+
+  if (lcd_pos_end == LCD_E2_POS_END && y > 1) {
+    // A 40x4 line LCD has two 40x2 controllers.
+    y -= 2;
+  }
+
   lcd_pos = pos;
 
-  if (lcd_pos_end < LCD_E1_POS_END) {
-    if (lcd_pos < lcd_xsize) {
-      lcd_set_pos_raw(lcd_pos);
-    } else {
-      lcd_set_pos_raw(LCD_XPOS_MAX + (lcd_pos - lcd_xsize));
-    }
+  if (y == 0) {
+    lcd_set_ddram_address(LCD_LINE_1_DDRAM_ADDRESS_BASE + x);
+  } else if (y == 1) {
+    lcd_set_ddram_address(LCD_LINE_2_DDRAM_ADDRESS_BASE + x);
+  } else if (y == 2) {
+    lcd_set_ddram_address(LCD_LINE_1_DDRAM_ADDRESS_BASE + lcd_xsize + x);
   } else {
-    lcd_set_pos_raw(lcd_pos);
+    lcd_set_ddram_address(LCD_LINE_2_DDRAM_ADDRESS_BASE + lcd_xsize + x);
   }
 }
 
