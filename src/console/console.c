@@ -1,8 +1,7 @@
 #include "console.h"
 
 #include "kernel/delay.h"
-#include "lcd/control.h"
-#include "lcd/io.h"
+#include "lcd/lcd.h"
 #include "util/algorithm.h"
 
 #include <ctype.h>
@@ -19,7 +18,7 @@ static unsigned char full;
 void console_set_resolution(unsigned char x, unsigned char y) {
   x_size = x;
   frame_capacity = x * y;
-  lcd_set_resolution(x, y);
+  lcd->set_resolution(x, y);
   console_clear();
 }
 
@@ -38,16 +37,16 @@ void console_clear(void) {
   frame_head = frame_tail + x_size;
   full = 0;
 
-  lcd_clear();
+  lcd->clear();
   console_render();
 }
 
 void console_render(void) {
-  lcd_home();
+  lcd->set_pos_home();
   if (full) {
     lcd_write(frame_buffer + frame_head, frame_capacity - frame_head);
     lcd_write(frame_buffer, frame_head);
-    lcd_set_pos(frame_capacity - x_size);
+    lcd->set_pos(frame_capacity - x_size);
   } else {
     lcd_write(frame_buffer, frame_tail);
   }
@@ -78,7 +77,7 @@ void console_putc(char c) {
   if (c == '\r') {
     offset_from_line_begin = x_size - (frame_head - frame_tail);
     frame_tail = frame_head - x_size;
-    lcd_set_pos(lcd_get_pos() - offset_from_line_begin);
+    lcd->set_pos(lcd->get_pos() - offset_from_line_begin);
     return;
   }
 
@@ -92,7 +91,7 @@ void console_putc(char c) {
   }
 
   frame_buffer[frame_tail++] = c;
-  lcd_putc(c);
+  lcd->putchar(c);
 }
 
 int console_write(const char* buf, unsigned int count) {

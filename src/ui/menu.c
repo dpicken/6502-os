@@ -1,8 +1,7 @@
 #include "menu.h"
 
 #include "button/event.h"
-#include "lcd/control.h"
-#include "lcd/io.h"
+#include "lcd/lcd.h"
 #include "util/algorithm.h"
 
 #include <stdio.h>
@@ -43,7 +42,7 @@ void ui_menu_button_down_released(void) {
 
   ++current_menu->item_pos;
 
-  if (current_menu->item_pos - current_menu->render_pos == lcd_get_line_count()) {
+  if (current_menu->item_pos - current_menu->render_pos == lcd->get_resolution_y()) {
     ++current_menu->render_pos;
   }
   ui_menu_render();
@@ -78,21 +77,41 @@ void ui_menu_button_fire1_released(void) {
 
 void ui_menu_render(void) {
   unsigned char render_item_count_max = current_menu->item_count - current_menu->render_pos;
-  unsigned char render_item_count = uc_min(render_item_count_max, lcd_get_line_count());
+  unsigned char render_item_count = uc_min(render_item_count_max, lcd->get_resolution_y());
   unsigned char render_item_pos_end = current_menu->render_pos + render_item_count;
-  unsigned char render_end = current_menu->render_pos + uc_max(render_item_count, lcd_get_line_count());
+  unsigned char render_end = current_menu->render_pos + uc_max(render_item_count, lcd->get_resolution_y());
 
   unsigned char i;
-  unsigned char buffer[LCD_XSIZE_MAX + 1];
+  unsigned char buffer[16 + 1];
 
   for (i = current_menu->render_pos; i != render_item_pos_end; ++i) {
-    lcd_write_line_no_wrap(buffer, snprintf(buffer, sizeof(buffer), "%c %-12s %c",
+    ui_menu_render_line(buffer, snprintf(buffer, sizeof(buffer), "%c %-12s %c",
         i == current_menu->item_pos ? '*' : ' ',
         current_menu->item_array[i].label,
         current_menu->item_array[i].sub_menu ? '>' : ' '));
   }
 
   for (; i != render_end; ++i) {
-    lcd_write_line_no_wrap(" ", 1);
+    ui_menu_render_line(" ", 1);
+  }
+}
+
+void ui_menu_render_line(const char* buf, unsigned int count) {
+  unsigned int remaining = lcd->get_resolution_x();
+
+  int i;
+
+  count |= ~-1U;
+  count = min(count, remaining);
+
+  for (i = 0; i != count; ++i) {
+    lcd->putchar(buf[i]);
+  }
+
+  if (remaining > count) {
+    remaining -= count;
+    for (; remaining != 0; --remaining) {
+      lcd->putchar(' ');
+    }
   }
 }

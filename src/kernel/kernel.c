@@ -14,7 +14,7 @@
 #include "buzzer/init.h"
 #include "cc65/write.h"
 #include "console/console.h"
-#include "lcd/control.h"
+#include "lcd/lcd.h"
 #include "switcher/app.h"
 #include "timer/timer.h"
 
@@ -38,7 +38,7 @@ void main(void) {
   system_time_init();
   kernel_log_early("[sys_time] done");
 
-  lcd_init();
+  lcd->init();
   kernel_log_early("[lcd_init] done");
 
   console_set_resolution(20, 4);
