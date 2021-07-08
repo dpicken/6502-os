@@ -2,13 +2,13 @@
 
 #include "button/app.h"
 #include "button/event.h"
-#include "buzzer/app.h"
 #include "configure/app.h"
 #include "console/console.h"
 #include "distraction/scroll/app.h"
 #include "distraction/wisdom/app.h"
 #include "kernel/kernel.h"
 #include "lcd/app.h"
+#include "led/app.h"
 #include "log/app.h"
 #include "memtest/app.h"
 #include "timer/timer.h"
@@ -35,8 +35,8 @@ static ui_menu switcher_system_menu = UI_MENU_MAKE_SUB_MENU(&switcher_menu, swit
 
 static const ui_menu_item switcher_test_menu_items[] = {
   UI_MENU_MAKE_ITEM("Button", switcher_app_enter_button),
-  UI_MENU_MAKE_ITEM("Buzzer", switcher_app_enter_buzzer),
   UI_MENU_MAKE_ITEM("LCD", switcher_app_enter_lcd),
+  UI_MENU_MAKE_ITEM("LED", switcher_app_enter_led),
   UI_MENU_MAKE_ITEM("Memtest",switcher_app_enter_memtest)
 };
 
@@ -62,14 +62,14 @@ void switcher_app_enter_button(void) {
   button_app_enter();
 }
 
-void switcher_app_enter_buzzer(void) {
-  switcher_app_reset();
-  buzzer_app_enter();
-}
-
 void switcher_app_enter_lcd(void) {
   switcher_app_reset();
   lcd_app_enter();
+}
+
+void switcher_app_enter_led(void) {
+  switcher_app_reset();
+  led_app_enter();
 }
 
 void switcher_app_enter_log(void) {

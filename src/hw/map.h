@@ -1,15 +1,14 @@
 #ifndef hw_map_h
 #define hw_map_h
 
-#define HW_BUTTON_0           0x01
-#define HW_BUTTON_1           0x02
-#define HW_BUTTON_2           0x04
-#define HW_BUTTON_3           0x08
-#define HW_BUTTON_4           0x10
-#define HW_BUTTON_5           0x20
-#define HW_BUTTON_6           0x40
-
-#define HW_BUZZER             0x80
+#define HW_BUTTON_0 0x01
+#define HW_BUTTON_1 0x02
+#define HW_BUTTON_2 0x04
+#define HW_BUTTON_3 0x08
+#define HW_BUTTON_4 0x10
+#define HW_BUTTON_5 0x20
+#define HW_BUTTON_6 0x40
+#define HW_LED      0x80
 
 #define HW_LCD_HD44780_CONTROL_RS   0x01
 #define HW_LCD_HD44780_CONTROL_R_WB 0x02
@@ -25,14 +24,14 @@ void hw_timer_fixed_rate_start(unsigned int frequency);
 /** Reset the fixed rate timer interrupt; returns true if it was set. */
 unsigned char hw_timer_fixed_rate_interrupt_reset(void);
 
-/** Set the buzzer direction to write. */
-void hw_buzzer_direction_set_write(void);
+/** Set the LED direction to write. */
+void hw_led_direction_set_write(void);
 
-/** Set the buzzer. */
-void hw_buzzer_set(void);
+/** Set the LED. */
+void hw_led_set(void);
 
-/** Reset the buzzer. */
-void hw_buzzer_reset(void);
+/** Reset the LED. */
+void hw_led_reset(void);
 
 /** Set the button direction to read. */
 void hw_button_direction_set_read(void);
