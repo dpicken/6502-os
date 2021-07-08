@@ -33,11 +33,11 @@ struct ui_menu {
 /** Run the specified menu. */
 void ui_menu_enter(ui_menu* menu);
 
-void ui_menu_button_up_released(void);
-void ui_menu_button_down_released(void);
-void ui_menu_button_left_released(void);
-void ui_menu_button_right_released(void);
-void ui_menu_button_fire1_released(void);
+void ui_menu_button_up_depressed(void);
+void ui_menu_button_down_depressed(void);
+void ui_menu_button_left_depressed(void);
+void ui_menu_button_right_depressed(void);
+void ui_menu_button_fire1_depressed(void);
 void ui_menu_render(void);
 void ui_menu_render_line(const char* buf, unsigned int count);
 

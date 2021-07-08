@@ -11,16 +11,16 @@ static ui_menu* current_menu;
 void ui_menu_enter(ui_menu* menu) {
   current_menu = menu;
 
-  button_released_set_handler(ui_menu_button_up_released, button_code_up);
-  button_released_set_handler(ui_menu_button_down_released, button_code_down);
-  button_released_set_handler(ui_menu_button_left_released, button_code_left);
-  button_released_set_handler(ui_menu_button_right_released, button_code_right);
-  button_released_set_handler(ui_menu_button_fire1_released, button_code_fire1);
+  button_depressed_set_handler(ui_menu_button_up_depressed, button_code_up);
+  button_depressed_set_handler(ui_menu_button_down_depressed, button_code_down);
+  button_depressed_set_handler(ui_menu_button_left_depressed, button_code_left);
+  button_depressed_set_handler(ui_menu_button_right_depressed, button_code_right);
+  button_depressed_set_handler(ui_menu_button_fire1_depressed, button_code_fire1);
 
   ui_menu_render();
 }
 
-void ui_menu_button_up_released(void) {
+void ui_menu_button_up_depressed(void) {
   if (current_menu->item_pos == 0) {
     return;
   }
@@ -35,7 +35,7 @@ void ui_menu_button_up_released(void) {
   ui_menu_render();
 }
 
-void ui_menu_button_down_released(void) {
+void ui_menu_button_down_depressed(void) {
   if (current_menu->item_pos + 1 == current_menu->item_count) {
     return;
   }
@@ -48,7 +48,7 @@ void ui_menu_button_down_released(void) {
   ui_menu_render();
 }
 
-void ui_menu_button_left_released(void) {
+void ui_menu_button_left_depressed(void) {
   if (current_menu->parent_menu != 0) {
     current_menu->item_pos = 0;
     current_menu->render_pos = 0;
@@ -56,13 +56,13 @@ void ui_menu_button_left_released(void) {
   }
 }
 
-void ui_menu_button_right_released(void) {
+void ui_menu_button_right_depressed(void) {
   if (current_menu->item_array[current_menu->item_pos].sub_menu != 0) {
     ui_menu_enter(current_menu->item_array[current_menu->item_pos].sub_menu);
   }
 }
 
-void ui_menu_button_fire1_released(void) {
+void ui_menu_button_fire1_depressed(void) {
   unsigned char item_pos;
 
   if (current_menu->item_array[current_menu->item_pos].sub_menu != 0) {
