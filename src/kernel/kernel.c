@@ -10,8 +10,8 @@
 
 #include "button/event.h"
 #include "button/init.h"
-#include "buzzer/buzzer.h"
-#include "buzzer/init.h"
+#include "led/init.h"
+#include "led/led.h"
 #include "cc65/write.h"
 #include "console/console.h"
 #include "lcd/lcd.h"
@@ -25,11 +25,11 @@ static unsigned char shutdown;
 void main(void) {
   kernel_log_early(memory_get_rom_version());
 
-  buzzer_init();
-  kernel_log_early("[buz_init] done");
+  led_init();
+  kernel_log_early("[led_init] done");
 
-  // Enable the buzzer early.
-  buzzer_on();
+  // Enable the LED early.
+  led_on();
 
   irq_handler_init();
   irq_enable();
@@ -44,8 +44,8 @@ void main(void) {
   console_set_resolution(20, 4);
   kernel_log_early("[con_reso] done");
 
-  // Disable the buzzer after early initialization is complete.
-  buzzer_off();
+  // Disable the LED after early initialization is complete.
+  led_off();
 
   vidiprinter = fopen(VIDIPRINTER_PATH, "a");
   kernel_log("[vid_init] done");
@@ -59,8 +59,8 @@ void main(void) {
   timer_add_one_shot(switcher_app_enter, 10);
   kernel_log("[swt_entr] done");
 
-  // Short buzz after initialization is complete.
-  buzzer_short_buzz();
+  // Flash the LED after initialization is complete.
+  led_flash_short();
 
   kernel_log("[pol_loop] ...");
   kernel_event_poll_loop();
