@@ -22,6 +22,7 @@ KERNEL_LIBS += $(BUILD_DIR)/lcd/drivers/hd44780/hd44780.a
 KERNEL_LIBS += $(BUILD_DIR)/led/led.a
 KERNEL_LIBS += $(BUILD_DIR)/log/log.a
 KERNEL_LIBS += $(BUILD_DIR)/memtest/memtest.a
+KERNEL_LIBS += $(BUILD_DIR)/panic/panic.a
 KERNEL_LIBS += $(BUILD_DIR)/switcher/switcher.a
 KERNEL_LIBS += $(BUILD_DIR)/timer/timer.a
 KERNEL_LIBS += $(BUILD_DIR)/ui/ui.a

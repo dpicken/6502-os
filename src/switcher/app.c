@@ -11,6 +11,7 @@
 #include "led/app.h"
 #include "log/app.h"
 #include "memtest/app.h"
+#include "panic/app.h"
 #include "timer/timer.h"
 #include "uptime/app.h"
 
@@ -37,7 +38,8 @@ static const ui_menu_item switcher_test_menu_items[] = {
   UI_MENU_MAKE_ITEM("Button", switcher_app_enter_button),
   UI_MENU_MAKE_ITEM("LCD", switcher_app_enter_lcd),
   UI_MENU_MAKE_ITEM("LED", switcher_app_enter_led),
-  UI_MENU_MAKE_ITEM("Memtest",switcher_app_enter_memtest)
+  UI_MENU_MAKE_ITEM("Memtest", switcher_app_enter_memtest),
+  UI_MENU_MAKE_ITEM("Panic", switcher_app_enter_panic)
 };
 
 static ui_menu switcher_test_menu = UI_MENU_MAKE_SUB_MENU(&switcher_menu, switcher_test_menu_items);
@@ -80,6 +82,11 @@ void switcher_app_enter_log(void) {
 void switcher_app_enter_memtest(void) {
   switcher_app_reset();
   memtest_app_enter();
+}
+
+void switcher_app_enter_panic(void) {
+  switcher_app_reset();
+  panic_app_enter();
 }
 
 void switcher_app_enter_scroll(void) {

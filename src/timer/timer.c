@@ -1,6 +1,7 @@
 #include "timer.h"
 
 #include "kernel/system_time.h"
+#include "panic/panic.h"
 
 #define MAX_TIMER_COUNT 8
 
@@ -31,7 +32,7 @@ void timer_add(timer_callback callback, unsigned long ttl_ms, unsigned long next
     entry->is_special = is_special;
     return;
   }
-  // TODO: brk
+  panic("timer queue full");
 }
 
 void timer_add_one_shot(timer_callback callback, unsigned long ttl_ms) {
