@@ -39,5 +39,6 @@ void ui_menu_button_left_released(void);
 void ui_menu_button_right_released(void);
 void ui_menu_button_fire1_released(void);
 void ui_menu_render(void);
+void ui_menu_render_line(const char* buf, unsigned int count);
 
 #endif // ifndef ui_menu_h
