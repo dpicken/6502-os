@@ -14,8 +14,8 @@
 static int char_set_pos;
 
 void lcd_app_enter(void) {
-  button_released_set_handler(lcd_app_char_set_previous_page, button_code_up);
-  button_released_set_handler(lcd_app_char_set_next_page, button_code_down);
+  button_depressed_set_handler(lcd_app_char_set_previous_page, button_code_up);
+  button_depressed_set_handler(lcd_app_char_set_next_page, button_code_down);
   lcd_app_char_set_home();
 }
 

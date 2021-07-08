@@ -8,13 +8,13 @@
 #include <stdio.h>
 
 void buzzer_app_enter(void) {
-  button_released_set_handler(buzzer_short_buzz, button_code_left);
-  button_released_set_handler(buzzer_long_buzz, button_code_right);
-  button_released_set_handler(buzzer_app_count_down, button_code_down);
+  button_depressed_set_handler(buzzer_short_buzz, button_code_left);
+  button_depressed_set_handler(buzzer_long_buzz, button_code_right);
+  button_depressed_set_handler(buzzer_app_count_down, button_code_down);
   button_depressed_set_handler(buzzer_on, button_code_fire1);
   button_released_set_handler(buzzer_off, button_code_fire1);
-  button_released_set_handler(buzzer_on, button_code_fire2);
-  button_released_set_handler(buzzer_off, button_code_fire3);
+  button_depressed_set_handler(buzzer_on, button_code_fire2);
+  button_depressed_set_handler(buzzer_off, button_code_fire3);
 
   printf("L   R \n");
   printf("  D        A B C");

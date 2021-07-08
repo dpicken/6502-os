@@ -1,6 +1,5 @@
 #include "app.h"
 
-#include "button/event.h"
 #include "console/console.h"
 #include "kernel/memory.h"
 #include "cc65/write.h"
@@ -9,8 +8,6 @@
 #include <zlib.h>
 
 void memtest_app_enter(void) {
-  button_released_set_handler(memtest_rom, button_code_fire1);
-
   memtest_rom();
 }
 
