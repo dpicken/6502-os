@@ -19,6 +19,7 @@ KERNEL_LIBS += $(BUILD_DIR)/distraction/wisdom/wisdom.a
 KERNEL_LIBS += $(BUILD_DIR)/hw/hw.a
 KERNEL_LIBS += $(BUILD_DIR)/lcd/lcd.a
 KERNEL_LIBS += $(BUILD_DIR)/lcd/drivers/hd44780/hd44780.a
+KERNEL_LIBS += $(BUILD_DIR)/lcd/drivers/us2066/us2066.a
 KERNEL_LIBS += $(BUILD_DIR)/led/led.a
 KERNEL_LIBS += $(BUILD_DIR)/log/log.a
 KERNEL_LIBS += $(BUILD_DIR)/memtest/memtest.a
