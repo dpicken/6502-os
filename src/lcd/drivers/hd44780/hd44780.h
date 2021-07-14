@@ -24,5 +24,6 @@ void hd44780_display_on(void);
 void hd44780_contrast_decrement(void);
 void hd44780_contrast_increment(void);
 void hd44780_putchar(char c);
+void hd44780_busy_wait(void);
 
 #endif // ifndef lcd_drivers_hd44780_hd44780_h
