@@ -39,6 +39,6 @@ void ui_menu_button_left_depressed(void);
 void ui_menu_button_right_depressed(void);
 void ui_menu_button_fire1_depressed(void);
 void ui_menu_render(void);
-void ui_menu_render_line(const char* buf, unsigned int count);
+void ui_menu_render_line(const char* buf, unsigned char count, unsigned char lcd_resolution_x);
 
 #endif // ifndef ui_menu_h

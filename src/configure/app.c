@@ -16,13 +16,13 @@ static const ui_menu_item configure_lcd_menu_items[] = {
   UI_MENU_MAKE_ITEM("Contrast Dec", configure_app_lcd_contrast_decrement),
 };
 
-ui_menu configure_lcd_menu = UI_MENU_MAKE_SUB_MENU(&configure_menu, configure_lcd_menu_items);
+static ui_menu configure_lcd_menu = UI_MENU_MAKE_SUB_MENU(&configure_menu, configure_lcd_menu_items);
 
 static const ui_menu_item configure_menu_items[] = {
   UI_MENU_MAKE_ITEM_WITH_SUB_MENU("LCD", &configure_lcd_menu)
 };
 
-ui_menu configure_menu = UI_MENU_MAKE_SUB_MENU(&switcher_menu, configure_menu_items);
+static ui_menu configure_menu = UI_MENU_MAKE_SUB_MENU(&switcher_menu, configure_menu_items);
 
 void configure_app_lcd_16x2(void) {
   console_set_resolution(16, 2);
@@ -41,8 +41,10 @@ void configure_app_lcd_40x4(void) {
 
 void configure_app_lcd_contrast_increment(void) {
   lcd->contrast_increment();
+  ui_menu_enter(&configure_lcd_menu);
 }
 
 void configure_app_lcd_contrast_decrement(void) {
   lcd->contrast_decrement();
+  ui_menu_enter(&configure_lcd_menu);
 }

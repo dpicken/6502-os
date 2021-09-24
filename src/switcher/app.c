@@ -12,12 +12,13 @@
 #include "log/app.h"
 #include "memtest/app.h"
 #include "panic/app.h"
+#include "speedtest/app.h"
 #include "timer/timer.h"
 #include "uptime/app.h"
 
 #include <stdio.h>
 
-ui_menu switcher_menu;
+static ui_menu switcher_menu;
 
 static const ui_menu_item switcher_distraction_menu_items[] = {
   UI_MENU_MAKE_ITEM("Scroll", switcher_app_enter_scroll),
@@ -39,7 +40,8 @@ static const ui_menu_item switcher_test_menu_items[] = {
   UI_MENU_MAKE_ITEM("LCD", switcher_app_enter_lcd),
   UI_MENU_MAKE_ITEM("LED", switcher_app_enter_led),
   UI_MENU_MAKE_ITEM("Memtest", switcher_app_enter_memtest),
-  UI_MENU_MAKE_ITEM("Panic", switcher_app_enter_panic)
+  UI_MENU_MAKE_ITEM("Panic", switcher_app_enter_panic),
+  UI_MENU_MAKE_ITEM("Speedtest", switcher_app_enter_speedtest)
 };
 
 static ui_menu switcher_test_menu = UI_MENU_MAKE_SUB_MENU(&switcher_menu, switcher_test_menu_items);
@@ -51,7 +53,7 @@ static const ui_menu_item switcher_menu_items[] = {
   UI_MENU_MAKE_ITEM_WITH_SUB_MENU("Test", &switcher_test_menu)
 };
 
-ui_menu switcher_menu = UI_MENU_MAKE_MENU(switcher_menu_items);
+static ui_menu switcher_menu = UI_MENU_MAKE_MENU(switcher_menu_items);
 
 void switcher_app_enter(void) {
   switcher_app_reset();
@@ -87,6 +89,11 @@ void switcher_app_enter_memtest(void) {
 void switcher_app_enter_panic(void) {
   switcher_app_reset();
   panic_app_enter();
+}
+
+void switcher_app_enter_speedtest(void) {
+  switcher_app_reset();
+  speedtest_app_enter();
 }
 
 void switcher_app_enter_scroll(void) {

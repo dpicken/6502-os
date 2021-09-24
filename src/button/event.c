@@ -5,7 +5,7 @@
 button_event_handler button_depressed_handlers[button_count];
 button_event_handler button_released_handlers[button_count];
 
-unsigned char button_bits_history;
+static unsigned char button_bits_history;
 
 void button_depressed_set_handler(button_event_handler handler, button_code code) {
   button_depressed_handlers[code] = handler;

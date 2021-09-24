@@ -49,66 +49,69 @@ void ui_menu_button_down_depressed(void) {
 }
 
 void ui_menu_button_left_depressed(void) {
-  if (current_menu->parent_menu != 0) {
-    current_menu->item_pos = 0;
-    current_menu->render_pos = 0;
-    ui_menu_enter(current_menu->parent_menu);
+  if (current_menu->parent_menu == 0) {
+    return;
   }
+
+  current_menu->item_pos = 0;
+  current_menu->render_pos = 0;
+  ui_menu_enter(current_menu->parent_menu);
 }
 
 void ui_menu_button_right_depressed(void) {
-  if (current_menu->item_array[current_menu->item_pos].sub_menu != 0) {
-    ui_menu_enter(current_menu->item_array[current_menu->item_pos].sub_menu);
+  if (current_menu->item_array[current_menu->item_pos].sub_menu == 0) {
+    return;
   }
+
+  ui_menu_enter(current_menu->item_array[current_menu->item_pos].sub_menu);
 }
 
 void ui_menu_button_fire1_depressed(void) {
-  unsigned char item_pos;
+  unsigned char item_pos = current_menu->item_pos;
 
-  if (current_menu->item_array[current_menu->item_pos].sub_menu != 0) {
-    ui_menu_enter(current_menu->item_array[current_menu->item_pos].sub_menu);
+  if (current_menu->item_array[item_pos].sub_menu != 0) {
+    ui_menu_enter(current_menu->item_array[item_pos].sub_menu);
   } else {
-    current_menu->item_array[current_menu->item_pos].on_selected();
+    current_menu->item_pos = 0;
+    current_menu->render_pos = 0;
+    current_menu->item_array[item_pos].on_selected();
   }
 }
 
 void ui_menu_render(void) {
+  unsigned char lcd_resolution_x = lcd->get_resolution_x();
+  unsigned char lcd_resolution_y = lcd->get_resolution_y();
   unsigned char render_item_count_max = current_menu->item_count - current_menu->render_pos;
-  unsigned char render_item_count = uc_min(render_item_count_max, lcd->get_resolution_y());
+  unsigned char render_item_count = uc_min(render_item_count_max, lcd_resolution_y);
   unsigned char render_item_pos_end = current_menu->render_pos + render_item_count;
-  unsigned char render_end = current_menu->render_pos + uc_max(render_item_count, lcd->get_resolution_y());
+  unsigned char render_end = current_menu->render_pos + uc_max(render_item_count, lcd_resolution_y);
 
   unsigned char i;
   unsigned char buffer[16 + 1];
 
   for (i = current_menu->render_pos; i != render_item_pos_end; ++i) {
-    ui_menu_render_line(buffer, snprintf(buffer, sizeof(buffer), "%c %-12s %c",
-        i == current_menu->item_pos ? '*' : ' ',
-        current_menu->item_array[i].label,
-        current_menu->item_array[i].sub_menu ? '>' : ' '));
+    ui_menu_render_line(buffer
+        , snprintf(buffer, sizeof(buffer)
+            , "%c %-12s %c", i == current_menu->item_pos ? '*' : ' '
+            , current_menu->item_array[i].label, current_menu->item_array[i].sub_menu ? '>' : ' ')
+        , lcd_resolution_x);
   }
 
   for (; i != render_end; ++i) {
-    ui_menu_render_line(" ", 1);
+    ui_menu_render_line(" ", 1, lcd_resolution_x);
   }
 }
 
-void ui_menu_render_line(const char* buf, unsigned int count) {
-  unsigned int remaining = lcd->get_resolution_x();
+void ui_menu_render_line(const char* buf, unsigned char count, unsigned char lcd_resolution_x) {
+  unsigned char i;
 
-  int i;
+  count = uc_min(count, lcd_resolution_x);
 
-  count |= ~-1U;
-  count = min(count, remaining);
-
-  for (i = 0; i != count; ++i) {
+  for (i = 0; i < count; ++i) {
     lcd->putchar(buf[i]);
   }
 
-  if (remaining > count) {
-    remaining -= count;
-    for (; remaining != 0; --remaining) {
-      lcd->putchar(' ');
-    }
+  for (; i < lcd_resolution_x; ++i) {
+    lcd->putchar(' ');
   }
 }

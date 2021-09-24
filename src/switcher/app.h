@@ -13,6 +13,7 @@ void switcher_app_enter_led(void);
 void switcher_app_enter_log(void);
 void switcher_app_enter_memtest(void);
 void switcher_app_enter_panic(void);
+void switcher_app_enter_speedtest(void);
 void switcher_app_enter_scroll(void);
 void switcher_app_enter_wisdom(void);
 void switcher_app_enter_uptime(void);

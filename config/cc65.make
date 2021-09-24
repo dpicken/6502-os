@@ -10,6 +10,16 @@ CXXFLAGS +=
 CXXFLAGS += --target none
 CXXFLAGS += --cpu $(cpu)
 
+CXXFLAGS.OPTIMIZATIONS :=
+CXXFLAGS.OPTIMIZATIONS += -O
+CXXFLAGS.OPTIMIZATIONS += -Oi
+CXXFLAGS.OPTIMIZATIONS += -Or
+CXXFLAGS.OPTIMIZATIONS += -Os
+# Note: make all locals static locals: ~15% performance improvement
+CXXFLAGS.OPTIMIZATIONS += -Cl
+
+CXXFLAGS += $(CXXFLAGS.OPTIMIZATIONS)
+
 AS = ca65
 ASFLAGS += --target none
 ASFLAGS += --cpu $(cpu)

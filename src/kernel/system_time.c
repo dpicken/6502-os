@@ -7,12 +7,20 @@
 static unsigned long tick_count;
 static unsigned char ticked_event;
 
-unsigned long system_time_get(void) {
+unsigned long system_time_get_ticks(void) {
   return tick_count;
 }
 
+unsigned long system_time_ticks_to_ms(unsigned long ticks) {
+  return ticks * MS_PER_TICK;
+}
+
+unsigned long system_time_ms_to_ticks(unsigned long ms) {
+  return ms / MS_PER_TICK;
+}
+
 unsigned long system_time_get_ms(void) {
-  return system_time_get() * MS_PER_TICK;
+  return system_time_ticks_to_ms(system_time_get_ticks());
 }
 
 unsigned char system_time_reset_ticked_event(void) {
