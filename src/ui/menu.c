@@ -72,8 +72,10 @@ void ui_menu_button_fire1_depressed(void) {
   if (current_menu->item_array[item_pos].sub_menu != 0) {
     ui_menu_enter(current_menu->item_array[item_pos].sub_menu);
   } else {
-    current_menu->item_pos = 0;
-    current_menu->render_pos = 0;
+    if (current_menu->item_array[item_pos].on_selected_dismiss) {
+      current_menu->item_pos = 0;
+      current_menu->render_pos = 0;
+    }
     current_menu->item_array[item_pos].on_selected();
   }
 }

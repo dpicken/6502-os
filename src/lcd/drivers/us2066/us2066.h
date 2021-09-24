@@ -23,6 +23,8 @@ void us2066_display_on(void);
 void us2066_contrast_decrement(void);
 void us2066_contrast_increment(void);
 void us2066_contrast_set(void);
+void us2066_orientation_default(void);
+void us2066_orientation_rotated(void);
 void us2066_putchar(char c);
 void us2066_busy_wait(void);
 

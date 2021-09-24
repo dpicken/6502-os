@@ -36,6 +36,8 @@ const lcd_driver lcd_us2066 = {
   us2066_display_on,
   us2066_contrast_decrement,
   us2066_contrast_increment,
+  us2066_orientation_default,
+  us2066_orientation_rotated,
 
   us2066_putchar
 };
@@ -47,33 +49,14 @@ void us2066_init(void) {
       | HD44780_ENTRY_MODE_SET_INCREMENT
       | HD44780_ENTRY_MODE_SET_SHIFT_DISPLAY_OFF);
 
-  us2066_init_write_byte(HD44780_INSTRUCTION_FUNCTION_SET
-      | lcd_config_function_set_display_lines
-      | US2066_FUNCTION_SET_EXTENSION_RE_SET);
-  us2066_init_write_byte(US2066_INSTRUCTION_RE_EXTENDED_FUNCTION_SET
-      | US2066_RE_EXTENDED_FUNCTION_SET_DISPLAY_LINE_COUNT_GTE_3);
-  us2066_init_write_byte(HD44780_INSTRUCTION_ENTRY_MODE_SET
-      | US2066_RE_ENTRY_MODE_SET_BI_DIRECTION_COMMON_RESET
-      | US2066_RE_ENTRY_MODE_SET_BI_DIRECTION_SEGMENT_SET);
-  us2066_init_write_byte(US2066_INSTRUCTION_RE_OLED_CHARACTERIZATION
-      | US2066_RE_OLED_CHARACTERIZATION_SD_SET);
-  us2066_init_write_byte(US2066_INSTRUCTION_RE_SD_SET_SEG_PINS_CONFIGURATION_1);
-  us2066_init_write_byte(US2066_INSTRUCTION_RE_SD_SET_SEG_PINS_CONFIGURATION_2
-      | US2066_RE_SD_SEG_PINS_CONFIGURATION_2_ODD_EVEN_SET
-      | US2066_RE_SD_SEG_PINS_CONFIGURATION_2_LEFT_RIGHT_REMAP_RESET);
-  us2066_init_write_byte(US2066_INSTRUCTION_RE_OLED_CHARACTERIZATION
-      | US2066_RE_OLED_CHARACTERIZATION_SD_RESET);
-  us2066_init_write_byte(HD44780_INSTRUCTION_FUNCTION_SET
-      | lcd_config_function_set_display_lines
-      | US2066_FUNCTION_SET_EXTENSION_RE_RESET);
+  us2066_orientation_default();
+  us2066_contrast_set();
+  us2066_clear();
 
   us2066_init_write_byte(HD44780_INSTRUCTION_DISPLAY_CONTROL
       | HD44780_DISPLAY_CONTROL_ON
       | HD44780_DISPLAY_CONTROL_CURSOR_OFF
       | HD44780_DISPLAY_CONTROL_CURSOR_BLINK_OFF);
-
-  us2066_contrast_set();
-  us2066_clear();
 }
 
 void us2066_init_write_byte(unsigned char instruction) {
@@ -179,6 +162,30 @@ void us2066_contrast_set(void) {
 
   us2066_init_write_byte(US2066_INSTRUCTION_RE_OLED_CHARACTERIZATION
       | US2066_RE_OLED_CHARACTERIZATION_SD_RESET);
+  us2066_init_write_byte(HD44780_INSTRUCTION_FUNCTION_SET
+      | lcd_config_function_set_display_lines
+      | US2066_FUNCTION_SET_EXTENSION_RE_RESET);
+}
+
+void us2066_orientation_default(void) {
+  us2066_init_write_byte(HD44780_INSTRUCTION_FUNCTION_SET
+      | lcd_config_function_set_display_lines
+      | US2066_FUNCTION_SET_EXTENSION_RE_SET);
+  us2066_init_write_byte(HD44780_INSTRUCTION_ENTRY_MODE_SET
+      | US2066_RE_ENTRY_MODE_SET_BI_DIRECTION_COMMON_SET
+      | US2066_RE_ENTRY_MODE_SET_BI_DIRECTION_SEGMENT_RESET);
+  us2066_init_write_byte(HD44780_INSTRUCTION_FUNCTION_SET
+      | lcd_config_function_set_display_lines
+      | US2066_FUNCTION_SET_EXTENSION_RE_RESET);
+}
+
+void us2066_orientation_rotated(void) {
+  us2066_init_write_byte(HD44780_INSTRUCTION_FUNCTION_SET
+      | lcd_config_function_set_display_lines
+      | US2066_FUNCTION_SET_EXTENSION_RE_SET);
+  us2066_init_write_byte(HD44780_INSTRUCTION_ENTRY_MODE_SET
+      | US2066_RE_ENTRY_MODE_SET_BI_DIRECTION_COMMON_RESET
+      | US2066_RE_ENTRY_MODE_SET_BI_DIRECTION_SEGMENT_SET);
   us2066_init_write_byte(HD44780_INSTRUCTION_FUNCTION_SET
       | lcd_config_function_set_display_lines
       | US2066_FUNCTION_SET_EXTENSION_RE_RESET);

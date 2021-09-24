@@ -47,6 +47,12 @@ typedef struct lcd_driver {
   /** Increment the constrast. */
   void (*contrast_increment)(void);
 
+  /** Set default orientation. */
+  void (*orientation_default)(void);
+
+  /** Set rotated orientation. */
+  void (*orientation_rotated)(void);
+
   /** Write a character to the display. */
   void (*putchar)(char c);
 } lcd_driver;

@@ -1,6 +1,6 @@
 #include "map.h"
 
-#define HW_REGISTER(address) ((volatile unsigned char*) address)
+#define HW_REGISTER(address) ((volatile unsigned char* const) address)
 
 #define HW_VIA_B      HW_REGISTER(0x6000)
 #define HW_VIA_A      HW_REGISTER(0x6001)

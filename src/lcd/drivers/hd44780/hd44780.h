@@ -23,6 +23,8 @@ void hd44780_display_off(void);
 void hd44780_display_on(void);
 void hd44780_contrast_decrement(void);
 void hd44780_contrast_increment(void);
+void hd44780_orientation_default(void);
+void hd44780_orientation_rotated(void);
 void hd44780_putchar(char c);
 void hd44780_busy_wait(void);
 

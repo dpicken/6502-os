@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 
-static FILE* vidiprinter;
+FILE* vidiprinter;
 
 typedef int (*writer)(const char*, unsigned int);
 

@@ -18,8 +18,6 @@
 
 #include <stdio.h>
 
-static ui_menu switcher_menu;
-
 static const ui_menu_item switcher_distraction_menu_items[] = {
   UI_MENU_MAKE_ITEM("Scroll", switcher_app_enter_scroll),
   UI_MENU_MAKE_ITEM("Wisdom", switcher_app_enter_wisdom),
@@ -53,7 +51,7 @@ static const ui_menu_item switcher_menu_items[] = {
   UI_MENU_MAKE_ITEM_WITH_SUB_MENU("Test", &switcher_test_menu)
 };
 
-static ui_menu switcher_menu = UI_MENU_MAKE_MENU(switcher_menu_items);
+ui_menu switcher_menu = UI_MENU_MAKE_MENU(switcher_menu_items);
 
 void switcher_app_enter(void) {
   switcher_app_reset();

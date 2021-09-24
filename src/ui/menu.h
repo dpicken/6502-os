@@ -11,11 +11,13 @@ typedef struct ui_menu ui_menu;
 struct ui_menu_item {
   const char* const label;
   const ui_menu_item_callback* const on_selected; // NULL, if this has-a sub-menu.
+  unsigned char on_selected_dismiss;
   ui_menu* const sub_menu; // !NULL, if this is-a sub-menu.
 };
 
-#define UI_MENU_MAKE_ITEM(label, on_selected) { label, on_selected, 0 }
-#define UI_MENU_MAKE_ITEM_WITH_SUB_MENU(label, sub_menu) { label, 0, sub_menu }
+#define UI_MENU_MAKE_ITEM(label, on_selected) { label, on_selected, 1, 0 }
+#define UI_MENU_MAKE_ITEM_NO_DISMISS(label, on_selected) { label, on_selected, 0, 0 }
+#define UI_MENU_MAKE_ITEM_WITH_SUB_MENU(label, sub_menu) { label, 0, 0, sub_menu }
 
 struct ui_menu {
   ui_menu* const parent_menu; // !NULL, if this is-a sub-menu.

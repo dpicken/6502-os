@@ -10,10 +10,11 @@
 
 #include "button/event.h"
 #include "button/init.h"
-#include "led/init.h"
-#include "led/led.h"
 #include "cc65/write.h"
 #include "console/console.h"
+#include "hw/map.h"
+#include "led/init.h"
+#include "led/led.h"
 #include "lcd/lcd.h"
 #include "switcher/app.h"
 #include "timer/timer.h"
@@ -38,7 +39,19 @@ void main(void) {
   system_time_init();
   kernel_log_early("[sys_time] done");
 
-  lcd->init();
+  button_init();
+  kernel_log_early("[btn_init] done");
+
+  if ((hw_button_read() & HW_BUTTON_6) == 0) {
+    lcd_init_us2066();
+    kernel_log_early("[lcd_init] us2066");
+  } else {
+    lcd_init_hd44780();
+    kernel_log_early("[lcd_init] hd44780");
+  }
+  if (hw_button_read() & HW_BUTTON_1) {
+    lcd->orientation_rotated();
+  }
   kernel_log_early("[lcd_init] done");
 
   console_set_resolution(20, 4);
@@ -49,9 +62,6 @@ void main(void) {
 
   vidiprinter = fopen(VIDIPRINTER_PATH, "a");
   kernel_log("[vid_init] done");
-
-  button_init();
-  kernel_log("[btn_init] done");
 
   button_released_set_handler(switcher_app_enter, button_code_special_left_and_right);
   kernel_log("[swt_hkey] done");

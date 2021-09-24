@@ -2,8 +2,8 @@
 
 #include "hw/map.h"
 
-button_event_handler button_depressed_handlers[button_count];
-button_event_handler button_released_handlers[button_count];
+static button_event_handler button_depressed_handlers[button_count];
+static button_event_handler button_released_handlers[button_count];
 
 static unsigned char button_bits_history;
 

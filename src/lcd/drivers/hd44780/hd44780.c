@@ -35,6 +35,8 @@ const lcd_driver lcd_hd44780 = {
   hd44780_display_on,
   hd44780_contrast_decrement,
   hd44780_contrast_increment,
+  hd44780_orientation_default,
+  hd44780_orientation_rotated,
 
   hd44780_putchar
 };
@@ -160,6 +162,12 @@ void hd44780_contrast_decrement(void) {
 }
 
 void hd44780_contrast_increment(void) {
+}
+
+void hd44780_orientation_default(void) {
+}
+
+void hd44780_orientation_rotated(void) {
 }
 
 void hd44780_putchar(char c) {
