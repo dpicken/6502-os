@@ -21,10 +21,10 @@ void scroll_app_enter(void) {
 
 void scroll_left(void) {
   timer_clear_all_non_special();
-  timer_add_fixed_rate(lcd->display_shift_left, 60);
+  timer_add_fixed_rate(lcd->display_shift_left, 10);
 }
 
 void scroll_right(void) {
   timer_clear_all_non_special();
-  timer_add_fixed_rate(lcd->display_shift_right, 60);
+  timer_add_fixed_rate(lcd->display_shift_right, 10);
 }

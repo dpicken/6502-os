@@ -120,6 +120,6 @@ int console_vidiprinter_write(const char* buf, unsigned int count) {
 }
 
 void console_vidiprinter_delay(char c) {
-  delay_ms(c == ',' || c == ';' || c == ':' || c == '.' || c == '?' ? 500 : 100);
+  delay_ms(c == ',' || c == ';' || c == ':' || c == '.' || c == '?' ? 400 : 80);
 }
 
