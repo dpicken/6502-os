@@ -22,12 +22,12 @@
 #define HW_VIA_IER_SET          0x80
 #define HW_VIA_IER_T1           0x40
 
-#define HW_BUTTON_REGISTER          HW_VIA_A
-#define HW_BUTTON_DDR               HW_VIA_DDRA
+#define HW_BUTTON_REGISTER          HW_VIA_B
+#define HW_BUTTON_DDR               HW_VIA_DDRB
 #define HW_BUTTON_MASK              (HW_BUTTON_0 | HW_BUTTON_1 | HW_BUTTON_2 | HW_BUTTON_3 | HW_BUTTON_4 | HW_BUTTON_5 | HW_BUTTON_6)
 
-#define HW_LCD_HD44780_REGISTER             HW_VIA_B
-#define HW_LCD_HD44780_DDR                  HW_VIA_DDRB
+#define HW_LCD_HD44780_REGISTER             HW_VIA_A
+#define HW_LCD_HD44780_DDR                  HW_VIA_DDRA
 #define HW_LCD_HD44780_CONTROL_MASK         0x0F
 #define HW_LCD_HD44780_DATA_MASK            0xF0
 
