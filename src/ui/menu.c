@@ -89,7 +89,7 @@ void ui_menu_render(void) {
   unsigned char render_end = current_menu->render_pos + uc_max(render_item_count, lcd_resolution_y);
 
   unsigned char i;
-  unsigned char buffer[16 + 1];
+  char buffer[16 + 1];
 
   for (i = current_menu->render_pos; i != render_item_pos_end; ++i) {
     ui_menu_render_line(buffer
