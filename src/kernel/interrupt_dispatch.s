@@ -1,6 +1,8 @@
 .import callirq
 .import startup_init
 
+.import _nmi_handler
+
 .export doneirq
 .export initirq
 .export interrupt_dispatch_irq
@@ -28,6 +30,13 @@ interrupt_dispatch_irq:
   rti
 
 interrupt_dispatch_nmi:
+  pha
+  phx
+  phy
+  jsr _nmi_handler
+  ply
+  plx
+  pla
   rti
 
 interrupt_dispatch_reset:

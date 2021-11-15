@@ -6,6 +6,7 @@ KERNEL_OBJS += $(BUILD_DIR)/kernel/irq_handler.c.o
 KERNEL_OBJS += $(BUILD_DIR)/kernel/kernel.c.o
 KERNEL_OBJS += $(BUILD_DIR)/kernel/log.c.o
 KERNEL_OBJS += $(BUILD_DIR)/kernel/memory.s.o
+KERNEL_OBJS += $(BUILD_DIR)/kernel/nmi_handler.c.o
 KERNEL_OBJS += $(BUILD_DIR)/kernel/startup.s.o
 KERNEL_OBJS += $(BUILD_DIR)/kernel/system_time.c.o
 KERNEL_OBJS += $(BUILD_DIR)/kernel/vector.s.o
