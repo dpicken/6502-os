@@ -1,6 +1,6 @@
 #include "app.h"
 
-#include "button/event.h"
+#include "controller/controller.h"
 #include "lcd/lcd.h"
 #include "timer/timer.h"
 
@@ -9,8 +9,8 @@
 void scroll_app_enter(void) {
   int i;
 
-  button_depressed_set_handler(scroll_left, button_code_left);
-  button_depressed_set_handler(scroll_right, button_code_right);
+  controller_button_set_demuxed_depressed_handler(scroll_left, controller_button_left);
+  controller_button_set_demuxed_depressed_handler(scroll_right, controller_button_right);
 
   for (i = 0; i < lcd->get_resolution_cell_count(); ++i) {
     rand() % 2 ? lcd->putchar(' ') : lcd->putchar(0xFF);

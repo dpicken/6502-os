@@ -8,16 +8,14 @@
 #include "memory.h"
 #include "system_time.h"
 
-#include "button/event.h"
-#include "button/init.h"
 #include "cc65/write.h"
 #include "console/console.h"
-#include "hw/map.h"
-#include "led/init.h"
-#include "led/led.h"
+#include "controller/controller.h"
+#include "hw/configuration.h"
 #include "lcd/lcd.h"
 #include "switcher/app.h"
 #include "timer/timer.h"
+#include "via/via.h"
 
 #include <stdio.h>
 
@@ -26,51 +24,36 @@ static unsigned char shutdown;
 void main(void) {
   kernel_log_early(memory_get_rom_version());
 
-  led_init();
-  kernel_log_early("[led_init] done");
+  controller_init(HW_CONTROLLER_VIA_PORT);
+  kernel_log_early("[ctl_init] done");
 
-  // Enable the LED early.
-  led_on();
+  controller_led_on();
 
   irq_handler_init();
   irq_enable();
   kernel_log_early("[irq_init] done");
 
-  system_time_init();
-  kernel_log_early("[sys_time] done");
-
-  button_init();
-  kernel_log_early("[btn_init] done");
-
-  if ((hw_button_read() & HW_BUTTON_6) == 0) {
-    lcd_init_us2066();
-    kernel_log_early("[lcd_init] us2066");
+#if HW_VIA_COUNT > 1
+  if (controller_buttons_depressed(CONTROLLER_BUTTON_TO_BIT(controller_button_a))) {
+    HW_LCD_DRIVER_INIT(HW_LCD_VIA_PORT_ALT1);
+  } else if (controller_buttons_depressed(CONTROLLER_BUTTON_TO_BIT(controller_button_b))) {
+    HW_LCD_DRIVER_INIT(HW_LCD_VIA_PORT_ALT2);
   } else {
-    lcd_init_hd44780();
-    kernel_log_early("[lcd_init] hd44780");
+    HW_LCD_DRIVER_INIT(HW_LCD_VIA_PORT_DEFAULT);
   }
-  if (hw_button_read() & HW_BUTTON_1) {
-    lcd->orientation_rotated();
-  }
+#else
+  HW_LCD_DRIVER_INIT(HW_LCD_VIA_PORT);
+#endif
   kernel_log_early("[lcd_init] done");
 
   console_set_resolution(20, 4);
   kernel_log_early("[con_reso] done");
 
-  // Disable the LED after early initialization is complete.
-  led_off();
-
   vidiprinter = fopen(VIDIPRINTER_PATH, "a");
   kernel_log("[vid_init] done");
 
-  button_released_set_handler(switcher_app_enter, button_code_special_left_and_right);
-  kernel_log("[swt_hkey] done");
-
   timer_add_one_shot(switcher_app_enter, 10);
   kernel_log("[swt_entr] done");
-
-  // Flash the LED after initialization is complete.
-  led_flash_short();
 
   kernel_log("[pol_loop] ...");
   kernel_event_poll_loop();
@@ -80,6 +63,7 @@ void main(void) {
   kernel_log("[irq_shut] done");
 
   kernel_log("[krl_exit] ...");
+  controller_led_off();
 }
 
 void kernel_event_poll_loop(void) {

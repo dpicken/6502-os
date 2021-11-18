@@ -1,19 +1,24 @@
 #include "app.h"
 
-#include "button/event.h"
 #include "console/console.h"
-#include "hw/map.h"
+#include "hw/configuration.h"
 #include "lcd/lcd.h"
 #include "switcher/app.h"
+#include "via/via.h"
 
 #include <stdio.h>
 
 static const ui_menu_item configure_lcd_menu_items[] = {
+#if HW_VIA_COUNT > 1
+  UI_MENU_MAKE_ITEM("Exp 1a:", configure_app_lcd_exp_1a),
+  UI_MENU_MAKE_ITEM("Exp 2a:", configure_app_lcd_exp_2a),
+  UI_MENU_MAKE_ITEM("Exp 2b:", configure_app_lcd_exp_2b),
+#endif
   UI_MENU_MAKE_ITEM("16x2", configure_app_lcd_16x2),
   UI_MENU_MAKE_ITEM("20x4", configure_app_lcd_20x4),
   UI_MENU_MAKE_ITEM("40x4", configure_app_lcd_40x4),
-  UI_MENU_MAKE_ITEM_NO_DISMISS("Contrast Inc", configure_app_lcd_contrast_increment),
-  UI_MENU_MAKE_ITEM_NO_DISMISS("Contrast Dec", configure_app_lcd_contrast_decrement),
+  UI_MENU_MAKE_ITEM("Contrast +", configure_app_lcd_contrast_increment),
+  UI_MENU_MAKE_ITEM("Contrast -", configure_app_lcd_contrast_decrement),
   UI_MENU_MAKE_ITEM("Orient Def", configure_app_lcd_orientation_default),
   UI_MENU_MAKE_ITEM("Orient Rot", configure_app_lcd_orientation_rotated),
 };
@@ -25,6 +30,23 @@ static const ui_menu_item configure_menu_items[] = {
 };
 
 ui_menu configure_menu = UI_MENU_MAKE_SUB_MENU(&switcher_menu, configure_menu_items);
+
+#if HW_VIA_COUNT > 1
+void configure_app_lcd_exp_1a(void) {
+  HW_LCD_DRIVER_INIT(&via1->ra, &via1->ddra);
+  ui_menu_enter(&configure_lcd_menu);
+}
+
+void configure_app_lcd_exp_2a(void) {
+  HW_LCD_DRIVER_INIT(&via2->ra, &via2->ddra);
+  ui_menu_enter(&configure_lcd_menu);
+}
+
+void configure_app_lcd_exp_2b(void) {
+  HW_LCD_DRIVER_INIT(&via2->rb, &via2->ddrb);
+  ui_menu_enter(&configure_lcd_menu);
+}
+#endif
 
 void configure_app_lcd_16x2(void) {
   console_set_resolution(16, 2);

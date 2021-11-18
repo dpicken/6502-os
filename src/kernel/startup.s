@@ -9,7 +9,7 @@
 .import donelib
 .import _main
 
-.import __RAM_START__, __RAM_SIZE__
+.import __RAM_OS_START__, __RAM_OS_SIZE__
 
 .include "zeropage.inc"
 
@@ -21,9 +21,9 @@ startup_init:
   txs
 
   ; Initialize the cc65 argument stack pointer
-  lda #<(__RAM_START__ + __RAM_SIZE__)
+  lda #<(__RAM_OS_START__ + __RAM_OS_SIZE__)
   sta sp
-  lda #>(__RAM_START__ + __RAM_SIZE__)
+  lda #>(__RAM_OS_START__ + __RAM_OS_SIZE__)
   sta sp+1
 
   ; Initialize global variables

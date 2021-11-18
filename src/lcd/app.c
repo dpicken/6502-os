@@ -2,7 +2,7 @@
 
 #include "lcd.h"
 
-#include "button/event.h"
+#include "controller/controller.h"
 #include "timer/timer.h"
 #include "util/algorithm.h"
 #include "util/hex.h"
@@ -14,8 +14,8 @@
 static int char_set_pos;
 
 void lcd_app_enter(void) {
-  button_depressed_set_handler(lcd_app_char_set_previous_page, button_code_up);
-  button_depressed_set_handler(lcd_app_char_set_next_page, button_code_down);
+  controller_button_set_demuxed_depressed_handler(lcd_app_char_set_previous_page, controller_button_up);
+  controller_button_set_demuxed_depressed_handler(lcd_app_char_set_next_page, controller_button_down);
   lcd_app_char_set_home();
 }
 

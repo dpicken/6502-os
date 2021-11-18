@@ -1,15 +1,14 @@
 #include "app.h"
 
-#include "button/event.h"
 #include "console/console.h"
-#include "hw/map.h"
+#include "controller/controller.h"
 #include "lcd/lcd.h"
 #include "kernel/system_time.h"
 
 #include <stdio.h>
 
 void speedtest_app_enter(void) {
-  button_depressed_set_handler(speedtest_run, button_code_fire1);
+  controller_button_set_demuxed_depressed_handler(speedtest_run, controller_button_a);
 
   speedtest_run();
 }

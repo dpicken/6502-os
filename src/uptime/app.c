@@ -1,6 +1,5 @@
 #include "app.h"
 
-#include "button/event.h"
 #include "kernel/system_time.h"
 #include "timer/timer.h"
 

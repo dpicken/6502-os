@@ -1,9 +1,11 @@
 #ifndef lcd_driver_h
 #define lcd_driver_h
 
+#include "hw/register.h"
+
 typedef struct lcd_driver {
   /** Initialize display. */
-  void (*init)(void);
+  void (*init)(hw_register via_port, hw_register via_ddr);
 
   /** Set the resolution. */
   void (*set_resolution)(unsigned char x, unsigned char y);

@@ -1,17 +1,17 @@
 #include "lcd.h"
 
-#include "drivers/hd44780/hd44780.h"
-#include "drivers/us2066/us2066.h"
+#include "driver/hd44780/hd44780.h"
+#include "driver/us2066/us2066.h"
 
-const lcd_driver* lcd = &lcd_us2066;
+const lcd_driver* lcd;
 
-void lcd_init_hd44780(void) {
-  lcd_hd44780.init();
+void lcd_init_hd44780(hw_register via_port, hw_register via_ddr) {
+  hd44780_init(via_port, via_ddr);
   lcd = &lcd_hd44780;
 }
 
-void lcd_init_us2066(void) {
-  lcd_us2066.init();
+void lcd_init_us2066(hw_register via_port, hw_register via_ddr) {
+  us2066_init(via_port, via_ddr);
   lcd = &lcd_us2066;
 }
 

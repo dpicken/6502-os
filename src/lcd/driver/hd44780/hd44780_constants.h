@@ -1,5 +1,13 @@
-#ifndef lcd_drivers_hd44780_hd44780_constants_h
-#define lcd_drivers_hd44780_hd44780_constants_h
+#ifndef lcd_driver_hd44780_hd44780_constants_h
+#define lcd_driver_hd44780_hd44780_constants_h
+
+#define HD44780_VIA_DATA_MASK    0xF0
+#define HD44780_VIA_CONTROL_MASK 0x0F
+
+#define HD44780_VIA_CONTROL_E2   0x08
+#define HD44780_VIA_CONTROL_E1   0x04
+#define HD44780_VIA_CONTROL_R_WB 0x02
+#define HD44780_VIA_CONTROL_RS   0x01
 
 #define HD44780_INSTRUCTION_SET_DDRAM_ADDRESS         0x80
 #define HD44780_INSTRUCTION_SET_CGRAM_ADDRESS         0x40
@@ -36,4 +44,4 @@
 
 #define HD44780_DR_BUSY                               0x80
 
-#endif // ifndef lcd_drivers_hd44780_hd44780_constants_h
+#endif // ifndef lcd_driver_hd44780_hd44780_constants_h

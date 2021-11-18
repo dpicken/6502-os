@@ -12,16 +12,14 @@ KERNEL_OBJS += $(BUILD_DIR)/kernel/system_time.c.o
 KERNEL_OBJS += $(BUILD_DIR)/kernel/vector.s.o
 
 KERNEL_LIBS :=
-KERNEL_LIBS += $(BUILD_DIR)/button/button.a
 KERNEL_LIBS += $(BUILD_DIR)/configure/configure.a
 KERNEL_LIBS += $(BUILD_DIR)/console/console.a
+KERNEL_LIBS += $(BUILD_DIR)/controller/controller.a
 KERNEL_LIBS += $(BUILD_DIR)/distraction/scroll/scroll.a
 KERNEL_LIBS += $(BUILD_DIR)/distraction/wisdom/wisdom.a
-KERNEL_LIBS += $(BUILD_DIR)/hw/hw.a
 KERNEL_LIBS += $(BUILD_DIR)/lcd/lcd.a
-KERNEL_LIBS += $(BUILD_DIR)/lcd/drivers/hd44780/hd44780.a
-KERNEL_LIBS += $(BUILD_DIR)/lcd/drivers/us2066/us2066.a
-KERNEL_LIBS += $(BUILD_DIR)/led/led.a
+KERNEL_LIBS += $(BUILD_DIR)/lcd/driver/hd44780/hd44780.a
+KERNEL_LIBS += $(BUILD_DIR)/lcd/driver/us2066/us2066.a
 KERNEL_LIBS += $(BUILD_DIR)/log/log.a
 KERNEL_LIBS += $(BUILD_DIR)/memtest/memtest.a
 KERNEL_LIBS += $(BUILD_DIR)/panic/panic.a
@@ -31,6 +29,7 @@ KERNEL_LIBS += $(BUILD_DIR)/timer/timer.a
 KERNEL_LIBS += $(BUILD_DIR)/ui/ui.a
 KERNEL_LIBS += $(BUILD_DIR)/uptime/uptime.a
 KERNEL_LIBS += $(BUILD_DIR)/util/util.a
+KERNEL_LIBS += $(BUILD_DIR)/via/via.a
 
 KERNEL_TOOLCHAIN_LIBS :=
 KERNEL_TOOLCHAIN_LIBS += $(BUILD_DIR)/cc65/cc65.a

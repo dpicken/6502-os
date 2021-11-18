@@ -1,5 +1,5 @@
-#ifndef lcd_drivers_us2066_us2066_constants_h
-#define lcd_drivers_us2066_us2066_constants_h
+#ifndef lcd_driver_us2066_us2066_constants_h
+#define lcd_driver_us2066_us2066_constants_h
 
 #define US2066_INSTRUCTION_RE_SD_SET_SEG_PINS_CONFIGURATION_1         0xDA
 #define US2066_INSTRUCTION_RE_SD_SET_SEG_PINS_CONFIGURATION_2         0x00
@@ -36,4 +36,4 @@
 #define US2066_FUNCTION_SET_EXTENSION_IS_SET                          0x01
 #define US2066_FUNCTION_SET_EXTENSION_IS_RESET                        0x00
 
-#endif // ifndef lcd_drivers_us2066_us2066_constants_h
+#endif // ifndef lcd_driver_us2066_us2066_constants_h

@@ -3,7 +3,9 @@ cpu := 65c02
 SRC_EXT_CXX := c
 
 CXX.MKDEPS := $(CXX.MKDEPS)
-CXX.MKDEPS.CXXFLAGS=
+CXX.MKDEPS.CXXFLAGS =
+CXX.MKDEPS.CXXFLAGS += -I/usr/local/share/cc65/include
+CXX.MKDEPS.CXXFLAGS += -Wno-deprecated
 
 CXX = cl65
 CXXFLAGS +=

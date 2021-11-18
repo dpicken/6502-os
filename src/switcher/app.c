@@ -1,14 +1,12 @@
 #include "app.h"
 
-#include "button/app.h"
-#include "button/event.h"
 #include "configure/app.h"
 #include "console/console.h"
+#include "controller/app.h"
 #include "distraction/scroll/app.h"
 #include "distraction/wisdom/app.h"
 #include "kernel/kernel.h"
 #include "lcd/app.h"
-#include "led/app.h"
 #include "log/app.h"
 #include "memtest/app.h"
 #include "panic/app.h"
@@ -17,6 +15,8 @@
 #include "uptime/app.h"
 
 #include <stdio.h>
+
+#define SWITCHER_APP_ENTER_BUTTON_BITS (CONTROLLER_BUTTON_TO_BIT(controller_button_left) | CONTROLLER_BUTTON_TO_BIT(controller_button_right))
 
 static const ui_menu_item switcher_distraction_menu_items[] = {
   UI_MENU_MAKE_ITEM("Scroll", switcher_app_enter_scroll),
@@ -28,15 +28,14 @@ static ui_menu switcher_distraction_menu = UI_MENU_MAKE_SUB_MENU(&switcher_menu,
 static const ui_menu_item switcher_system_menu_items[] = {
   UI_MENU_MAKE_ITEM("Log", switcher_app_enter_log),
   UI_MENU_MAKE_ITEM("Uptime", switcher_app_enter_uptime),
-  UI_MENU_MAKE_ITEM("Shutdown", switcher_app_exit),
+  UI_MENU_MAKE_ITEM("Shutdown", switcher_app_shutdown),
 };
 
 static ui_menu switcher_system_menu = UI_MENU_MAKE_SUB_MENU(&switcher_menu, switcher_system_menu_items);
 
 static const ui_menu_item switcher_test_menu_items[] = {
-  UI_MENU_MAKE_ITEM("Button", switcher_app_enter_button),
+  UI_MENU_MAKE_ITEM("Controller", switcher_app_enter_controller),
   UI_MENU_MAKE_ITEM("LCD", switcher_app_enter_lcd),
-  UI_MENU_MAKE_ITEM("LED", switcher_app_enter_led),
   UI_MENU_MAKE_ITEM("Memtest", switcher_app_enter_memtest),
   UI_MENU_MAKE_ITEM("Panic", switcher_app_enter_panic),
   UI_MENU_MAKE_ITEM("Speedtest", switcher_app_enter_speedtest)
@@ -55,67 +54,69 @@ ui_menu switcher_menu = UI_MENU_MAKE_MENU(switcher_menu_items);
 
 void switcher_app_enter(void) {
   switcher_app_reset();
-  UI_MENU_HOME(switcher_menu);
   ui_menu_enter(&switcher_menu);
 }
 
-void switcher_app_enter_button(void) {
-  switcher_app_reset();
-  button_app_enter();
+void switcher_app_enter_controller(void) {
+  switcher_app_start(controller_app_enter);
 }
 
 void switcher_app_enter_lcd(void) {
-  switcher_app_reset();
-  lcd_app_enter();
-}
-
-void switcher_app_enter_led(void) {
-  switcher_app_reset();
-  led_app_enter();
+  switcher_app_start(lcd_app_enter);
 }
 
 void switcher_app_enter_log(void) {
-  switcher_app_reset();
-  log_app_enter();
+  switcher_app_start(log_app_enter);
 }
 
 void switcher_app_enter_memtest(void) {
-  switcher_app_reset();
-  memtest_app_enter();
+  switcher_app_start(memtest_app_enter);
 }
 
 void switcher_app_enter_panic(void) {
-  switcher_app_reset();
-  panic_app_enter();
+  switcher_app_start(panic_app_enter);
 }
 
 void switcher_app_enter_speedtest(void) {
-  switcher_app_reset();
-  speedtest_app_enter();
+  switcher_app_start(speedtest_app_enter);
 }
 
 void switcher_app_enter_scroll(void) {
-  switcher_app_reset();
-  scroll_app_enter();
+  switcher_app_start(scroll_app_enter);
 }
 
 void switcher_app_enter_wisdom(void) {
-  switcher_app_reset();
-  wisdom_app_enter();
+  switcher_app_start(wisdom_app_enter);
 }
 
 void switcher_app_enter_uptime(void) {
-  switcher_app_reset();
-  uptime_app_enter();
+  switcher_app_start(uptime_app_enter);
 }
 
-void switcher_app_exit(void) {
+void switcher_app_shutdown(void) {
+  switcher_app_start(kernel_shutdown);
+}
+
+void switcher_app_start(switcher_app_runnable* app) {
   switcher_app_reset();
-  kernel_shutdown();
+  controller_button_set_released_handler(switcher_app_button_released);
+  controller_button_set_demuxed_depressed_handler(switcher_app_return, controller_button_left);
+  app();
+}
+
+void switcher_app_return(void) {
+  switcher_app_reset();
+  ui_menu_enter_current();
 }
 
 void switcher_app_reset(void) {
-  button_clear_all_non_special();
+  controller_button_clear_event_handlers();
   timer_clear_all_non_special();
   console_clear();
+}
+
+void switcher_app_button_released(controller_button_bitset buttons) {
+  if ((buttons & SWITCHER_APP_ENTER_BUTTON_BITS) == SWITCHER_APP_ENTER_BUTTON_BITS) {
+    switcher_app_enter();
+  }
 }

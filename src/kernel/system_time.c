@@ -1,11 +1,15 @@
 #include "system_time.h"
 
-#include "hw/map.h"
+#include "hw/configuration.h"
 
 #define MS_PER_TICK 5
 
 static unsigned long tick_count;
 static unsigned char ticked_event;
+
+unsigned long system_time_get_tick_frequency(void) {
+  return MS_PER_TICK * (HW_CPU_FREQUENCY / 1000);
+}
 
 unsigned long system_time_get_ticks(void) {
   return tick_count;
@@ -29,11 +33,6 @@ unsigned char system_time_reset_ticked_event(void) {
     return 1;
   }
   return 0;
-}
-
-void system_time_init(void) {
-  unsigned long tick_frequency = MS_PER_TICK * (hw_cpu_get_frequency() / 1000);
-  hw_timer_fixed_rate_start(tick_frequency);
 }
 
 void system_time_on_tick(void) {
