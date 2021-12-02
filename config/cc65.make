@@ -4,7 +4,7 @@ SRC_EXT_CXX := c
 
 CXX.MKDEPS := $(CXX.MKDEPS)
 CXX.MKDEPS.CXXFLAGS =
-CXX.MKDEPS.CXXFLAGS += -I/usr/local/share/cc65/include
+CXX.MKDEPS.CXXFLAGS += -I$(CC65_HOME)/include
 CXX.MKDEPS.CXXFLAGS += -Wno-deprecated
 
 CXX = cl65

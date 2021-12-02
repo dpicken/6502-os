@@ -40,7 +40,7 @@ $(BUILD_DIR)/kernel/kernel: $(SRC_DIR)/kernel/system.cfg $(KERNEL_OBJS) $(KERNEL
 
 $(BUILD_DIR)/kernel/kernel.with.commit.img: $(BUILD_DIR)/kernel/kernel
 	$(echo_build_message)
-	$(echo_recipe)([[ $$(git status --porcelain) == "" ]] && (git rev-parse HEAD | cut --bytes=1-7 --zero-terminated) || echo -ne 'adhoc  \0') >$@
+	$(echo_recipe)([[ $$(git status --porcelain) == "" ]] && (git rev-parse HEAD | cut -b 1-7 | tr '\n' '\0') || echo -ne 'adhoc  \0') >$@
 	$(echo_recipe)cat $^ >>$@
 
 $(BUILD_DIR)/kernel/kernel.img: $(BUILD_DIR)/kernel/kernel.with.commit.img
