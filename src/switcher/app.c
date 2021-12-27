@@ -5,6 +5,7 @@
 #include "controller/app.h"
 #include "distraction/scroll/app.h"
 #include "distraction/wisdom/app.h"
+#include "ft245r/app.h"
 #include "kernel/kernel.h"
 #include "lcd/app.h"
 #include "log/app.h"
@@ -36,6 +37,7 @@ static ui_menu switcher_system_menu = UI_MENU_MAKE_SUB_MENU(&switcher_menu, swit
 
 static const ui_menu_item switcher_test_menu_items[] = {
   UI_MENU_MAKE_ITEM("Controller", switcher_app_enter_controller),
+  UI_MENU_MAKE_ITEM("FT245R", switcher_app_enter_ft245r),
   UI_MENU_MAKE_ITEM("LCD", switcher_app_enter_lcd),
   UI_MENU_MAKE_ITEM("Memtest", switcher_app_enter_memtest),
   UI_MENU_MAKE_ITEM("Panic", switcher_app_enter_panic),
@@ -60,6 +62,10 @@ void switcher_app_enter(void) {
 
 void switcher_app_enter_controller(void) {
   switcher_app_start(controller_app_enter);
+}
+
+void switcher_app_enter_ft245r(void) {
+  switcher_app_start(ft245r_app_enter);
 }
 
 void switcher_app_enter_lcd(void) {

@@ -39,21 +39,18 @@
  * Default input/output configuration.
  */
 #if HW_CONFIGURATION_BREADBOARD
-  #define HW_CONTROLLER_VIA_PORT &via1->ra, &via1->ddra
-  #define HW_LCD_VIA_PORT &via1->rb, &via1->ddrb
+  #define HW_CONTROLLER_VIA1_PORT &via1->ra, &via1->ddra
+  #define HW_LCD_VIA1_PORT &via1->rb, &via1->ddrb
   #define HW_LCD_DRIVER_INIT lcd_init_hd44780
 #elif HW_CONFIGURATION_SBC_V1
-  #define HW_CONTROLLER_VIA_PORT &via1->rb, &via1->ddrb
-  #define HW_LCD_VIA_PORT &via1->ra, &via1->ddra
+  #define HW_CONTROLLER_VIA1_PORT &via1->rb, &via1->ddrb
+  #define HW_LCD_VIA1_PORT &via1->ra, &via1->ddra
   #define HW_LCD_DRIVER_INIT lcd_init_us2066
 #elif HW_CONFIGURATION_V2
-  #define HW_CONTROLLER_VIA_PORT &via1->rb, &via1->ddrb
-  #define HW_LCD_VIA_PORT_DEFAULT &via1->ra, &via1->ddra
-  #define HW_LCD_VIA_PORT_ALT1 &via2->ra, &via2->ddra
-  #define HW_LCD_VIA_PORT_ALT2 &via2->rb, &via2->ddrb
-  #define HW_LCD_VIA_PORT HW_LCD_VIA_PORT_DEFAULT
-  //#define HW_LCD_VIA_PORT HW_LCD_VIA_PORT_ALT1
-  //#define HW_LCD_VIA_PORT HW_LCD_VIA_PORT_ALT2
+  #define HW_CONTROLLER_VIA1_PORT &via1->rb, &via1->ddrb
+  #define HW_LCD_VIA1_PORT &via1->ra, &via1->ddra
+  #define HW_FT245R_CONTROL_VIA2_PORT &via2->rb, &via2->ddrb
+  #define HW_FT245R_DATA_VIA2_PORT &via2->ra, &via2->ddra
   #define HW_LCD_DRIVER_INIT lcd_init_us2066
 #else
   #error unsupported hardware platfrom

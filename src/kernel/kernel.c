@@ -11,6 +11,7 @@
 #include "cc65/write.h"
 #include "console/console.h"
 #include "controller/controller.h"
+#include "ft245r/ft245r.h"
 #include "hw/configuration.h"
 #include "lcd/lcd.h"
 #include "switcher/app.h"
@@ -24,7 +25,7 @@ static unsigned char shutdown;
 void main(void) {
   kernel_log_early(memory_get_rom_version());
 
-  controller_init(HW_CONTROLLER_VIA_PORT);
+  controller_init(HW_CONTROLLER_VIA1_PORT);
   kernel_log_early("[ctl_init] done");
 
   controller_led_on();
@@ -33,18 +34,13 @@ void main(void) {
   irq_enable();
   kernel_log_early("[irq_init] done");
 
-#if HW_VIA_COUNT > 1
-  if (controller_buttons_depressed(CONTROLLER_BUTTON_TO_BIT(controller_button_a))) {
-    HW_LCD_DRIVER_INIT(HW_LCD_VIA_PORT_ALT1);
-  } else if (controller_buttons_depressed(CONTROLLER_BUTTON_TO_BIT(controller_button_b))) {
-    HW_LCD_DRIVER_INIT(HW_LCD_VIA_PORT_ALT2);
-  } else {
-    HW_LCD_DRIVER_INIT(HW_LCD_VIA_PORT_DEFAULT);
-  }
-#else
-  HW_LCD_DRIVER_INIT(HW_LCD_VIA_PORT);
-#endif
+  HW_LCD_DRIVER_INIT(HW_LCD_VIA1_PORT);
   kernel_log_early("[lcd_init] done");
+
+#if HW_VIA_COUNT > 1
+  ft245r_init(HW_FT245R_DATA_VIA2_PORT, HW_FT245R_CONTROL_VIA2_PORT);
+  kernel_log_early("[ftr_init] done");
+#endif
 
   console_set_resolution(20, 4);
   kernel_log_early("[con_reso] done");

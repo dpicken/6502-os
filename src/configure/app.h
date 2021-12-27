@@ -5,9 +5,6 @@
 
 extern ui_menu configure_menu;
 
-void configure_app_lcd_exp_1a(void);
-void configure_app_lcd_exp_2a(void);
-void configure_app_lcd_exp_2b(void);
 void configure_app_lcd_16x2(void);
 void configure_app_lcd_20x4(void);
 void configure_app_lcd_40x4(void);

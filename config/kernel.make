@@ -17,6 +17,7 @@ KERNEL_LIBS += $(BUILD_DIR)/console/console.a
 KERNEL_LIBS += $(BUILD_DIR)/controller/controller.a
 KERNEL_LIBS += $(BUILD_DIR)/distraction/scroll/scroll.a
 KERNEL_LIBS += $(BUILD_DIR)/distraction/wisdom/wisdom.a
+KERNEL_LIBS += $(BUILD_DIR)/ft245r/ft245r.a
 KERNEL_LIBS += $(BUILD_DIR)/lcd/lcd.a
 KERNEL_LIBS += $(BUILD_DIR)/lcd/driver/hd44780/hd44780.a
 KERNEL_LIBS += $(BUILD_DIR)/lcd/driver/us2066/us2066.a

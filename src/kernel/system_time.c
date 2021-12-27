@@ -20,7 +20,13 @@ unsigned long system_time_ticks_to_ms(unsigned long ticks) {
 }
 
 unsigned long system_time_ms_to_ticks(unsigned long ms) {
-  return ms / MS_PER_TICK;
+  if (ms == 0) {
+    return 0;
+  } else if (ms < MS_PER_TICK) {
+    return 1;
+  } else {
+    return ms / MS_PER_TICK;
+  }
 }
 
 unsigned long system_time_get_ms(void) {

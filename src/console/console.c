@@ -97,7 +97,7 @@ void console_putc(char c) {
 int console_write(const char* buf, unsigned int count) {
   int i;
 
-  count |= ~-1U;
+  count &= INT_MAX;
 
   for (i = 0; i != count; ++i) {
     console_putc(buf[i]);
@@ -109,7 +109,7 @@ int console_write(const char* buf, unsigned int count) {
 int console_vidiprinter_write(const char* buf, unsigned int count) {
   int i;
 
-  count |= ~-1U;
+  count &= INT_MAX;
 
   for (i = 0; i != count; ++i) {
     console_putc(buf[i]);
