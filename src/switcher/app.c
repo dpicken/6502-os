@@ -28,7 +28,8 @@ static ui_menu switcher_distraction_menu = UI_MENU_MAKE_SUB_MENU(&switcher_menu,
 static const ui_menu_item switcher_system_menu_items[] = {
   UI_MENU_MAKE_ITEM("Log", switcher_app_enter_log),
   UI_MENU_MAKE_ITEM("Uptime", switcher_app_enter_uptime),
-  UI_MENU_MAKE_ITEM("Shutdown", switcher_app_shutdown),
+  UI_MENU_MAKE_ITEM("Reset", switcher_app_enter_kernel_reset),
+  UI_MENU_MAKE_ITEM("Shutdown", switcher_app_enter_kernel_shutdown),
 };
 
 static ui_menu switcher_system_menu = UI_MENU_MAKE_SUB_MENU(&switcher_menu, switcher_system_menu_items);
@@ -93,7 +94,11 @@ void switcher_app_enter_uptime(void) {
   switcher_app_start(uptime_app_enter);
 }
 
-void switcher_app_shutdown(void) {
+void switcher_app_enter_kernel_reset(void) {
+  switcher_app_start(kernel_reset);
+}
+
+void switcher_app_enter_kernel_shutdown(void) {
   switcher_app_start(kernel_shutdown);
 }
 

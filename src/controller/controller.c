@@ -13,7 +13,7 @@ static controller_button_event_handler released_handler;
 static controller_button_demuxed_event_handler demuxed_depressed_handlers[CONTROLLER_BUTTON_COUNT];
 static controller_button_demuxed_event_handler demuxed_released_handlers[CONTROLLER_BUTTON_COUNT];
 
-static controller_button_bitset button_bits_previous;
+static controller_button_bitset button_bits_previous = CONTROLLER_VIA_BUTTON_MASK; // Ignore buttons held down at boot during the first poll
 
 void controller_init(hw_register via_port, hw_register via_ddr) {
   controller_via_port = via_port;

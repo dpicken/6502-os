@@ -75,6 +75,12 @@ void kernel_event_poll_loop(void) {
   }
 }
 
+void kernel_reset(void) {
+  kernel_log("Resetting...");
+  __asm__("jmp ($FFFC)");
+}
+
 void kernel_shutdown(void) {
+  kernel_log("Shutting down...");
   shutdown = 1;
 }

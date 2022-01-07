@@ -4,6 +4,7 @@
 void main(void);
 
 void kernel_event_poll_loop(void);
+void kernel_reset(void);
 void kernel_shutdown(void);
 
 #endif // ifndef kernel_kernel_h

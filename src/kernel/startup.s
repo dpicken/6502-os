@@ -39,4 +39,8 @@ startup_init:
 _exit:
   ; Run destructors
   jsr donelib
+
+halt:
+  nop
+  jmp halt
   brk
