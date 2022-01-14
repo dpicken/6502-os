@@ -40,6 +40,6 @@ void ui_menu_left(void);
 void ui_menu_right(void);
 void ui_menu_select(void);
 void ui_menu_render(void);
-void ui_menu_render_line(const char* buf, unsigned char count, unsigned char lcd_resolution_x);
+void ui_menu_render_line(const char* buf, unsigned char count, unsigned char display_resolution_x);
 
 #endif // ifndef ui_menu_h

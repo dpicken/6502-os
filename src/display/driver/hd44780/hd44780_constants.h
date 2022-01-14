@@ -1,5 +1,5 @@
-#ifndef lcd_driver_hd44780_hd44780_constants_h
-#define lcd_driver_hd44780_hd44780_constants_h
+#ifndef display_driver_hd44780_hd44780_constants_h
+#define display_driver_hd44780_hd44780_constants_h
 
 #define HD44780_VIA_DATA_MASK    0xF0
 #define HD44780_VIA_CONTROL_MASK 0x0F
@@ -44,4 +44,4 @@
 
 #define HD44780_DR_BUSY                               0x80
 
-#endif // ifndef lcd_driver_hd44780_hd44780_constants_h
+#endif // ifndef display_driver_hd44780_hd44780_constants_h

@@ -1,11 +1,33 @@
 #include "app.h"
 
-#include "console/console.h"
 #include "controller/controller.h"
-#include "lcd/lcd.h"
+#include "display/display.h"
+#include "io/io.h"
 #include "kernel/system_time.h"
 
 #include <stdio.h>
+
+#define SPEEDTEST_1K(test_description, test_expression) \
+  start_time = system_time_get_ticks();\
+  for (i = 0; i != 100; ++i) {\
+    for (j = 0; j != 10; ++j) {\
+      test_expression;\
+    }\
+  }\
+  end_time = system_time_get_ticks();\
+  fprintf(vidiprinter, "1K %s: %lu ms\n", test_description, system_time_ticks_to_ms(end_time - start_time))
+
+#define SPEEDTEST_1M(test_description, test_expression) \
+  start_time = system_time_get_ticks();\
+  for (i = 0; i != 100; ++i) {\
+    for (j = 0; j != 100; ++j) {\
+      for (k = 0; k != 100; ++k) {\
+        test_expression;\
+      }\
+    }\
+  }\
+  end_time = system_time_get_ticks();\
+  fprintf(vidiprinter, "1M %s: %lu ms\n", test_description, system_time_ticks_to_ms(end_time - start_time))
 
 void speedtest_app_enter(void) {
   controller_button_set_demuxed_depressed_handler(speedtest_run, controller_button_a);
@@ -23,45 +45,9 @@ void speedtest_run(void) {
 
   volatile unsigned char* p = &v;
 
-  start_time = system_time_get_ticks();
-  for (i = 0; i != 100; ++i) {
-    for (j = 0; j < 100; ++j) {
-      lcd->putchar('*');
-    }
-  }
-  end_time = system_time_get_ticks();
-  console_clear();
-  printf("10K LCD: %lu ms\n", system_time_ticks_to_ms(end_time - start_time));
-
-  start_time = system_time_get_ticks();
-  for (i = 0; i != 100; ++i) {
-    for (j = 0; j < 100; ++j) {
-      for (k = 0; k < 100; ++k) {
-      }
-    }
-  }
-  end_time = system_time_get_ticks();
-  printf("1M loop: %lu ms\n", system_time_ticks_to_ms(end_time - start_time));
-
-  start_time = system_time_get_ticks();
-  for (i = 0; i != 100; ++i) {
-    for (j = 0; j < 100; ++j) {
-      for (k = 0; k < 100; ++k) {
-        *p;
-      }
-    }
-  }
-  end_time = system_time_get_ticks();
-  printf("1M read: %lu ms\n", system_time_ticks_to_ms(end_time - start_time));
-
-  start_time = system_time_get_ticks();
-  for (i = 0; i != 100; ++i) {
-    for (j = 0; j < 100; ++j) {
-      for (k = 0; k < 100; ++k) {
-        *p = 1;
-      }
-    }
-  }
-  end_time = system_time_get_ticks();
-  printf("1M write: %lu ms", system_time_ticks_to_ms(end_time - start_time));
+  SPEEDTEST_1K("vdu", fprintf(vdu, "speedtest "));
+  SPEEDTEST_1K("serial", fprintf(serial, "speedtest "));
+  SPEEDTEST_1M("loop", ;);
+  SPEEDTEST_1M("read", *p);
+  SPEEDTEST_1M("write", *p = 1);
 }

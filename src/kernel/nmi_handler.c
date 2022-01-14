@@ -3,7 +3,7 @@
 #include "delay.h"
 #include "irq_control.h"
 
-#include "console/console.h"
+#include "display/display.h"
 
 #include <stdio.h>
 
@@ -19,13 +19,13 @@ void nmi_handler(void) {
 
   ++nmiCount;
 
-  console_clear();
-  printf("NMI: %i/%i (%i)\n", nmiCount, nmiReentryDepth, nmiMaxReentryDepth);
+  display_clear();
+  fprintf(stderr, "NMI: %i/%i (%i)\n", nmiCount, nmiReentryDepth, nmiMaxReentryDepth);
 
   irq_enable();
   delay_ms(1000);
   irq_disable();
 
   --nmiReentryDepth;
-  printf("NMI: %i/%i (%i)\n", nmiCount, nmiReentryDepth, nmiMaxReentryDepth);
+  fprintf(stderr, "NMI: %i/%i (%i)\n", nmiCount, nmiReentryDepth, nmiMaxReentryDepth);
 }

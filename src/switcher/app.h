@@ -11,8 +11,8 @@ extern ui_menu switcher_menu;
 void switcher_app_enter(void);
 
 void switcher_app_enter_controller(void);
+void switcher_app_enter_display(void);
 void switcher_app_enter_ft245r(void);
-void switcher_app_enter_lcd(void);
 void switcher_app_enter_log(void);
 void switcher_app_enter_memtest(void);
 void switcher_app_enter_panic(void);

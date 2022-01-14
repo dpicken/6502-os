@@ -1,13 +1,13 @@
 #include "app.h"
 
 #include "configure/app.h"
-#include "console/console.h"
 #include "controller/app.h"
+#include "display/app.h"
+#include "display/display.h"
 #include "distraction/scroll/app.h"
 #include "distraction/wisdom/app.h"
 #include "ft245r/app.h"
 #include "kernel/kernel.h"
-#include "lcd/app.h"
 #include "log/app.h"
 #include "memtest/app.h"
 #include "panic/app.h"
@@ -37,8 +37,8 @@ static ui_menu switcher_system_menu = UI_MENU_MAKE_SUB_MENU(&switcher_menu, swit
 
 static const ui_menu_item switcher_test_menu_items[] = {
   UI_MENU_MAKE_ITEM("Controller", switcher_app_enter_controller),
+  UI_MENU_MAKE_ITEM("Display", switcher_app_enter_display),
   UI_MENU_MAKE_ITEM("FT245R", switcher_app_enter_ft245r),
-  UI_MENU_MAKE_ITEM("LCD", switcher_app_enter_lcd),
   UI_MENU_MAKE_ITEM("Memtest", switcher_app_enter_memtest),
   UI_MENU_MAKE_ITEM("Panic", switcher_app_enter_panic),
   UI_MENU_MAKE_ITEM("Speedtest", switcher_app_enter_speedtest)
@@ -64,12 +64,12 @@ void switcher_app_enter_controller(void) {
   switcher_app_start(controller_app_enter);
 }
 
-void switcher_app_enter_ft245r(void) {
-  switcher_app_start(ft245r_app_enter);
+void switcher_app_enter_display(void) {
+  switcher_app_start(display_app_enter);
 }
 
-void switcher_app_enter_lcd(void) {
-  switcher_app_start(lcd_app_enter);
+void switcher_app_enter_ft245r(void) {
+  switcher_app_start(ft245r_app_enter);
 }
 
 void switcher_app_enter_log(void) {
@@ -123,7 +123,7 @@ void switcher_app_return(void) {
 void switcher_app_reset(void) {
   controller_button_clear_event_handlers();
   timer_clear_all_non_special();
-  console_clear();
+  display_clear();
 }
 
 void switcher_app_button_released(controller_button_bitset buttons) {

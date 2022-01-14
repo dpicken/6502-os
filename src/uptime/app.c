@@ -1,6 +1,7 @@
 #include "app.h"
 
 #include "kernel/system_time.h"
+#include "io/io.h"
 #include "timer/timer.h"
 
 #include <stdio.h>
@@ -17,5 +18,5 @@ void uptime_print_system_time(void) {
   unsigned int minutes = (total_seconds / 60) % 60;
   unsigned int hours = (total_seconds / (60 * 60)) % 24;
   unsigned int days = (total_seconds / (60 * 60 * 24));
-  printf("%02u-%02u:%02u:%02u\r", days, hours, minutes, seconds);
+  fprintf(vdu, "%02u-%02u:%02u:%02u\r", days, hours, minutes, seconds);
 }

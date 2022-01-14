@@ -4,7 +4,6 @@ KERNEL_OBJS += $(BUILD_DIR)/kernel/interrupt_dispatch.s.o
 KERNEL_OBJS += $(BUILD_DIR)/kernel/interrupt_wait.s.o
 KERNEL_OBJS += $(BUILD_DIR)/kernel/irq_handler.c.o
 KERNEL_OBJS += $(BUILD_DIR)/kernel/kernel.c.o
-KERNEL_OBJS += $(BUILD_DIR)/kernel/log.c.o
 KERNEL_OBJS += $(BUILD_DIR)/kernel/memory.s.o
 KERNEL_OBJS += $(BUILD_DIR)/kernel/nmi_handler.c.o
 KERNEL_OBJS += $(BUILD_DIR)/kernel/startup.s.o
@@ -13,14 +12,14 @@ KERNEL_OBJS += $(BUILD_DIR)/kernel/vector.s.o
 
 KERNEL_LIBS :=
 KERNEL_LIBS += $(BUILD_DIR)/configure/configure.a
-KERNEL_LIBS += $(BUILD_DIR)/console/console.a
 KERNEL_LIBS += $(BUILD_DIR)/controller/controller.a
+KERNEL_LIBS += $(BUILD_DIR)/display/display.a
+KERNEL_LIBS += $(BUILD_DIR)/display/driver/hd44780/hd44780.a
+KERNEL_LIBS += $(BUILD_DIR)/display/driver/us2066/us2066.a
 KERNEL_LIBS += $(BUILD_DIR)/distraction/scroll/scroll.a
 KERNEL_LIBS += $(BUILD_DIR)/distraction/wisdom/wisdom.a
 KERNEL_LIBS += $(BUILD_DIR)/ft245r/ft245r.a
-KERNEL_LIBS += $(BUILD_DIR)/lcd/lcd.a
-KERNEL_LIBS += $(BUILD_DIR)/lcd/driver/hd44780/hd44780.a
-KERNEL_LIBS += $(BUILD_DIR)/lcd/driver/us2066/us2066.a
+KERNEL_LIBS += $(BUILD_DIR)/io/io.a
 KERNEL_LIBS += $(BUILD_DIR)/log/log.a
 KERNEL_LIBS += $(BUILD_DIR)/memtest/memtest.a
 KERNEL_LIBS += $(BUILD_DIR)/panic/panic.a
@@ -32,10 +31,7 @@ KERNEL_LIBS += $(BUILD_DIR)/uptime/uptime.a
 KERNEL_LIBS += $(BUILD_DIR)/util/util.a
 KERNEL_LIBS += $(BUILD_DIR)/via/via.a
 
-KERNEL_TOOLCHAIN_LIBS :=
-KERNEL_TOOLCHAIN_LIBS += $(BUILD_DIR)/cc65/cc65.a
-
-$(BUILD_DIR)/kernel/kernel: $(SRC_DIR)/kernel/system.cfg $(KERNEL_OBJS) $(KERNEL_LIBS) $(KERNEL_TOOLCHAIN_LIBS)
+$(BUILD_DIR)/kernel/kernel: $(SRC_DIR)/kernel/system.cfg $(KERNEL_OBJS) $(KERNEL_LIBS)
 	$(echo_build_message)
 	$(echo_recipe)ld65 -o $@ --lib-path $(BUILD_DIR) -C $< --start-group $(filter-out $<,$^) none.lib --end-group && chmod a+x $@
 

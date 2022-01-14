@@ -2,7 +2,7 @@
 
 #include "log.h"
 
-#include "cc65/write.h"
+#include "io/io.h"
 
 void log_app_enter(void) {
   log_app_dump();

@@ -4,16 +4,15 @@
 #include "interrupt_wait.h"
 #include "irq_control.h"
 #include "irq_handler.h"
-#include "log.h"
+#include "log/log.h"
 #include "memory.h"
 #include "system_time.h"
 
-#include "cc65/write.h"
-#include "console/console.h"
 #include "controller/controller.h"
+#include "display/display.h"
 #include "ft245r/ft245r.h"
 #include "hw/configuration.h"
-#include "lcd/lcd.h"
+#include "io/io.h"
 #include "switcher/app.h"
 #include "timer/timer.h"
 #include "via/via.h"
@@ -23,42 +22,47 @@
 static unsigned char shutdown;
 
 void main(void) {
-  kernel_log_early(memory_get_rom_version());
+  log(memory_get_rom_version());
 
   controller_init(HW_CONTROLLER_VIA1_PORT);
-  kernel_log_early("[ctl_init] done");
+  log("[ctl_init] done");
 
   controller_led_on();
 
   irq_handler_init();
   irq_enable();
-  kernel_log_early("[irq_init] done");
+  log("[irq_init] done");
 
-  HW_LCD_DRIVER_INIT(HW_LCD_VIA1_PORT);
-  kernel_log_early("[lcd_init] done");
+  HW_DISPLAY_DRIVER_INIT(HW_DISPLAY_VIA1_PORT);
+  log("[dis_init] done");
 
 #if HW_VIA_COUNT > 1
   ft245r_init(HW_FT245R_DATA_VIA2_PORT, HW_FT245R_CONTROL_VIA2_PORT);
-  kernel_log_early("[ftr_init] done");
+  log("[ftr_init] done");
 #endif
 
-  console_set_resolution(20, 4);
-  kernel_log_early("[con_reso] done");
-
-  vidiprinter = fopen(VIDIPRINTER_PATH, "a");
-  kernel_log("[vid_init] done");
+  if (!ft245r_is_initialized()) {
+    io_init(io_closed_reader, io_display_write, io_display_write);
+  } else {
+    if (controller_buttons_depressed(CONTROLLER_BUTTON_TO_BIT(controller_button_down))) {
+      io_init(io_ft245r_read, io_ft245r_write, io_ft245r_write);
+    } else {
+      io_init(io_ft245r_read, io_display_write, io_display_write);
+    }
+  }
+  log("[cio_init] done");
 
   timer_add_one_shot(switcher_app_enter, 10);
-  kernel_log("[swt_entr] done");
+  log("[swt_entr] done");
 
-  kernel_log("[pol_loop] ...");
+  log("[pol_loop] ...");
   kernel_event_poll_loop();
-  kernel_log("[pol_loop] done");
+  log("[pol_loop] done");
 
   irq_disable();
-  kernel_log("[irq_shut] done");
+  log("[irq_shut] done");
 
-  kernel_log("[krl_exit] ...");
+  log("[krl_exit] ...");
   controller_led_off();
 }
 
@@ -72,11 +76,11 @@ void kernel_event_poll_loop(void) {
 }
 
 void kernel_reset(void) {
-  kernel_log("Resetting...");
+  log("Resetting...");
   __asm__("jmp ($FFFC)");
 }
 
 void kernel_shutdown(void) {
-  kernel_log("Shutting down...");
+  log("Shutting down...");
   shutdown = 1;
 }

@@ -2,10 +2,8 @@
 
 #include "controller/controller.h"
 #include "kernel/delay.h"
-#include "lcd/lcd.h"
-#include "timer/timer.h"
 
-#include <string.h>
+#include <stdio.h>
 
 static unsigned char panicking;
 
@@ -19,9 +17,7 @@ void panic(const char* const message) {
 
   panicking = 1;
 
-  lcd->clear();
-  lcd_write_str("panic: ");
-  lcd_write_str(message);
+  fprintf(stderr, "\npanic: %s", message);
 
   for (;;) {
     delay_ms(1000);

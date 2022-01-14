@@ -48,9 +48,6 @@ void controller_led_on(void);
 /** Extinguish the controller's LED. */
 void controller_led_off(void);
 
-/** Flash the controller's LED continuously, with a non-clearable timer. */
-void controller_led_flash_continuous_special(void);
-
 /** Test whether the specified buttons are depressed. */
 unsigned char controller_buttons_depressed(controller_button_bitset buttons);
 

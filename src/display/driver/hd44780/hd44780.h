@@ -1,9 +1,9 @@
-#ifndef lcd_driver_hd44780_hd44780_h
-#define lcd_driver_hd44780_hd44780_h
+#ifndef display_driver_hd44780_hd44780_h
+#define display_driver_hd44780_hd44780_h
 
-#include "lcd/driver.h"
+#include "display/driver.h"
 
-extern const lcd_driver lcd_hd44780;
+extern const display_driver display_hd44780;
 
 void hd44780_init(hw_register via_port, hw_register via_ddr);
 void hd44780_set_resolution(unsigned char x, unsigned char y);
@@ -31,4 +31,4 @@ void hd44780_via_write_data(unsigned char data, unsigned char via_enable_bits);
 void hd44780_busy_wait(void);
 unsigned char hd44780_via_read_control(unsigned char via_enable_bits);
 
-#endif // ifndef lcd_driver_hd44780_hd44780_h
+#endif // ifndef display_driver_hd44780_hd44780_h

@@ -2,15 +2,14 @@
 
 #include "controller.h"
 
-#include "console/console.h"
-#include "timer/timer.h"
+#include "io/io.h"
 
 #include <stdio.h>
 
 #define DEFINE_BUTTON_HANDLERS(button_name, depressed_char, released_char) \
   void button_app_##button_name##_depressed(void) { \
     controller_led_off(); \
-    putchar(depressed_char); \
+    fputc(depressed_char, vdu); \
   } \
 \
   void button_app_##button_name##_released(void) { \
@@ -38,5 +37,4 @@ void controller_app_enter(void) {
   SET_BUTTON_HANDLERS(a);
   SET_BUTTON_HANDLERS(b);
   SET_BUTTON_HANDLERS(c);
-  timer_add_fixed_rate(&console_clear, 30000);
 }

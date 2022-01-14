@@ -1,9 +1,9 @@
-#ifndef lcd_driver_us2066_us2066_h
-#define lcd_driver_us2066_us2066_h
+#ifndef display_driver_us2066_us2066_h
+#define display_driver_us2066_us2066_h
 
-#include "lcd/driver.h"
+#include "display/driver.h"
 
-extern const lcd_driver lcd_us2066;
+extern const display_driver display_us2066;
 
 void us2066_init(hw_register via_port, hw_register via_ddr);
 void us2066_set_resolution(unsigned char x, unsigned char y);
@@ -31,4 +31,4 @@ void us2066_via_write_data(unsigned char data);
 void us2066_busy_wait(void);
 unsigned char us2066_via_read_control(void);
 
-#endif // ifndef lcd_driver_us2066_us2066_h
+#endif // ifndef display_driver_us2066_us2066_h

@@ -18,11 +18,11 @@
 static hw_register hd44780_via_port;
 static hw_register hd44780_via_ddr;
 
-static unsigned char lcd_xsize = HD44780_XSIZE_MAX;
-static unsigned char lcd_pos_end = HD44780_E2_POS_END;
-static unsigned char lcd_pos;
+static unsigned char display_xsize = HD44780_XSIZE_MAX;
+static unsigned char display_pos_end = HD44780_E2_POS_END;
+static unsigned char display_pos;
 
-const lcd_driver lcd_hd44780 = {
+const display_driver display_hd44780 = {
   hd44780_init,
   hd44780_set_resolution,
   hd44780_get_resolution_x,
@@ -81,39 +81,39 @@ void hd44780_init(hw_register via_port, hw_register via_ddr) {
 }
 
 void hd44780_set_resolution(unsigned char x, unsigned char y) {
-  lcd_xsize = x;
-  lcd_pos_end = x * y;
-  lcd_pos = 0;
+  display_xsize = x;
+  display_pos_end = x * y;
+  display_pos = 0;
 }
 
 unsigned char hd44780_get_resolution_x(void) {
-  return lcd_xsize;
+  return display_xsize;
 }
 
 unsigned char hd44780_get_resolution_y(void) {
-  return lcd_pos_end / lcd_xsize;
+  return display_pos_end / display_xsize;
 }
 
 unsigned char hd44780_get_resolution_cell_count(void) {
-  return lcd_pos_end;
+  return display_pos_end;
 }
 
 void hd44780_clear(void) {
   hd44780_via_write_control(HD44780_INSTRUCTION_CLEAR_DISPLAY, HD44780_VIA_CONTROL_E1 | HD44780_VIA_CONTROL_E2);
-  lcd_pos = 0;
+  display_pos = 0;
 }
 
 void hd44780_set_pos_home(void) {
   hd44780_via_write_control(HD44780_INSTRUCTION_RETURN_HOME, HD44780_VIA_CONTROL_E1 | HD44780_VIA_CONTROL_E2);
-  lcd_pos = 0;
+  display_pos = 0;
 }
 
 void hd44780_set_pos(unsigned char pos) {
-  unsigned char x = pos % lcd_xsize;
-  unsigned char y = pos / lcd_xsize;
+  unsigned char x = pos % display_xsize;
+  unsigned char y = pos / display_xsize;
 
-  if (lcd_pos_end == HD44780_E2_POS_END && y > 1) {
-    // A 40x4 line LCD has two 40x2 controllers.
+  if (display_pos_end == HD44780_E2_POS_END && y > 1) {
+    // A 40x4 line display has two 40x2 controllers.
     y -= 2;
   }
 
@@ -122,16 +122,16 @@ void hd44780_set_pos(unsigned char pos) {
   } else if (y == 1) {
     hd44780_set_ddram_address(HD44780_LINE_2_DDRAM_ADDRESS_BASE + x);
   } else if (y == 2) {
-    hd44780_set_ddram_address(HD44780_LINE_1_DDRAM_ADDRESS_BASE + lcd_xsize + x);
+    hd44780_set_ddram_address(HD44780_LINE_1_DDRAM_ADDRESS_BASE + display_xsize + x);
   } else {
-    hd44780_set_ddram_address(HD44780_LINE_2_DDRAM_ADDRESS_BASE + lcd_xsize + x);
+    hd44780_set_ddram_address(HD44780_LINE_2_DDRAM_ADDRESS_BASE + display_xsize + x);
   }
 
-  lcd_pos = pos;
+  display_pos = pos;
 }
 
 unsigned char hd44780_get_pos(void) {
-  return lcd_pos;
+  return display_pos;
 }
 
 void hd44780_set_ddram_address(unsigned char address) {
@@ -167,19 +167,19 @@ void hd44780_orientation_rotated(void) {
 }
 
 void hd44780_putchar(char c) {
-  if (lcd_pos < HD44780_E1_POS_END) {
+  if (display_pos < HD44780_E1_POS_END) {
     hd44780_via_write_data(c, HD44780_VIA_CONTROL_E1);
   } else {
     hd44780_via_write_data(c, HD44780_VIA_CONTROL_E2);
   }
 
-  ++lcd_pos;
-  if (lcd_pos == lcd_pos_end) {
-    lcd_pos = 0;
+  ++display_pos;
+  if (display_pos == display_pos_end) {
+    display_pos = 0;
   }
 
-  if (lcd_pos % lcd_xsize == 0) {
-    hd44780_set_pos(lcd_pos);
+  if (display_pos % display_xsize == 0) {
+    hd44780_set_pos(display_pos);
   }
 }
 

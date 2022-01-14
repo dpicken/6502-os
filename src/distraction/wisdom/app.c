@@ -1,10 +1,11 @@
 #include "app.h"
 
-#include "cc65/write.h"
-#include "console/console.h"
+#include "display/display.h"
+#include "io/io.h"
 #include "timer/timer.h"
 #include "util/array.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 
 static const char* const wisdom_list[] = {
@@ -19,13 +20,13 @@ void wisdom_app_enter(void) {
 
 void wisdom_play(void) {
   wisdom_index = rand() % ARRAY_SIZE(wisdom_list);
-  console_clear();
+  display_clear();
   wisdom_pretty_print(wisdom_list[wisdom_index]);
   timer_add_one_shot(wisdom_play, 5000);
 }
 
 void wisdom_pretty_print(const char* const wisdom) {
-  unsigned char x_size = console_get_x_size();
+  unsigned char x_size = display_get_x_size();
   unsigned char x_pos = 0;
   const char* word_it = wisdom;
   const char* word_end = wisdom;

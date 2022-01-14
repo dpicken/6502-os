@@ -1,9 +1,9 @@
-#ifndef lcd_driver_h
-#define lcd_driver_h
+#ifndef display_driver_h
+#define display_driver_h
 
 #include "hw/register.h"
 
-typedef struct lcd_driver {
+typedef struct display_driver {
   /** Initialize display. */
   void (*init)(hw_register via_port, hw_register via_ddr);
 
@@ -57,6 +57,6 @@ typedef struct lcd_driver {
 
   /** Write a character to the display. */
   void (*putchar)(char c);
-} lcd_driver;
+} display_driver;
 
-#endif // ifndef lcd_driver_h
+#endif // ifndef display_driver_h

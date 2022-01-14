@@ -5,6 +5,8 @@ void ft245r_app_enter(void);
 
 void ft245r_app_rx(void);
 void ft245r_app_tx(void);
+void ft245r_app_toggle_echo_to_display(void);
+void ft245r_app_toggle_echo_to_peer(void);
 void ft245r_app_echo_enter(void);
 void ft245r_app_echo(void);
 
