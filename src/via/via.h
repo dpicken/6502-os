@@ -24,6 +24,7 @@ typedef struct {
 
 extern via* const via1;
 extern via* const via2;
+extern via* const via3;
 
 #define VIA_DATA_DIRECTION_SET_WRITE_MASK(ddr, write_mask) (*ddr) = (write_mask)
 #define VIA_DATA_DIRECTION_SET_WRITE(ddr) VIA_DATA_DIRECTION_SET_WRITE_MASK(ddr, 0xFF)

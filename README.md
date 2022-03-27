@@ -1,6 +1,6 @@
 # 6502-os
 
-An OS and applications for an [Eater](https://eater.net/6502) inspired [6502 computer](https://github.com/dpicken/6502-hw).
+An OS and applications for a [Ben Eater](https://eater.net/6502) inspired [6502 computer](https://github.com/dpicken/6502-hw).
 
 ## Install tools
 

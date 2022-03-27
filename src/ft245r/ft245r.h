@@ -4,7 +4,7 @@
 #include "hw/register.h"
 
 /** Initialize the FT245R driver. */
-void ft245r_init(hw_register via_data_port, hw_register via_data_ddr, hw_register via_control_port, hw_register via_control_ddr);
+void ft245r_init(hw_register via_control_port, hw_register via_control_ddr, hw_register via_data_port, hw_register via_data_ddr);
 
 /** Returns true if the driver has been initialized. */
 unsigned char ft245r_is_initialized(void);

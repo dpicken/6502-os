@@ -31,7 +31,17 @@ KERNEL_LIBS += $(BUILD_DIR)/uptime/uptime.a
 KERNEL_LIBS += $(BUILD_DIR)/util/util.a
 KERNEL_LIBS += $(BUILD_DIR)/via/via.a
 
-$(BUILD_DIR)/kernel/kernel: $(SRC_DIR)/kernel/system.cfg $(KERNEL_OBJS) $(KERNEL_LIBS)
+#SBC_VERSION ?= 0
+#SBC_VERSION ?= 1
+SBC_VERSION ?= 2
+#SBC_VERSION ?= 2_2
+
+CXXFLAGS += -DHW_CONFIGURATION_SBC_V$(SBC_VERSION)=1
+CXX.MKDEPS.CXXFLAGS += -DHW_CONFIGURATION_SBC_V$(SBC_VERSION)=1
+
+SBC_CONFIG = config/sbc-v$(SBC_VERSION).cfg
+
+$(BUILD_DIR)/kernel/kernel: $(SBC_CONFIG) $(KERNEL_OBJS) $(KERNEL_LIBS)
 	$(echo_build_message)
 	$(echo_recipe)ld65 -o $@ --lib-path $(BUILD_DIR) -C $< --start-group $(filter-out $<,$^) none.lib --end-group && chmod a+x $@
 

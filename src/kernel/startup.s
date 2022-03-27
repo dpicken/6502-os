@@ -4,9 +4,9 @@
 .export _exit
 
 .import copydata
-.import zerobss
-.import initlib
 .import donelib
+.import initlib
+.import zerobss
 .import _main
 
 .import __RAM_OS_START__, __RAM_OS_SIZE__

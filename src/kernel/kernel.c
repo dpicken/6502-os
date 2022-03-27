@@ -24,7 +24,7 @@ static unsigned char shutdown;
 void main(void) {
   log(memory_get_rom_version());
 
-  controller_init(HW_CONTROLLER_VIA1_PORT);
+  controller_init(HW_CONTROLLER_VIA_PORT);
   log("[ctl_init] done");
 
   controller_led_on();
@@ -33,18 +33,22 @@ void main(void) {
   irq_enable();
   log("[irq_init] done");
 
-  HW_DISPLAY_DRIVER_INIT(HW_DISPLAY_VIA1_PORT);
+  if (controller_buttons_depressed(CONTROLLER_BUTTON_TO_BIT(controller_button_a))) {
+    HW_DISPLAY_DRIVER_INIT_ALT(HW_DISPLAY_VIA_PORT);
+  } else {
+    HW_DISPLAY_DRIVER_INIT(HW_DISPLAY_VIA_PORT);
+  }
   log("[dis_init] done");
 
-#if HW_VIA_COUNT > 1
-  ft245r_init(HW_FT245R_DATA_VIA2_PORT, HW_FT245R_CONTROL_VIA2_PORT);
+#if HW_FT245R_SUPPORT
+  ft245r_init(HW_FT245R_CONTROL_VIA_PORT, HW_FT245R_DATA_VIA_PORT);
   log("[ftr_init] done");
 #endif
 
   if (!ft245r_is_initialized()) {
     io_init(io_closed_reader, io_display_write, io_display_write);
   } else {
-    if (controller_buttons_depressed(CONTROLLER_BUTTON_TO_BIT(controller_button_down))) {
+    if (controller_buttons_depressed(CONTROLLER_BUTTON_TO_BIT(controller_button_b))) {
       io_init(io_ft245r_read, io_ft245r_write, io_ft245r_write);
     } else {
       io_init(io_ft245r_read, io_display_write, io_display_write);

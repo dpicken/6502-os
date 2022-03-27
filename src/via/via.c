@@ -8,6 +8,9 @@ via* const via1 = VIA(HW_VIA1_ADDRESS);
 #if HW_VIA_COUNT > 1
 via* const via2 = VIA(HW_VIA2_ADDRESS);
 #endif
+#if HW_VIA_COUNT > 2
+via* const via3 = VIA(HW_VIA3_ADDRESS);
+#endif
 
 #define VIA_ACR_T1_CONTINUOUS_INTERRUPTS 0x40
 
