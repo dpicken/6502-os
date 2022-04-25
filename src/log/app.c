@@ -9,5 +9,6 @@ void log_app_enter(void) {
 }
 
 void log_app_dump(void) {
+  log_dump(stderr);
   log_dump(vidiprinter);
 }

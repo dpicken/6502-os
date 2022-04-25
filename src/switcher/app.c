@@ -11,6 +11,7 @@
 #include "log/app.h"
 #include "memtest/app.h"
 #include "panic/app.h"
+#include "sd/app.h"
 #include "speedtest/app.h"
 #include "timer/timer.h"
 #include "uptime/app.h"
@@ -41,6 +42,7 @@ static const ui_menu_item switcher_test_menu_items[] = {
   UI_MENU_MAKE_ITEM("FT245R", switcher_app_enter_ft245r),
   UI_MENU_MAKE_ITEM("Memtest", switcher_app_enter_memtest),
   UI_MENU_MAKE_ITEM("Panic", switcher_app_enter_panic),
+  UI_MENU_MAKE_ITEM("SD card", switcher_app_enter_sd),
   UI_MENU_MAKE_ITEM("Speedtest", switcher_app_enter_speedtest)
 };
 
@@ -82,6 +84,10 @@ void switcher_app_enter_memtest(void) {
 
 void switcher_app_enter_panic(void) {
   switcher_app_start(panic_app_enter);
+}
+
+void switcher_app_enter_sd(void) {
+  switcher_app_start(sd_app_enter);
 }
 
 void switcher_app_enter_speedtest(void) {

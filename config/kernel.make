@@ -23,7 +23,9 @@ KERNEL_LIBS += $(BUILD_DIR)/io/io.a
 KERNEL_LIBS += $(BUILD_DIR)/log/log.a
 KERNEL_LIBS += $(BUILD_DIR)/memtest/memtest.a
 KERNEL_LIBS += $(BUILD_DIR)/panic/panic.a
+KERNEL_LIBS += $(BUILD_DIR)/sd/sd.a
 KERNEL_LIBS += $(BUILD_DIR)/speedtest/speedtest.a
+KERNEL_LIBS += $(BUILD_DIR)/spi/spi.a
 KERNEL_LIBS += $(BUILD_DIR)/switcher/switcher.a
 KERNEL_LIBS += $(BUILD_DIR)/timer/timer.a
 KERNEL_LIBS += $(BUILD_DIR)/ui/ui.a
@@ -33,8 +35,8 @@ KERNEL_LIBS += $(BUILD_DIR)/via/via.a
 
 #SBC_VERSION ?= 0
 #SBC_VERSION ?= 1
-SBC_VERSION ?= 2
-#SBC_VERSION ?= 2_2
+#SBC_VERSION ?= 2
+SBC_VERSION ?= 2_2
 
 CXXFLAGS += -DHW_CONFIGURATION_SBC_V$(SBC_VERSION)=1
 CXX.MKDEPS.CXXFLAGS += -DHW_CONFIGURATION_SBC_V$(SBC_VERSION)=1

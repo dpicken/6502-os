@@ -16,6 +16,7 @@ void switcher_app_enter_ft245r(void);
 void switcher_app_enter_log(void);
 void switcher_app_enter_memtest(void);
 void switcher_app_enter_panic(void);
+void switcher_app_enter_sd(void);
 void switcher_app_enter_speedtest(void);
 void switcher_app_enter_scroll(void);
 void switcher_app_enter_wisdom(void);

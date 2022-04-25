@@ -30,6 +30,20 @@ extern via* const via3;
 #define VIA_DATA_DIRECTION_SET_WRITE(ddr) VIA_DATA_DIRECTION_SET_WRITE_MASK(ddr, 0xFF)
 #define VIA_DATA_DIRECTION_SET_READ(ddr)  VIA_DATA_DIRECTION_SET_WRITE_MASK(ddr, 0x00)
 
+#define VIA_ACR_T1_CONTINUOUS_INTERRUPTS 0x40
+#define VIA_ACR_SHIFT_IN_CB1_CLOCKED     0x0C
+
+#define VIA_PCR_CB2_CONTROL_OUTPUT_HIGH 0xE0
+#define VIA_PCR_CB2_CONTROL_OUTPUT_LOW  0xC0
+#define VIA_PCR_CB1_INTERRUPT_CONTROL_POSITIVE_ACTIVE_EDGE 0x10
+
+#define VIA_PCR_CA2_CONTROL_OUTPUT_LOW  0x0C
+#define VIA_PCR_CA2_CONTROL_OUTPUT_HIGH 0x0E
+#define VIA_PCR_CA1_INTERRUPT_CONTROL_POSITIVE_ACTIVE_EDGE 0x01
+
+/** Initializes each via's ORA and ORB to zero. */
+void via_init();
+
 /** Sets a VIA's T1 timer to interrupt at a fixed rate. */
 void via_timer_t1_fixed_rate_start(via* via, unsigned int frequency);
 

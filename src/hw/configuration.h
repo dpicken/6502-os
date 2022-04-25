@@ -51,12 +51,14 @@
   #define HW_DISPLAY_DRIVER_INIT display_init_hd44780
   #define HW_DISPLAY_DRIVER_INIT_ALT display_init_us2066
   #define HW_FT245R_SUPPORT 0
+  #define HW_SD_CARD_SUPPORT 0
 #elif HW_CONFIGURATION_SBC_V1
   #define HW_CONTROLLER_VIA_PORT &via1->rb, &via1->ddrb
   #define HW_DISPLAY_VIA_PORT &via1->ra, &via1->ddra
   #define HW_DISPLAY_DRIVER_INIT display_init_us2066
   #define HW_DISPLAY_DRIVER_INIT_ALT display_init_hd44780
   #define HW_FT245R_SUPPORT 0
+  #define HW_SD_CARD_SUPPORT 0
 #elif HW_CONFIGURATION_SBC_V2
   #define HW_CONTROLLER_VIA_PORT &via1->rb, &via1->ddrb
   #define HW_DISPLAY_VIA_PORT &via1->ra, &via1->ddra
@@ -65,6 +67,7 @@
   #define HW_FT245R_SUPPORT 1
   #define HW_FT245R_CONTROL_VIA_PORT &via2->rb, &via2->ddrb
   #define HW_FT245R_DATA_VIA_PORT &via2->ra, &via2->ddra
+  #define HW_SD_CARD_SUPPORT 0
 #elif HW_CONFIGURATION_SBC_V2_2
   #define HW_CONTROLLER_VIA_PORT &via1->rb, &via1->ddrb
   #define HW_DISPLAY_VIA_PORT &via1->ra, &via1->ddra
@@ -73,6 +76,8 @@
   #define HW_FT245R_SUPPORT 1
   #define HW_FT245R_CONTROL_VIA_PORT &via3->rb, &via3->ddrb
   #define HW_FT245R_DATA_VIA_PORT &via3->ra, &via3->ddra
+  #define HW_SD_CARD_SUPPORT 1
+  #define HW_SD_CARD_VIA via3
 #else
   #error unsupported hardware platfrom
 #endif
