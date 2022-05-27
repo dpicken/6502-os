@@ -17,7 +17,6 @@
 #define DEV_DISPLAY "/dev/display"
 #define DEV_DISPLAY_VIDIPRINTER "/dev/display_vidiprinter"
 #define DEV_FT245R "/dev/ft245r"
-#define DEV_SD_CARD "/dev/sd_card"
 
 FILE* serial;
 FILE* vdu;
@@ -26,6 +25,7 @@ FILE* vidiprinter;
 static io_reader io_readers[FOPEN_MAX];
 static io_writer io_writers[ARRAY_SIZE(io_readers)];
 static io_closer io_closers[ARRAY_SIZE(io_readers)];
+static long      io_cursors[ARRAY_SIZE(io_readers)];
 
 void io_init(io_reader c_stdin, io_writer c_stdout, io_writer c_stderr) {
   unsigned char i;
@@ -51,14 +51,14 @@ void io_init(io_reader c_stdin, io_writer c_stdout, io_writer c_stderr) {
 }
 
 unsigned char io_is_initialized(void) {
-  return io_writers[STDERR_FILENO] != NULL;
+  return io_closers[STDERR_FILENO] != NULL;
 }
 
-int io_closed_reader(char*, unsigned int) {
+int io_closed_reader(long, char*, unsigned int) {
   return io_fail(EBADF);
 }
 
-int io_closed_writer(const char*, unsigned int) {
+int io_closed_writer(long, const char*, unsigned int) {
   return io_fail(EBADF);
 }
 
@@ -79,7 +79,7 @@ int open(const char* name, int flags, ...) {
   unsigned char fd;
 
   for (fd = 0; fd != ARRAY_SIZE(io_readers); ++fd) {
-    if (io_readers[fd] == io_closed_reader && io_writers[fd] == io_closed_writer) {
+    if (io_closers[fd] == io_closed_closer) {
       if (strcmp(name, DEV_DISPLAY) == 0) {
         return io_open_display(fd, flags);
       } else if (strcmp(name, DEV_DISPLAY_VIDIPRINTER) == 0) {
@@ -160,7 +160,6 @@ int io_open_sd_card(int fd, int flags) {
       if (!sd_card_open()) {
         return io_fail(EIO);
       }
-      io_writers[fd] = io_sd_card_write;
       io_closers[fd] = io_sd_card_close;
       return fd;
     case O_RDWR:
@@ -168,7 +167,6 @@ int io_open_sd_card(int fd, int flags) {
         return io_fail(EIO);
       }
       io_readers[fd] = io_sd_card_read;
-      io_writers[fd] = io_sd_card_write;
       io_closers[fd] = io_sd_card_close;
       return fd;
   }
@@ -185,35 +183,73 @@ int __fastcall__ close(int fd) {
 
   status = io_closers[fd]();
 
-  io_closers[fd] = io_closed_closer;
-  io_writers[fd] = io_closed_writer;
   io_readers[fd] = io_closed_reader;
+  io_writers[fd] = io_closed_writer;
+  io_closers[fd] = io_closed_closer;
+  io_cursors[fd] = 0;
 
   return status;
 }
 
-int __fastcall__ read(int fd, void* buf, unsigned count) {
+int __fastcall__ read(int fd, void* buf, unsigned int count) {
+  int status;
+
   if (fd >= ARRAY_SIZE(io_readers)) {
     return io_fail(EBADF);
   }
 
-  return io_readers[fd]((char*)buf, count);
+  status = io_readers[fd](io_cursors[fd], (char*)buf, count);
+  if (status == -1) {
+    return io_fail(EIO);
+  }
+
+  io_cursors[fd] += status;
+  return status;
 }
 
-int __fastcall__ write(int fd, const void* buf, unsigned count) {
+int __fastcall__ write(int fd, const void* buf, unsigned int count) {
+  int status;
+
   if (fd >= ARRAY_SIZE(io_writers)) {
     return io_fail(EBADF);
   }
 
-  return io_writers[fd](buf, count);
+  status = io_writers[fd](io_cursors[fd], buf, count);
+  if (status == -1) {
+    return io_fail(EIO);
+  }
+
+  io_cursors[fd] += status;
+  return status;
 }
 
-IO_DEFINE_WRITER(io_display_write, display_putc);
-IO_DEFINE_WRITER(io_display_vidiprinter_write, display_vidiprinter_putc);
+long __fastcall__ lseek(int fd, long offset, int whence) {
+  if (fd >= ARRAY_SIZE(io_writers)) {
+    return io_fail(EBADF);
+  }
 
-IO_DEFINE_READER_NON_BLOCKING(io_ft245r_read, ft245r_rx_ready, ft245r_rx);
-IO_DEFINE_WRITER_NON_BLOCKING(io_ft245r_write, ft245r_tx_ready, ft245r_tx);
+  if (io_closers[fd] == io_closed_closer) {
+    return io_fail(EBADF);
+  }
 
-IO_DEFINE_READER(io_sd_card_read, sd_card_read);
-IO_DEFINE_WRITER(io_sd_card_write, sd_card_write);
+  if (whence == SEEK_SET) {
+    io_cursors[fd] = offset;
+    return io_cursors[fd];
+  } else if (whence == SEEK_CUR) {
+    io_cursors[fd] += offset;
+    return io_cursors[fd];
+  } else if (whence == SEEK_END) {
+    return io_fail(EINVAL);
+  } else {
+    return io_fail(EINVAL);
+  }
+}
+
+IO_DEFINE_BYTE_WRITER(io_display_write, display_putc);
+IO_DEFINE_BYTE_WRITER(io_display_vidiprinter_write, display_vidiprinter_putc);
+
+IO_DEFINE_BYTE_READER_NON_BLOCKING(io_ft245r_read, ft245r_rx_ready, ft245r_rx);
+IO_DEFINE_BYTE_WRITER_NON_BLOCKING(io_ft245r_write, ft245r_tx_ready, ft245r_tx);
+
+IO_DEFINE_BLOCK_READER(io_sd_card_read, sd_card_read, SD_BLOCK_BYTE_COUNT_LOG2);
 IO_DEFINE_CLOSER(io_sd_card_close, sd_card_close);

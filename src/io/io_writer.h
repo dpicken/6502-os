@@ -3,11 +3,11 @@
 
 #include <limits.h>
 
-typedef int (*io_writer)(const char*, unsigned int);
+typedef int (*io_writer)(long, const char*, unsigned int);
 
-#define IO_DECLARE_WRITER(fn_name) int fn_name(const char* buffer, unsigned int count)
+#define IO_DECLARE_WRITER(fn_name) int fn_name(long, const char* buffer, unsigned int count)
 
-#define IO_DEFINE_WRITER(fn_name, write_byte_fn) int fn_name(const char* buffer, unsigned int count) {\
+#define IO_DEFINE_BYTE_WRITER(fn_name, write_byte_fn) int fn_name(long, const char* buffer, unsigned int count) {\
   const char* it = buffer;\
   const char* end = buffer + (count & INT_MAX);\
 \
@@ -19,7 +19,7 @@ typedef int (*io_writer)(const char*, unsigned int);
 }\
 unsigned char fn_name##_guard
 
-#define IO_DEFINE_WRITER_NON_BLOCKING(fn_name, write_byte_ready_fn, write_byte_fn) int fn_name(const char* buffer, unsigned int count) {\
+#define IO_DEFINE_BYTE_WRITER_NON_BLOCKING(fn_name, write_byte_ready_fn, write_byte_fn) int fn_name(long, const char* buffer, unsigned int count) {\
   const char* it = buffer;\
   const char* end = buffer + (count & INT_MAX);\
 \

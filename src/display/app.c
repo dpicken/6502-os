@@ -5,7 +5,6 @@
 #include "controller/controller.h"
 #include "timer/timer.h"
 #include "util/algorithm.h"
-#include "util/hex.h"
 
 #include <stdint.h>
 

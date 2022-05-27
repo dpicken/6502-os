@@ -15,3 +15,11 @@ int min(int a, int b) {
 int max(int a, int b) {
   return a > b ? a : b;
 }
+
+unsigned int u_min(unsigned int a, unsigned int b) {
+  return a < b ? a :b ;
+}
+
+unsigned int u_max(unsigned int a, unsigned int b) {
+  return a > b ? a : b;
+}
