@@ -57,7 +57,7 @@ void sd_app_card_close(void) {
 void sd_app_card_read(void) {
   unsigned char buffer[8];
   long address;
-  int item_count;
+  size_t item_count;
 
   if (sd_card == NULL) {
     fprintf(vdu, "Card not open\n");

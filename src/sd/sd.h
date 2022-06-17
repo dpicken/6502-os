@@ -38,7 +38,7 @@ unsigned char sd_spi_cmd16_set_blocklen(unsigned long byte_count);
 unsigned char sd_spi_cmd17_read_single_block(unsigned long block_address);
 unsigned char sd_spi_cmd55_app_cmd(void);
 unsigned char sd_spi_cmd58_read_ocr(void);
-unsigned char sd_spi_acmd41_sd_send_op_cmd(void);
+unsigned char sd_spi_acmd41_sd_send_op_cond(void);
 
 unsigned char sd_spi_read_transfer(unsigned long skip_byte_count, char* buffer, unsigned int byte_count);
 

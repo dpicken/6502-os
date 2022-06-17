@@ -157,7 +157,7 @@ unsigned char sd_spi_card_init(void) {
       return 0;
     }
 
-    response = sd_spi_acmd41_sd_send_op_cmd();
+    response = sd_spi_acmd41_sd_send_op_cond();
     if (SD_SPI_RESPONSE_IS_SUCCESS(response)) {
       break;
     } else if (!SD_SPI_RESPONSE_IS_IN_IDLE_STATE_ONLY(response)) {
@@ -332,7 +332,7 @@ unsigned char sd_spi_cmd58_read_ocr(void) {
   return response;
 }
 
-unsigned char sd_spi_acmd41_sd_send_op_cmd(void) {
+unsigned char sd_spi_acmd41_sd_send_op_cond(void) {
   unsigned char response;
 
   sd_spi_select();

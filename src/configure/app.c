@@ -3,8 +3,6 @@
 #include "display/display.h"
 #include "switcher/app.h"
 
-#include <stdio.h>
-
 static const ui_menu_item configure_display_menu_items[] = {
   UI_MENU_MAKE_ITEM("16x2", configure_app_display_16x2),
   UI_MENU_MAKE_ITEM("20x4", configure_app_display_20x4),

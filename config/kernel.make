@@ -20,6 +20,7 @@ KERNEL_LIBS += $(BUILD_DIR)/distraction/scroll/scroll.a
 KERNEL_LIBS += $(BUILD_DIR)/distraction/wisdom/wisdom.a
 KERNEL_LIBS += $(BUILD_DIR)/ft245r/ft245r.a
 KERNEL_LIBS += $(BUILD_DIR)/io/io.a
+KERNEL_LIBS += $(BUILD_DIR)/loader/loader.a
 KERNEL_LIBS += $(BUILD_DIR)/log/log.a
 KERNEL_LIBS += $(BUILD_DIR)/memtest/memtest.a
 KERNEL_LIBS += $(BUILD_DIR)/panic/panic.a

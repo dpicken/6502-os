@@ -8,6 +8,7 @@
 #include "distraction/wisdom/app.h"
 #include "ft245r/app.h"
 #include "kernel/kernel.h"
+#include "loader/app.h"
 #include "log/app.h"
 #include "memtest/app.h"
 #include "panic/app.h"
@@ -22,7 +23,7 @@
 
 static const ui_menu_item switcher_distraction_menu_items[] = {
   UI_MENU_MAKE_ITEM("Scroll", switcher_app_enter_scroll),
-  UI_MENU_MAKE_ITEM("Wisdom", switcher_app_enter_wisdom),
+  UI_MENU_MAKE_ITEM("Wisdom", switcher_app_enter_wisdom)
 };
 
 static ui_menu switcher_distraction_menu = UI_MENU_MAKE_SUB_MENU(&switcher_menu, switcher_distraction_menu_items);
@@ -31,7 +32,7 @@ static const ui_menu_item switcher_system_menu_items[] = {
   UI_MENU_MAKE_ITEM("Log", switcher_app_enter_log),
   UI_MENU_MAKE_ITEM("Uptime", switcher_app_enter_uptime),
   UI_MENU_MAKE_ITEM("Reset", switcher_app_enter_kernel_reset),
-  UI_MENU_MAKE_ITEM("Shutdown", switcher_app_enter_kernel_shutdown),
+  UI_MENU_MAKE_ITEM("Shutdown", switcher_app_enter_kernel_shutdown)
 };
 
 static ui_menu switcher_system_menu = UI_MENU_MAKE_SUB_MENU(&switcher_menu, switcher_system_menu_items);
@@ -51,6 +52,7 @@ static ui_menu switcher_test_menu = UI_MENU_MAKE_SUB_MENU(&switcher_menu, switch
 static const ui_menu_item switcher_menu_items[] = {
   UI_MENU_MAKE_ITEM_WITH_SUB_MENU("Configure", &configure_menu),
   UI_MENU_MAKE_ITEM_WITH_SUB_MENU("Distraction", &switcher_distraction_menu),
+  UI_MENU_MAKE_ITEM_WITH_SUB_MENU("Loader", &loader_menu),
   UI_MENU_MAKE_ITEM_WITH_SUB_MENU("System", &switcher_system_menu),
   UI_MENU_MAKE_ITEM_WITH_SUB_MENU("Test", &switcher_test_menu)
 };
